@@ -127,6 +127,33 @@ Coursework\fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\build
 .PHONY : Coursework\fast
 
+Semester.obj: Semester.cpp.obj
+
+.PHONY : Semester.obj
+
+# target to build an object file
+Semester.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\Semester.cpp.obj
+.PHONY : Semester.cpp.obj
+
+Semester.i: Semester.cpp.i
+
+.PHONY : Semester.i
+
+# target to preprocess a source file
+Semester.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\Semester.cpp.i
+.PHONY : Semester.cpp.i
+
+Semester.s: Semester.cpp.s
+
+.PHONY : Semester.s
+
+# target to generate assembly for a file
+Semester.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\Semester.cpp.s
+.PHONY : Semester.cpp.s
+
 Student.obj: Student.cpp.obj
 
 .PHONY : Student.obj
@@ -153,6 +180,33 @@ Student.s: Student.cpp.s
 Student.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\Student.cpp.s
 .PHONY : Student.cpp.s
+
+Subject.obj: Subject.cpp.obj
+
+.PHONY : Subject.obj
+
+# target to build an object file
+Subject.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\Subject.cpp.obj
+.PHONY : Subject.cpp.obj
+
+Subject.i: Subject.cpp.i
+
+.PHONY : Subject.i
+
+# target to preprocess a source file
+Subject.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\Subject.cpp.i
+.PHONY : Subject.cpp.i
+
+Subject.s: Subject.cpp.s
+
+.PHONY : Subject.s
+
+# target to generate assembly for a file
+Subject.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\Subject.cpp.s
+.PHONY : Subject.cpp.s
 
 main.obj: main.cpp.obj
 
@@ -190,9 +244,15 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Coursework
+	@echo ... Semester.obj
+	@echo ... Semester.i
+	@echo ... Semester.s
 	@echo ... Student.obj
 	@echo ... Student.i
 	@echo ... Student.s
+	@echo ... Subject.obj
+	@echo ... Subject.i
+	@echo ... Subject.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

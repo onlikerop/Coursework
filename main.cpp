@@ -1,5 +1,4 @@
 #include "Student.h"
-#include <clocale>
 
 
 int main() {
@@ -20,7 +19,11 @@ int main() {
 
     Allah->addSemester();
     Allah->addSubject(1,"Sranina");
-    cout << Allah->getSubjects(1).getName() << endl;
+    Allah->addSubject(1,"Ebanina");
+    Allah->addSubject(1,"Pizda Losya");
+    /*Allah->printSubjects(1);*/
+    Allah->getSemester(1)->getSubject("Ebanina")->setGrade(5);
+    Allah->getSemester(1)->printSubjects();
 //    Allah->getSemester(0).addSubject("Sranina");
 /*    Allah->getSemester(0).addSubject("Ebanina");
     Allah->getSemester(0).addSubject("Pizdanie");
@@ -29,7 +32,5 @@ int main() {
     Allah->getSemester(1).addSubject("Eblya");
     cout << Allah->getSemester(1).getSubjects() << endl;*/
     //cout << Allah->getSemester(0).getSubjects()<< endl << endl;
-    int i;
-    cin >> i;
     return 0;
 }
