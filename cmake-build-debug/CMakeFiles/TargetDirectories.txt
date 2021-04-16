@@ -1,0 +1,3 @@
+Q:/Progs/C++/University/Practice/Coursework/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+Q:/Progs/C++/University/Practice/Coursework/cmake-build-debug/CMakeFiles/Coursework.dir
+Q:/Progs/C++/University/Practice/Coursework/cmake-build-debug/CMakeFiles/edit_cache.dir

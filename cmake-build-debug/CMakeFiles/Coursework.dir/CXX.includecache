@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+Q:/Progs/C++/University/Practice/Coursework/Student.cpp
+Student.h
+Q:/Progs/C++/University/Practice/Coursework/Student.h
+
+Q:/Progs/C++/University/Practice/Coursework/Student.h
+iostream
+-
+cstring
+-
+utility
+-
+
+Q:/Progs/C++/University/Practice/Coursework/main.cpp
+Student.h
+Q:/Progs/C++/University/Practice/Coursework/Student.h
+clocale
+-
+
