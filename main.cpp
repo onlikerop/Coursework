@@ -1,4 +1,5 @@
 #include "Student.h"
+#include <fstream>
 
 
 int main() {
@@ -21,16 +22,10 @@ int main() {
     Allah->addSubject(1,"Sranina");
     Allah->addSubject(1,"Ebanina");
     Allah->addSubject(1,"Pizda Losya");
-    /*Allah->printSubjects(1);*/
-    Allah->getSemester(1)->getSubject("Ebanina")->setGrade(5);
     Allah->getSemester(1)->printSubjects();
-//    Allah->getSemester(0).addSubject("Sranina");
-/*    Allah->getSemester(0).addSubject("Ebanina");
-    Allah->getSemester(0).addSubject("Pizdanie");
-    Allah->addSemester();
-    Allah->getSemester(0).removeSubject("Sranina");
-    Allah->getSemester(1).addSubject("Eblya");
-    cout << Allah->getSemester(1).getSubjects() << endl;*/
-    //cout << Allah->getSemester(0).getSubjects()<< endl << endl;
+    Allah->getSemester(1)->getSubject("Ebanina")->setGrade(5);
+    Allah->getSemester(1)->getSubject("Sranina")->setGrade(INCOMPLETE);
+    Allah->getSemester(1)->printSubjects();
+
     return 0;
 }

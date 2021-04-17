@@ -2,6 +2,7 @@
 // Created by Eugene on 16.04.2021.
 //
 
+#define UNINITIALIZED 0xCDCDCDCD
 #ifndef COURSEWORK_SUBJECT_H
 #define COURSEWORK_SUBJECT_H
 
