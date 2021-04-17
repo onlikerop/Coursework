@@ -1,8 +1,6 @@
 //
 // Created by Eugene on 16.04.2021.
 //
-
-#define UNINITIALIZED 0xCDCDCDCD
 #ifndef COURSEWORK_SUBJECT_H
 #define COURSEWORK_SUBJECT_H
 
@@ -49,39 +47,26 @@ enum GRADE{
     UNSET = 0
 };
 
-class Subject {
+string GRADEToString(GRADE grade);
+
+string SEXToString (SEX sex);
+
+class Subject{
 private:
     string name;
     GRADE grade;
 
 
 public:
-    explicit Subject(string subjName){
-        name = move(subjName);
-        grade = UNSET;
-        cout << "You've just successfully added " << name << " subject" << endl;
-    }
+    explicit Subject(string subjName);
 
-    ~Subject(){
-        cout << "Subject " << name << " was successfully removed" << endl;
-    }
+    void setGrade (GRADE grade_to_set);
 
-    void setGrade (GRADE grade_to_set){
-        grade = grade_to_set;
-    }
+    void setGrade (int grade_to_set);
 
-    void setGrade (int grade_to_set){
-        grade = static_cast<GRADE>(grade_to_set);
-    }
+    GRADE getGrade ();
 
-    GRADE getGrade (){
-        return grade;
-    }
-
-    string getName(){
-        return name;
-    }
-
+    string getName();
 };
 
 

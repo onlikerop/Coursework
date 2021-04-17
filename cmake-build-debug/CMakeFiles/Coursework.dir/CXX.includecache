@@ -7,24 +7,24 @@
 #IncludeRegexTransform: 
 
 Q:/Progs/C++/University/Practice/Coursework/Semester.cpp
+Subject.h
+Q:/Progs/C++/University/Practice/Coursework/Subject.h
 Semester.h
 Q:/Progs/C++/University/Practice/Coursework/Semester.h
 
 Q:/Progs/C++/University/Practice/Coursework/Semester.h
-Subject.h
-Q:/Progs/C++/University/Practice/Coursework/Subject.h
 
 Q:/Progs/C++/University/Practice/Coursework/Student.cpp
+Subject.h
+Q:/Progs/C++/University/Practice/Coursework/Subject.h
+Semester.h
+Q:/Progs/C++/University/Practice/Coursework/Semester.h
 Student.h
 Q:/Progs/C++/University/Practice/Coursework/Student.h
 
 Q:/Progs/C++/University/Practice/Coursework/Student.h
 Semester.h
 Q:/Progs/C++/University/Practice/Coursework/Semester.h
-
-Q:/Progs/C++/University/Practice/Coursework/Subject.cpp
-Subject.h
-Q:/Progs/C++/University/Practice/Coursework/Subject.h
 
 Q:/Progs/C++/University/Practice/Coursework/Subject.h
 iostream
@@ -32,11 +32,5 @@ iostream
 cstring
 -
 utility
--
-
-Q:/Progs/C++/University/Practice/Coursework/main.cpp
-Student.h
-Q:/Progs/C++/University/Practice/Coursework/Student.h
-fstream
 -
 
