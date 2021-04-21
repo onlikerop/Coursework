@@ -18,6 +18,68 @@ Student::Student(string SName, string FName, string TName, Date BDate, unsigned 
     cout << "You've just successfully added " << getFullName() << " to the list of students" << endl;
 }
 
+Student::Student() {
+    string SName, FName, TName, faculty, department, group, IDCard;
+    Date BDate;
+    unsigned short BDDay, BDMonth, BDYear, receiptYear;
+    SEX sex;
+
+    cout << "Enter student's second name: " << endl;
+    cin >> SName;
+    cout << "Enter student's first name: " << endl;
+    cin >> FName;
+    cout << "Enter student's third name: " << endl;
+    cin >> TName;
+
+    cout << "Enter student's birthdate: " << endl;
+    bool flag_BD = true;
+    while (flag_BD) {
+        scanf_s("%d.%d.%d", &BDDay, &BDMonth, &BDYear);
+        if (
+                ((BDMonth == 4 || BDMonth == 6 || BDMonth == 9 || BDMonth == 11) && BDDay > 30)
+                || ((BDMonth == 2) && BDDay > 29)
+                || (BDDay > 31)
+           ){
+            cout << "ERROR! You've entered wrong birthdate. Try again!" << endl;
+        }
+        else
+            flag_BD = false;
+    }
+
+    cout << "Enter student's receipt year: " << endl;
+    bool flag_RY = true;
+    while (flag_RY){
+        cin >> receiptYear;
+        if (receiptYear - BDYear < 14)
+            cout << "ERROR! Student on receipt must be 14 years old or older. Try again!" << endl;
+        else
+            flag_RY = false;
+    }
+
+    cout << "Enter student's faculty: " << endl;
+    cin >> faculty;
+    cout << "Enter student's department: " << endl;
+    cin >> department;
+    cout << "Enter student's group: " << endl;
+    cin >> group;
+    cout << "Enter student's ID (ID Card): " << endl;
+    cin >> IDCard;
+
+    cout << "Enter student's sex: " << endl;
+    // Доделать ввод пола через отдельный конвертер string to SEX
+
+
+    name = {move(SName), move(FName), move(TName)};
+    this->BDate = BDate;
+    university = {receiptYear, move(faculty), move(department), move(group), move(IDCard)};
+    this->sex = sex;
+    for (auto & semester : semesters)
+        semester = nullptr;
+
+    cout << "You've just successfully added " << getFullName() << " to the list of students" << endl;
+}
+
+
 Student::~Student(){
 //    for (auto & i : semesters)
 //        if (i != nullptr){
@@ -28,9 +90,6 @@ Student::~Student(){
 }
 
 int Student::addSemester(){
-
-    Semester* a[9];
-    *a = *semesters;
     int counter = 1;
     for (auto & semester : semesters){
         if (semester == nullptr){
@@ -45,9 +104,9 @@ int Student::addSemester(){
 }
 
 int Student::removeSemester(int semesterNumber) {
-    if (semesters[semesterNumber] != nullptr){
+    if (semesters[semesterNumber - 1] != nullptr){
         delete semesters[semesterNumber - 1];
-//        semesters[semesterNumber - 1] = nullptr;
+        semesters[semesterNumber - 1] = nullptr;
         cout << "You've just successfully removed semester " << semesterNumber << endl;
         return 0;
     }
@@ -73,8 +132,9 @@ void Student::printInfo(){
     cout << "Faculty: " << university.faculty << endl;
     cout << "Department: " << university.department << endl;
     cout << "Group: " << university.group << endl;
+    cout << "Year of receipt: " << university.receiptYear << endl;
 
-    cout << "         =========Semesters' info=========         " << endl;
+    cout << endl << "                 Semesters' info                  " << endl;
 
     int counter = 1;
     for (auto & semester : semesters)
@@ -82,7 +142,8 @@ void Student::printInfo(){
             cout << "   Semester " << counter << endl;
             counter++;
             semester->printSubjects();
-    }
+            cout << endl;
+        }
 
     cout << "==================================================" << endl;
 }
@@ -101,4 +162,12 @@ void Student::printInfo(){
 
 Semester* Student::getSemester(int semNumber){
     return semesters[semNumber-1];
+}
+
+int Student::operator +() {
+    return addSemester();
+}
+
+int Student::operator -(int semNumber) {
+    return removeSemester(semNumber);
 }

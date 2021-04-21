@@ -6,32 +6,43 @@
 
 int main() {
 
-    auto *Allah = new Student(
-            "Allahov",
-            "Allah",
-            "Allahovich",
+    auto *Ivan1 = new Student(
+            "Alekseev",
+            "Ivan",
+            "Valeryevich",
             {16, 3, 1911},
             2020,
-            "Govna i palok",
-            "KB-1",
-            "OCHKO-45-20",
-            "20B6141",
+            "Informacionnih tehnologiy",
+            "KB-3",
+            "INBO-5-19",
+            "19B6141",
             Male
             );
-    cout << Allah->getFullName() << endl;
+    cout << Ivan1->getFullName() << endl;
 
-    Allah->addSemester();
-    Allah->getSemester(1)->addSubject("Sranina");
-    Allah->getSemester(1)->addSubject("Ebanina");
-    Allah->getSemester(1)->addSubject("Pizda Losya");
-    Allah->getSemester(1)->printSubjects();
-    Allah->getSemester(1)->getSubject("Ebanina")->setGrade(5);
-    Allah->getSemester(1)->getSubject("Sranina")->setGrade(INCOMPLETE);
-    Allah->getSemester(1)->removeSubject("Pizda Losya");
-    Allah->getSemester(1)->printSubjects();
-//    Allah->printInfo();
+    +*Ivan1;
+    *Ivan1->getSemester(1) + "Math";
+    *Ivan1->getSemester(1) + "Programming";
+    *Ivan1->getSemester(1) + "IT";
+    Ivan1->getSemester(1)->printSubjects();
+    Ivan1->getSemester(1)->getSubject("IT")->setGrade(5);
+    Ivan1->getSemester(1)->getSubject("Math")->setGrade(INCOMPLETE);
+    *Ivan1->getSemester(1) - "Programming";
+    Ivan1->getSemester(1)->printSubjects();
+    +*Ivan1;
+    *Ivan1->getSemester(2) + "Physics";
+    *Ivan1->getSemester(2) + "Math";
+    *Ivan1->getSemester(2) + "IT";
+    *Ivan1->getSemester(2) + "Special courses";
+    Ivan1->getSemester(2)->getSubject("IT")->setGrade(5);
+    Ivan1->getSemester(2)->getSubject("Math")->setGrade(4);
+    Ivan1->getSemester(2)->getSubject("Special courses")->setGrade(COMPLETE);
+    Ivan1->getSemester(2)->getSubject("Physics")->setGrade(5);
+    +*Ivan1;
+    *Ivan1 - 3;
+    Ivan1->printInfo();
 
-    delete Allah;
+    delete Ivan1;
 
     return 0;
 }

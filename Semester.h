@@ -6,8 +6,6 @@
 #define COURSEWORK_SEMESTER_H
 
 
-
-
 class Semester{
 private:
     Subject* subjects[10];
@@ -25,6 +23,9 @@ public:
     void printSubjects();
 
     Subject* getSubject(const string& subjName);
+
+    int operator +(const string& subjName);
+    int operator -(const string& subjName);
 
 
 };

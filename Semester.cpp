@@ -19,8 +19,6 @@ Semester::Semester() {
 //}
 
 int Semester::addSubject(const string& subjName){
-    Subject* a[10];
-    *a = *subjects;
     for (auto & subject : subjects){
         if (subject == nullptr){
             subject = new Subject(subjName);
@@ -35,8 +33,8 @@ int Semester::addSubject(const string& subjName){
 int Semester::removeSubject(const string& subjName){
     for (auto & subject : subjects){
         if (subject->getName() == subjName){
-//            delete subject;
-//            subject = nullptr;
+            delete subject;
+            subject = nullptr;
             cout << "Subject " << subjName << " was successfully removed" << endl;
             return 0;
         }
@@ -57,4 +55,12 @@ Subject* Semester::getSubject(const string& subjName){
             if (i->getName() == subjName)
                 return i;
     return nullptr;
+}
+
+int Semester::operator+(const string &subjName) {
+    return addSubject(subjName);
+}
+
+int Semester::operator-(const string &subjName) {
+    return removeSubject(subjName);
 }

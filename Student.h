@@ -22,6 +22,8 @@ class Student {
         string department, string group, string IDCard, SEX sex
                 );
 
+        Student();
+
         ~Student();
 
         int addSemester();
@@ -42,7 +44,9 @@ class Student {
 
         Semester* getSemester(int semNumber);
 
-};
+        int operator +();
+        int operator -(int semNumber);
 
+};
 
 #endif //COURSEWORK_STUDENT_H
