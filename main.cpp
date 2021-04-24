@@ -43,14 +43,13 @@ int main() {
     *Ivan1 - 3;
     Ivan1->printInfo();
 
-//    auto *John = new Student();
-//    +*John;
-//    John->printInfo();
+//    saveToFile("Ivan.CW", Ivan1);
 
-//    saveToFile("Ivan.CW", *Ivan1);
+
+//    Student John = loadFromFile("Ivan.CW");
+//    John.printInfo();
 
     delete Ivan1;
-//    delete John;
 
     return 0;
 }

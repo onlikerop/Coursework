@@ -5,11 +5,11 @@
 #include "CWLib.h"
 
 
-int saveToFile(string path, Student* student){
+int saveToFile(const string& path, Student* student){
     ofstream fout;
     fout.open(path, ofstream::app);
     if (!fout.is_open()){
-        cout << "Error opening save-file" << endl;
+        cout << "Error opening save-file for saving" << endl;
         fout.close();
         return 1;
     }
@@ -17,6 +17,7 @@ int saveToFile(string path, Student* student){
         try {
             fout.write(reinterpret_cast<char*>(&student), sizeof(Student));
             fout.close();
+            cout << "Successfully saved data into \'" << path << "\'" << endl;
         }
         catch (...){
             return 1;
@@ -26,18 +27,19 @@ int saveToFile(string path, Student* student){
 
 }
 
-//Student loadFromFile(string path){ //Не работает!
+//Student loadFromFile(const string& path){ //Не работает!
 //    ifstream fin;
 //    fin.open(path, ios_base::in);
 //    Student student(nullptr);
 //    if (!fin.is_open()){
-//        cout << "Error opening save-file" << endl;
+//        cout << "Error opening save-file for loading" << endl;
 //        return student;
 //    }
 //    else{
 //        try {
 //            fin.read(reinterpret_cast<char*>(&student), sizeof(Student));
 //            fin.close();
+//            cout << "Successfully loaded data from \'" << path << "\'" << endl;
 //        }
 //        catch (...){
 //            return student;

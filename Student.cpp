@@ -36,7 +36,7 @@ Student::Student() {
         bool flag = true;
         while (flag) {
             cout << "Enter student's birthdate (DD.MM.YYYY): " << endl;
-            scanf("%hu.%hu.%hu", &BDDay, &BDMonth, &BDYear);
+            scanf_s("%hu.%hu.%hu", &BDDay, &BDMonth, &BDYear);
             bool leap_year = BDYear % 100 ? !(BDYear % 4) : !(BDYear % 400);
             if (
                     ((BDMonth == 4 || BDMonth == 6 || BDMonth == 9 || BDMonth == 11) && BDDay > 30)
@@ -93,7 +93,6 @@ Student::Student() {
             semester = nullptr;
 
         cout << "You've just successfully added " << name.Second << " " << name.First << " " << name.Third << " to the list of students" << endl;
-        throw 3;
 }
 
 
@@ -187,4 +186,8 @@ int Student::operator +() {
 
 int Student::operator -(int semNumber) {
     return removeSemester(semNumber);
+}
+
+Student::Student(nullptr_t){
+
 }

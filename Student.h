@@ -24,6 +24,7 @@ class Student {
                 );
 
         Student();
+        Student(nullptr_t);
 
         ~Student();
 

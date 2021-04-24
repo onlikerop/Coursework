@@ -12,8 +12,8 @@
 #include "Student.h"
 
 
-int saveToFile(string path, Student* student);
-//Student loadFromFile(string path);
+int saveToFile(const string &path, Student* student);
+//Student loadFromFile(const string& path);
 
 
 #endif //COURSEWORK_CWLIB_H
