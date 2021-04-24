@@ -11,7 +11,8 @@
 
 class Semester{
 private:
-    Subject* subjects[10];
+    Subject subjects[10];
+    bool is_active_;
 
 
 public:
@@ -20,10 +21,17 @@ public:
     ~Semester();
 
     int addSubject(const string& subjName);
+    int addSubject();
 
     int removeSubject(const string& subjName);
 
+    void cleanSubjects();
+
     void printSubjects();
+
+    bool is_active() const;
+
+    void is_active(bool is_active_);
 
     Subject* getSubject(const string& subjName);
 

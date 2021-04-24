@@ -59,10 +59,11 @@ class Subject{
 private:
     string name;
     GRADE grade;
+    bool is_active_;
 
 
 public:
-    explicit Subject(string subjName);
+    Subject();
 
     void setGrade (GRADE grade_to_set);
 
@@ -71,6 +72,12 @@ public:
     GRADE getGrade () const;
 
     string getName() const;
+
+    void setName (const string &subjName);
+
+    bool is_active() const;
+
+    void is_active(bool is_active_);
 };
 
 

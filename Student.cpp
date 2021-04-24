@@ -13,7 +13,7 @@ Student::Student(string SName, string FName, string TName, Date BDate, unsigned 
     university = {receiptYear, move(faculty), move(department), move(group), move(IDCard)};
     this->sex = sex;
     for (auto & semester : semesters)
-        semester = nullptr;
+        semester.is_active(false);
 
     cout << "You've just successfully added " << getFullName() << " to the list of students" << endl;
 }
@@ -89,27 +89,20 @@ Student::Student() {
         this->BDate = {BDDay, BDMonth, BDYear};
         university = {receiptYear, move(faculty), move(department), move(group), move(IDCard)};
         this->sex = sex;
-        for (auto &semester : semesters)
-            semester = nullptr;
 
         cout << "You've just successfully added " << name.Second << " " << name.First << " " << name.Third << " to the list of students" << endl;
 }
 
 
 Student::~Student(){
-    for (auto & i : semesters)
-        if (i != nullptr){
-            delete i;
-            i = nullptr;
-        }
     cout << "You've just successfully removed student " << getFullName() << " (" << getID() << ")" << endl;
 }
 
 int Student::addSemester(){
     int counter = 1;
     for (auto & semester : semesters){
-        if (semester == nullptr){
-            semester = new Semester();
+        if (!semester.is_active()){
+            semester.is_active(true);
             cout << "You've just successfully added semester " << counter << endl;
             return 0;
         }
@@ -120,9 +113,9 @@ int Student::addSemester(){
 }
 
 int Student::removeSemester(int semesterNumber) {
-    if (semesters[semesterNumber - 1] != nullptr){
-        delete semesters[semesterNumber - 1];
-        semesters[semesterNumber - 1] = nullptr;
+    if (semesters[semesterNumber - 1].is_active()){
+        semesters[semesterNumber - 1].is_active(false);
+        semesters[semesterNumber - 1].cleanSubjects();
         cout << "You've just successfully removed semester " << semesterNumber << endl;
         return 0;
     }
@@ -154,10 +147,10 @@ void Student::printInfo(){
 
     int counter = 1;
     for (auto & semester : semesters)
-        if (semester != nullptr){
+        if (semester.is_active()){
             cout << "   Semester " << counter << endl;
             counter++;
-            semester->printSubjects();
+            semester.printSubjects();
             cout << endl;
         }
 
@@ -177,7 +170,10 @@ void Student::printInfo(){
 //        }
 
 Semester* Student::getSemester(int semNumber){
-    return semesters[semNumber-1];
+    if (semesters[semNumber-1].is_active())
+        return &semesters[semNumber-1];
+    else
+        return nullptr;
 }
 
 int Student::operator +() {
@@ -186,8 +182,4 @@ int Student::operator +() {
 
 int Student::operator -(int semNumber) {
     return removeSemester(semNumber);
-}
-
-Student::Student(nullptr_t){
-
 }

@@ -16,7 +16,7 @@ class Student {
         University university;
         SEX sex;
 
-        Semester* semesters[9];
+        Semester semesters[9];
 
     public:
         Student(string SName, string FName, string TName, Date BDate, unsigned short receiptYear, string faculty,\
@@ -24,7 +24,6 @@ class Student {
                 );
 
         Student();
-        Student(nullptr_t);
 
         ~Student();
 
