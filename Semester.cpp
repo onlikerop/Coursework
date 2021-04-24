@@ -10,13 +10,13 @@ Semester::Semester() {
         subject = nullptr;
 }
 
-//Semester::~Semester(){
-//    for (auto & i : subjects)
-//        if (i != nullptr){
-//            delete i;
-//            i = nullptr;
-//        }
-//}
+Semester::~Semester(){
+    for (auto & i : subjects)
+        if (i != nullptr){
+            delete i;
+            i = nullptr;
+        }
+}
 
 int Semester::addSubject(const string& subjName){
     for (auto & subject : subjects){

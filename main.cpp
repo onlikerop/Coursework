@@ -1,21 +1,22 @@
 #include "Subject.h"
 #include "Semester.h"
 #include "Student.h"
-#include <fstream>
+#include "CWLib.h"
 
 
 int main() {
-
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
     auto *Ivan1 = new Student(
-            "Alekseev",
-            "Ivan",
-            "Valeryevich",
+            "Алексеев",
+            "Иван",
+            "Валерьевич",
             {16, 3, 1911},
             2020,
-            "Informacionnih tehnologiy",
-            "KB-3",
-            "INBO-5-19",
-            "19B6141",
+            "Информационных технологий",
+            "КБ-3",
+            "ИНБО-5-19",
+            "19Б6141",
             Male
             );
     cout << Ivan1->getFullName() << endl;
@@ -42,7 +43,14 @@ int main() {
     *Ivan1 - 3;
     Ivan1->printInfo();
 
+//    auto *John = new Student();
+//    +*John;
+//    John->printInfo();
+
+//    saveToFile("Ivan.CW", *Ivan1);
+
     delete Ivan1;
+//    delete John;
 
     return 0;
 }

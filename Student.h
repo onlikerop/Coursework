@@ -6,7 +6,8 @@
 #define COURSEWORK_STUDENT_H
 
 
-#include "Semester.h"
+//#include "Semester.h"
+
 
 class Student {
     private:
@@ -30,9 +31,9 @@ class Student {
 
         int removeSemester(int semesterNumber);
 
-        string getFullName();
+        string getFullName() const;
 
-        string getID();
+        string getID() const;
 
         void printInfo();
 

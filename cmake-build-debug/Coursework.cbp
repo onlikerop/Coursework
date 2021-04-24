@@ -82,6 +82,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="Q:/Progs/C++/University/Practice/Coursework/CWLib.cpp">
+			<Option target="Coursework"/>
+		</Unit>
+		<Unit filename="Q:/Progs/C++/University/Practice/Coursework/CWLib.h">
+			<Option target="Coursework"/>
+		</Unit>
 		<Unit filename="Q:/Progs/C++/University/Practice/Coursework/Semester.cpp">
 			<Option target="Coursework"/>
 		</Unit>

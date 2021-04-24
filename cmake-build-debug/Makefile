@@ -126,6 +126,33 @@ Coursework\fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\build
 .PHONY : Coursework\fast
 
+CWLib.obj: CWLib.cpp.obj
+
+.PHONY : CWLib.obj
+
+# target to build an object file
+CWLib.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\CWLib.cpp.obj
+.PHONY : CWLib.cpp.obj
+
+CWLib.i: CWLib.cpp.i
+
+.PHONY : CWLib.i
+
+# target to preprocess a source file
+CWLib.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\CWLib.cpp.i
+.PHONY : CWLib.cpp.i
+
+CWLib.s: CWLib.cpp.s
+
+.PHONY : CWLib.s
+
+# target to generate assembly for a file
+CWLib.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\CWLib.cpp.s
+.PHONY : CWLib.cpp.s
+
 Semester.obj: Semester.cpp.obj
 
 .PHONY : Semester.obj
@@ -243,6 +270,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Coursework
+	@echo ... CWLib.obj
+	@echo ... CWLib.i
+	@echo ... CWLib.s
 	@echo ... Semester.obj
 	@echo ... Semester.i
 	@echo ... Semester.s

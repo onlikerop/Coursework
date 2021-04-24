@@ -24,23 +24,32 @@ string SEXToString (SEX sex) {
     }
 }
 
+SEX stringToSEX (const string& sex) {
+    if (sex == "Male" or sex == "male")
+        return Male;
+    else if (sex == "Female" or sex == "female")
+        return Female;
+    else
+        return Undefined;
+}
+
 Subject::Subject(string subjName){
     name = move(subjName);
     grade = UNSET;
 }
 
 void Subject::setGrade (GRADE grade_to_set){
-grade = grade_to_set;
+    grade = grade_to_set;
 }
 
 void Subject::setGrade (int grade_to_set){
     grade = static_cast<GRADE>(grade_to_set);
 }
 
-GRADE Subject::getGrade (){
+GRADE Subject::getGrade () const{
     return grade;
 }
 
-string Subject::getName(){
+string Subject::getName() const{
     return name;
 }

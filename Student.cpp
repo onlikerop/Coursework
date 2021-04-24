@@ -19,73 +19,90 @@ Student::Student(string SName, string FName, string TName, Date BDate, unsigned 
 }
 
 Student::Student() {
-    string SName, FName, TName, faculty, department, group, IDCard;
-    Date BDate;
-    unsigned short BDDay, BDMonth, BDYear, receiptYear;
-    SEX sex;
+        string SName, FName, TName, faculty, department, group, IDCard, sexString;
+        unsigned short BDDay, BDMonth, BDYear, receiptYear;
+        SEX sex;
 
-    cout << "Enter student's second name: " << endl;
-    cin >> SName;
-    cout << "Enter student's first name: " << endl;
-    cin >> FName;
-    cout << "Enter student's third name: " << endl;
-    cin >> TName;
+        cout << endl << "Now you're going to add student in database. Follow the instructions below to continue! "
+             << endl;
 
-    cout << "Enter student's birthdate: " << endl;
-    bool flag_BD = true;
-    while (flag_BD) {
-        scanf_s("%d.%d.%d", &BDDay, &BDMonth, &BDYear);
-        if (
-                ((BDMonth == 4 || BDMonth == 6 || BDMonth == 9 || BDMonth == 11) && BDDay > 30)
-                || ((BDMonth == 2) && BDDay > 29)
-                || (BDDay > 31)
-           ){
-            cout << "ERROR! You've entered wrong birthdate. Try again!" << endl;
+        cout << "Enter student's second name: " << endl;
+        cin >> SName;
+        cout << "Enter student's first name: " << endl;
+        cin >> FName;
+        cout << "Enter student's third name: " << endl;
+        cin >> TName;
+
+        bool flag = true;
+        while (flag) {
+            cout << "Enter student's birthdate (DD.MM.YYYY): " << endl;
+            scanf("%hu.%hu.%hu", &BDDay, &BDMonth, &BDYear);
+            bool leap_year = BDYear % 100 ? !(BDYear % 4) : !(BDYear % 400);
+            if (
+                    ((BDMonth == 4 || BDMonth == 6 || BDMonth == 9 || BDMonth == 11) && BDDay > 30)
+                    || ((BDMonth == 2) && leap_year && BDDay > 29)
+                    || ((BDMonth == 2) && !leap_year && BDDay > 28)
+                    || (BDDay > 31)
+                    || (BDMonth > 12)
+                    || !(BDDay || BDMonth)
+                    ) {
+                cout << "ERROR! You've entered wrong birthdate. Try again!" << endl;
+            } else
+                flag = false;
         }
-        else
-            flag_BD = false;
-    }
-
-    cout << "Enter student's receipt year: " << endl;
-    bool flag_RY = true;
-    while (flag_RY){
-        cin >> receiptYear;
-        if (receiptYear - BDYear < 14)
-            cout << "ERROR! Student on receipt must be 14 years old or older. Try again!" << endl;
-        else
-            flag_RY = false;
-    }
-
-    cout << "Enter student's faculty: " << endl;
-    cin >> faculty;
-    cout << "Enter student's department: " << endl;
-    cin >> department;
-    cout << "Enter student's group: " << endl;
-    cin >> group;
-    cout << "Enter student's ID (ID Card): " << endl;
-    cin >> IDCard;
-
-    cout << "Enter student's sex: " << endl;
-    // Доделать ввод пола через отдельный конвертер string to SEX
 
 
-    name = {move(SName), move(FName), move(TName)};
-    this->BDate = BDate;
-    university = {receiptYear, move(faculty), move(department), move(group), move(IDCard)};
-    this->sex = sex;
-    for (auto & semester : semesters)
-        semester = nullptr;
+        flag = true;
+        while (flag) {
+            cout << "Enter student's receipt year: " << endl;
+            cin >> receiptYear;
+            if (receiptYear - BDYear < 14)
+                cout << "ERROR! Student on receipt must be 14 years old or older. Try again!" << endl;
+            else
+                flag = false;
+        }
 
-    cout << "You've just successfully added " << getFullName() << " to the list of students" << endl;
+        cout << "Enter student's faculty: " << endl;
+        cin.get();
+        getline(cin, faculty);
+        cout << "Enter student's department: " << endl;
+        getline(cin, department);
+        cout << "Enter student's group: " << endl;
+        cin >> group;
+        cout << "Enter student's ID (ID Card): " << endl;
+        cin >> IDCard;
+
+        flag = true;
+        while (flag) {
+            cout << "Enter student's sex: " << endl;
+            cin >> sexString;
+            if (stringToSEX(sexString) == Undefined)
+                cout << "ERROR! Unknown sex. It must be \"Male\" or \"Female\". Try Again!" << endl;
+            else
+                flag = false;
+        }
+
+        sex = stringToSEX(sexString);
+
+
+        name = {move(SName), move(FName), move(TName)};
+        this->BDate = {BDDay, BDMonth, BDYear};
+        university = {receiptYear, move(faculty), move(department), move(group), move(IDCard)};
+        this->sex = sex;
+        for (auto &semester : semesters)
+            semester = nullptr;
+
+        cout << "You've just successfully added " << name.Second << " " << name.First << " " << name.Third << " to the list of students" << endl;
+        throw 3;
 }
 
 
 Student::~Student(){
-//    for (auto & i : semesters)
-//        if (i != nullptr){
-//            delete i;
-//            i = nullptr;
-//        }
+    for (auto & i : semesters)
+        if (i != nullptr){
+            delete i;
+            i = nullptr;
+        }
     cout << "You've just successfully removed student " << getFullName() << " (" << getID() << ")" << endl;
 }
 
@@ -114,11 +131,11 @@ int Student::removeSemester(int semesterNumber) {
     return 1;
 }
 
-string Student::getFullName(){
+string Student::getFullName() const{
     return name.Second + " " + name.First + " " + name.Third;
 }
 
-string Student::getID(){
+string Student::getID() const{
     return university.IDCard;
 }
 

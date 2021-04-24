@@ -6,6 +6,9 @@
 #define COURSEWORK_SEMESTER_H
 
 
+//#include "Subject.h"
+
+
 class Semester{
 private:
     Subject* subjects[10];
@@ -14,7 +17,7 @@ private:
 public:
 
     Semester();
-//    ~Semester();
+    ~Semester();
 
     int addSubject(const string& subjName);
 

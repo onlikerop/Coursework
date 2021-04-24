@@ -8,6 +8,9 @@
 #include <iostream>
 #include <cstring>
 #include <utility>
+#include <cstdlib>
+#include <string>
+#include <Windows.h>
 
 
 using namespace std;
@@ -20,9 +23,9 @@ struct Name{
 };
 
 struct Date{
-    int day;
-    int month;
-    int year;
+    unsigned short day;
+    unsigned short month;
+    unsigned short year;
 };
 
 struct University {
@@ -34,6 +37,7 @@ struct University {
 };
 
 enum SEX {
+    Undefined = -1,
     Male,
     Female
 };
@@ -48,8 +52,8 @@ enum GRADE{
 };
 
 string GRADEToString(GRADE grade);
-
 string SEXToString (SEX sex);
+SEX stringToSEX (const string& sex);
 
 class Subject{
 private:
@@ -64,9 +68,9 @@ public:
 
     void setGrade (int grade_to_set);
 
-    GRADE getGrade ();
+    GRADE getGrade () const;
 
-    string getName();
+    string getName() const;
 };
 
 

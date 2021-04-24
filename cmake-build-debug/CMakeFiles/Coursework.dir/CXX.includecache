@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-Q:/Progs/C++/University/Practice/Coursework/Semester.h
-
-Q:/Progs/C++/University/Practice/Coursework/Student.cpp
+Q:/Progs/C++/University/Practice/Coursework/CWLib.h
+fstream
+-
 Subject.h
 Q:/Progs/C++/University/Practice/Coursework/Subject.h
 Semester.h
@@ -16,9 +16,9 @@ Q:/Progs/C++/University/Practice/Coursework/Semester.h
 Student.h
 Q:/Progs/C++/University/Practice/Coursework/Student.h
 
-Q:/Progs/C++/University/Practice/Coursework/Student.h
-Semester.h
 Q:/Progs/C++/University/Practice/Coursework/Semester.h
+
+Q:/Progs/C++/University/Practice/Coursework/Student.h
 
 Q:/Progs/C++/University/Practice/Coursework/Subject.h
 iostream
@@ -27,4 +27,20 @@ cstring
 -
 utility
 -
+cstdlib
+-
+string
+-
+Windows.h
+-
+
+Q:/Progs/C++/University/Practice/Coursework/main.cpp
+Subject.h
+Q:/Progs/C++/University/Practice/Coursework/Subject.h
+Semester.h
+Q:/Progs/C++/University/Practice/Coursework/Semester.h
+Student.h
+Q:/Progs/C++/University/Practice/Coursework/Student.h
+CWLib.h
+Q:/Progs/C++/University/Practice/Coursework/CWLib.h
 
