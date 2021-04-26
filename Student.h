@@ -43,6 +43,10 @@ class Student {
 //
 //        void printSubjects(int semNumber);
 
+        int getNumberOfGrades(GRADE grade);
+
+        int getNumberOfGrades(int grade);
+
         Semester* getSemester(int semNumber);
 
         int operator +();
@@ -59,13 +63,13 @@ class Student {
         int printSubjects(int semNumber);
 
 
-    int setGrade (int semNumber, const string& subjName, GRADE grade_to_set);
+        int setGrade (int semNumber, const string& subjName, GRADE grade_to_set);
 
-    int setGrade (int semNumber, const string& subjName, int grade_to_set);
+        int setGrade (int semNumber, const string& subjName, int grade_to_set);
 
-    GRADE getGrade (int semNumber, const string& subjName);
+        GRADE getGrade (int semNumber, const string& subjName);
 
-    int setName (int semNumber, const string& subjName, const string &subjNameToSet);
+        int setName (int semNumber, const string& subjName, const string &subjNameToSet);
 
 };
 

@@ -74,7 +74,7 @@ Student::Student() {
 
         flag = true;
         while (flag) {
-            cout << "Enter student's sex: " << endl;
+            cout << "Enter student's sex (Male, Female, M (latin), F, М (cyrillic), Ж): " << endl;
             cin >> sexString;
             if (stringToSEX(sexString) == Undefined)
                 cout << "ERROR! Unknown sex. It must be \"Male\" or \"Female\". Try Again!" << endl;
@@ -168,6 +168,24 @@ void Student::printInfo(){
 //        void Student::printSubjects(int semNumber){
 //            semesters[semNumber-1]->printSubjects();
 //        }
+
+int Student::getNumberOfGrades(GRADE grade){
+    int counter = 0;
+    for (auto & semester : semesters){
+        if (semester.is_active())
+            counter += semester.getNumberOfGrades(grade);
+    }
+    return counter;
+}
+
+int Student::getNumberOfGrades(int grade){
+    int counter = 0;
+    for (auto & semester : semesters){
+        if (semester.is_active())
+            counter += semester.getNumberOfGrades(grade);
+    }
+    return counter;
+}
 
 Semester* Student::getSemester(int semNumber){
     if (semesters[semNumber-1].is_active())

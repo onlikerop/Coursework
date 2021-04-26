@@ -33,6 +33,10 @@ public:
 
     void is_active(bool is_active_);
 
+    int getNumberOfGrades(GRADE grade);
+
+    int getNumberOfGrades(int grade);
+
     Subject* getSubject(const string& subjName);
 
     int operator +(const string& subjName);

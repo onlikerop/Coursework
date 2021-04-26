@@ -92,6 +92,24 @@ void Semester::is_active(bool is_active_) {
     this->is_active_ = is_active_;
 }
 
+int Semester::getNumberOfGrades(GRADE grade){
+    int counter = 0;
+    for (auto & subject : subjects){
+        if (subject.is_active() && subject.getGrade() == grade)
+            counter++;
+    }
+    return counter;
+}
+
+int Semester::getNumberOfGrades(int grade){
+    int counter = 0;
+    for (auto & subject : subjects){
+        if (subject.is_active() && subject.getGrade() == grade)
+            counter++;
+    }
+    return counter;
+}
+
 
 int Semester::setGrade (const string& subjName, GRADE grade_to_set){
     Subject* subject = getSubject(subjName);
