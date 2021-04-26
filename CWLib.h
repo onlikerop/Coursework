@@ -13,7 +13,7 @@
 
 
 int saveToFile(const string &path, Student* student);
-//Student loadFromFile(const string& path);
+int loadFromFile(const string& path, Student* student);
 
 
 #endif //COURSEWORK_CWLIB_H

@@ -18,37 +18,39 @@ int main() {
             "ИНБО-5-19",
             "19Б6141",
             Male
-            );
+    );
     cout << Ivan1->getFullName() << endl;
 
     +*Ivan1;
-    *Ivan1->getSemester(1) + "Math";
-    *Ivan1->getSemester(1) + "Programming";
-    *Ivan1->getSemester(1) + "IT";
-    Ivan1->getSemester(1)->printSubjects();
-    Ivan1->getSemester(1)->getSubject("IT")->setGrade(5);
-    Ivan1->getSemester(1)->getSubject("Math")->setGrade(INCOMPLETE);
-    *Ivan1->getSemester(1) - "Programming";
-    Ivan1->getSemester(1)->printSubjects();
+    Ivan1->addSubject(1, "Math");
+    Ivan1->addSubject(1, "Programming");
+    Ivan1->addSubject(1, "IT");
+    Ivan1->printSubjects(1);
+    Ivan1->setGrade(1, "IT", 5);
+    Ivan1->setGrade(1, "Math", INCOMPLETE);
+    Ivan1->removeSubject(1, "Programming");
+    Ivan1->printSubjects(1);
     +*Ivan1;
-    *Ivan1->getSemester(2) + "Physics";
-    *Ivan1->getSemester(2) + "Math";
-    *Ivan1->getSemester(2) + "IT";
-    *Ivan1->getSemester(2) + "Special courses";
-    Ivan1->getSemester(2)->getSubject("IT")->setGrade(5);
-    Ivan1->getSemester(2)->getSubject("Math")->setGrade(4);
-    Ivan1->getSemester(2)->getSubject("Special courses")->setGrade(COMPLETE);
-    Ivan1->getSemester(2)->getSubject("Physics")->setGrade(5);
+    Ivan1->addSubject(2, "Physics");
+    Ivan1->addSubject(2, "Math");
+    Ivan1->addSubject(2, "IT");
+    Ivan1->addSubject(2, "Special courses");
+    Ivan1->setGrade(2, "IT", 5);
+    Ivan1->setGrade(2, "Math", 5);
+    Ivan1->setGrade(2, "Special courses", COMPLETE);
+    Ivan1->setGrade(2, "Physics", 5);
     +*Ivan1;
     *Ivan1 - 3;
     Ivan1->printInfo();
 
 //    saveToFile("Ivan.CW", Ivan1);
-
-
-//    Student John = loadFromFile("Ivan.CW");
-//    John.printInfo();
-
+//
+//
+//    Student* John;
+//    loadFromFile("Ivan.CW", John);
+//    John->printInfo();
+//
+//    delete John;
     delete Ivan1;
 
     return 0;

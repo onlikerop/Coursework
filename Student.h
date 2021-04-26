@@ -48,6 +48,25 @@ class Student {
         int operator +();
         int operator -(int semNumber);
 
+
+        int addSubject(int semNumber, const string& subjName);
+        int addSubject(int semNumber);
+
+        int removeSubject(int semNumber, const string& subjName);
+
+        int cleanSubjects(int semNumber);
+
+        int printSubjects(int semNumber);
+
+
+    int setGrade (int semNumber, const string& subjName, GRADE grade_to_set);
+
+    int setGrade (int semNumber, const string& subjName, int grade_to_set);
+
+    GRADE getGrade (int semNumber, const string& subjName);
+
+    int setName (int semNumber, const string& subjName, const string &subjNameToSet);
+
 };
 
 #endif //COURSEWORK_STUDENT_H

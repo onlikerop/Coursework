@@ -183,3 +183,87 @@ int Student::operator +() {
 int Student::operator -(int semNumber) {
     return removeSemester(semNumber);
 }
+
+
+int Student::addSubject(int semNumber, const string& subjName){
+    Semester* semester = getSemester(semNumber);
+    if (semester == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return 1;
+    }
+    return (*semester + subjName);
+}
+int Student::addSubject(int semNumber){
+    Semester* semester = getSemester(semNumber);
+    if (semester == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return 1;
+    }
+    return semester->addSubject();
+}
+
+int Student::removeSubject(int semNumber, const string& subjName){
+    Semester* semester = getSemester(semNumber);
+    if (semester == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return 1;
+    }
+    return (*semester - subjName);
+}
+
+int Student::cleanSubjects(int semNumber){
+    Semester* semester = getSemester(semNumber);
+    if (semester == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return 1;
+    }
+    semester->cleanSubjects();
+    return 0;
+}
+
+int Student::printSubjects(int semNumber){
+    Semester* semester = getSemester(semNumber);
+    if (semester == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return 1;
+    }
+    semester->printSubjects();
+    return 0;
+}
+
+
+int Student::setGrade (int semNumber, const string& subjName, GRADE grade_to_set){
+    Semester* semester = getSemester(semNumber);
+    if (semester == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return 1;
+    }
+    return semester->setGrade(subjName, grade_to_set);
+}
+
+int Student::setGrade (int semNumber, const string& subjName, int grade_to_set){
+    Semester* semester = getSemester(semNumber);
+    if (semester == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return 1;
+    }
+    return semester->setGrade(subjName, grade_to_set);
+}
+
+GRADE Student::getGrade (int semNumber, const string& subjName){
+    Semester* semester = getSemester(semNumber);
+    if (semester == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return Undefined_;
+    }
+    return semester->getGrade(subjName);
+}
+
+int Student::setName (int semNumber, const string& subjName, const string &subjNameToSet){
+    Semester* semester = getSemester(semNumber);
+    if (semester == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return 1;
+    }
+    return semester->setName(subjName, subjNameToSet);
+}

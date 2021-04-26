@@ -91,3 +91,44 @@ bool Semester::is_active() const {
 void Semester::is_active(bool is_active_) {
     this->is_active_ = is_active_;
 }
+
+
+int Semester::setGrade (const string& subjName, GRADE grade_to_set){
+    Subject* subject = getSubject(subjName);
+    if (subject == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return 1;
+    }
+    subject->setGrade(grade_to_set);
+    return 0;
+}
+
+int Semester::setGrade (const string& subjName, int grade_to_set){
+    Subject* subject = getSubject(subjName);
+    if (subject == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return 1;
+    }
+    subject->setGrade(grade_to_set);
+    return 0;
+}
+
+
+GRADE Semester::getGrade (const string& subjName){
+    Subject* subject = getSubject(subjName);
+    if (subject == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return Undefined_;
+    }
+    return subject->getGrade();
+}
+
+int Semester::setName (const string& subjName, const string &subjNameToSet){
+    Subject* subject = getSubject(subjName);
+    if (subject == nullptr){
+        cout << "Error! We got nullptr as argument. May be you've chosen wrong student / semester / subject" << endl;
+        return 1;
+    }
+    subject->setName(subjNameToSet);
+    return 0;
+}

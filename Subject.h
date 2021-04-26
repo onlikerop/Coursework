@@ -43,6 +43,7 @@ enum SEX {
 };
 
 enum GRADE{
+    Undefined_ = -1,
     GREAT = 5,
     GOOD = 4,
     SATISFACTORY = 3,

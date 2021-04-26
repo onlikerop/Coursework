@@ -39,6 +39,14 @@ public:
     int operator -(const string& subjName);
 
 
+    int setGrade (const string& subjName, GRADE grade_to_set);
+
+    int setGrade (const string& subjName, int grade_to_set);
+
+    GRADE getGrade (const string& subjName);
+
+    int setName (const string& subjName, const string &subjNameToSet);
+
 };
 
 

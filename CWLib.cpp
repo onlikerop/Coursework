@@ -27,24 +27,23 @@ int saveToFile(const string& path, Student* student){
 
 }
 
-//Student loadFromFile(const string& path){ //Не работает!
-//    ifstream fin;
-//    fin.open(path, ios_base::in);
-//    Student student(nullptr);
-//    if (!fin.is_open()){
-//        cout << "Error opening save-file for loading" << endl;
-//        return student;
-//    }
-//    else{
-//        try {
-//            fin.read(reinterpret_cast<char*>(&student), sizeof(Student));
-//            fin.close();
-//            cout << "Successfully loaded data from \'" << path << "\'" << endl;
-//        }
-//        catch (...){
-//            return student;
-//        }
-//        return student;
-//    }
-//
-//}
+int loadFromFile(const string& path, Student* student){ //Не работает!
+    ifstream fin;
+    fin.open(path, ios_base::in);
+    if (!fin.is_open()){
+        cout << "Error opening save-file for loading" << endl;
+        return 1;
+    }
+    else{
+        try {
+            fin.read(reinterpret_cast<char*>(&student), sizeof(Student));
+            fin.close();
+            cout << "Successfully loaded data from \'" << path << "\'" << endl;
+        }
+        catch (...){
+            return 2;
+        }
+        return 0;
+    }
+
+}
