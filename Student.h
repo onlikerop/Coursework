@@ -6,10 +6,9 @@
 #define COURSEWORK_STUDENT_H
 
 
-//#include "Semester.h"
+#include "Grademeres.h"
 
-
-class Student {
+class Student : public Grademeres{
     private:
         Name name;
         Date BDate;
@@ -43,9 +42,9 @@ class Student {
 //
 //        void printSubjects(int semNumber);
 
-        int getNumberOfGrades(GRADE grade);
+        int getNumberOfGrades(GRADE grade) final;
 
-        int getNumberOfGrades(int grade);
+        int getNumberOfGrades(int grade) final;
 
         Semester* getSemester(int semNumber);
 

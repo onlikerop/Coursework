@@ -84,14 +84,6 @@ int Semester::operator-(const string &subjName) {
     return removeSubject(subjName);
 }
 
-bool Semester::is_active() const {
-    return is_active_;
-}
-
-void Semester::is_active(bool is_active_) {
-    this->is_active_ = is_active_;
-}
-
 int Semester::getNumberOfGrades(GRADE grade){
     int counter = 0;
     for (auto & subject : subjects){

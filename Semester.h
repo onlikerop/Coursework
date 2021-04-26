@@ -6,13 +6,11 @@
 #define COURSEWORK_SEMESTER_H
 
 
-//#include "Subject.h"
+#include "Grademeres.h"
 
-
-class Semester{
+class Semester : public Active, public Grademeres{
 private:
     Subject subjects[10];
-    bool is_active_;
 
 
 public:
@@ -29,13 +27,9 @@ public:
 
     void printSubjects();
 
-    bool is_active() const;
+    int getNumberOfGrades(GRADE grade) final;
 
-    void is_active(bool is_active_);
-
-    int getNumberOfGrades(GRADE grade);
-
-    int getNumberOfGrades(int grade);
+    int getNumberOfGrades(int grade) final;
 
     Subject* getSubject(const string& subjName);
 

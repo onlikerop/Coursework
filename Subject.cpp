@@ -39,12 +39,14 @@ Subject::Subject(){
     is_active_ = false;
 }
 
-void Subject::setGrade (GRADE grade_to_set){
+int Subject::setGrade (GRADE grade_to_set){
     grade = grade_to_set;
+    return 0;
 }
 
-void Subject::setGrade (int grade_to_set){
+int Subject::setGrade (int grade_to_set){
     grade = static_cast<GRADE>(grade_to_set);
+    return 0;
 }
 
 GRADE Subject::getGrade () const{
@@ -55,14 +57,7 @@ string Subject::getName() const{
     return name;
 }
 
-bool Subject::is_active() const {
-    return is_active_;
-}
-
-void Subject::is_active(bool is_active_) {
-    this->is_active_ = is_active_;
-}
-
-void Subject::setName(const string &subjName) {
+int Subject::setName(const string &subjName) {
     this->name = subjName;
+    return 0;
 }

@@ -126,6 +126,33 @@ Coursework\fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\build
 .PHONY : Coursework\fast
 
+Active.obj: Active.cpp.obj
+
+.PHONY : Active.obj
+
+# target to build an object file
+Active.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\Active.cpp.obj
+.PHONY : Active.cpp.obj
+
+Active.i: Active.cpp.i
+
+.PHONY : Active.i
+
+# target to preprocess a source file
+Active.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\Active.cpp.i
+.PHONY : Active.cpp.i
+
+Active.s: Active.cpp.s
+
+.PHONY : Active.s
+
+# target to generate assembly for a file
+Active.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Coursework.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\Coursework.dir\Active.cpp.s
+.PHONY : Active.cpp.s
+
 CWLib.obj: CWLib.cpp.obj
 
 .PHONY : CWLib.obj
@@ -270,6 +297,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Coursework
+	@echo ... Active.obj
+	@echo ... Active.i
+	@echo ... Active.s
 	@echo ... CWLib.obj
 	@echo ... CWLib.i
 	@echo ... CWLib.s

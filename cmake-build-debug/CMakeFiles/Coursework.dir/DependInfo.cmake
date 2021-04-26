@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "Q:/Progs/C++/University/Practice/Coursework/Active.cpp" "Q:/Progs/C++/University/Practice/Coursework/cmake-build-debug/CMakeFiles/Coursework.dir/Active.cpp.obj"
   "Q:/Progs/C++/University/Practice/Coursework/CWLib.cpp" "Q:/Progs/C++/University/Practice/Coursework/cmake-build-debug/CMakeFiles/Coursework.dir/CWLib.cpp.obj"
   "Q:/Progs/C++/University/Practice/Coursework/Semester.cpp" "Q:/Progs/C++/University/Practice/Coursework/cmake-build-debug/CMakeFiles/Coursework.dir/Semester.cpp.obj"
   "Q:/Progs/C++/University/Practice/Coursework/Student.cpp" "Q:/Progs/C++/University/Practice/Coursework/cmake-build-debug/CMakeFiles/Coursework.dir/Student.cpp.obj"

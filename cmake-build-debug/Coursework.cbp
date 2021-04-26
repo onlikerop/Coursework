@@ -82,10 +82,22 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="Q:/Progs/C++/University/Practice/Coursework/Active.cpp">
+			<Option target="Coursework"/>
+		</Unit>
+		<Unit filename="Q:/Progs/C++/University/Practice/Coursework/Active.h">
+			<Option target="Coursework"/>
+		</Unit>
 		<Unit filename="Q:/Progs/C++/University/Practice/Coursework/CWLib.cpp">
 			<Option target="Coursework"/>
 		</Unit>
 		<Unit filename="Q:/Progs/C++/University/Practice/Coursework/CWLib.h">
+			<Option target="Coursework"/>
+		</Unit>
+		<Unit filename="Q:/Progs/C++/University/Practice/Coursework/Grademeres.h">
+			<Option target="Coursework"/>
+		</Unit>
+		<Unit filename="Q:/Progs/C++/University/Practice/Coursework/OwnTypes.h">
 			<Option target="Coursework"/>
 		</Unit>
 		<Unit filename="Q:/Progs/C++/University/Practice/Coursework/Semester.cpp">

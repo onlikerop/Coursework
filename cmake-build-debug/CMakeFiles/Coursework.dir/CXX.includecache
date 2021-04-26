@@ -6,6 +6,8 @@
 
 #IncludeRegexTransform: 
 
+Q:/Progs/C++/University/Practice/Coursework/Active.h
+
 Q:/Progs/C++/University/Practice/Coursework/CWLib.h
 fstream
 -
@@ -16,23 +18,35 @@ Q:/Progs/C++/University/Practice/Coursework/Semester.h
 Student.h
 Q:/Progs/C++/University/Practice/Coursework/Student.h
 
+Q:/Progs/C++/University/Practice/Coursework/Grademeres.h
+OwnTypes.h
+Q:/Progs/C++/University/Practice/Coursework/OwnTypes.h
+
+Q:/Progs/C++/University/Practice/Coursework/OwnTypes.h
+cstring
+-
+string
+-
+
 Q:/Progs/C++/University/Practice/Coursework/Semester.h
+Grademeres.h
+Q:/Progs/C++/University/Practice/Coursework/Grademeres.h
 
 Q:/Progs/C++/University/Practice/Coursework/Student.h
+Grademeres.h
+Q:/Progs/C++/University/Practice/Coursework/Grademeres.h
 
 Q:/Progs/C++/University/Practice/Coursework/Subject.h
 iostream
 -
-cstring
--
 utility
--
-cstdlib
--
-string
 -
 Windows.h
 -
+Active.h
+Q:/Progs/C++/University/Practice/Coursework/Active.h
+OwnTypes.h
+Q:/Progs/C++/University/Practice/Coursework/OwnTypes.h
 
 Q:/Progs/C++/University/Practice/Coursework/main.cpp
 Subject.h
