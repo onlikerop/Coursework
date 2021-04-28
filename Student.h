@@ -23,6 +23,7 @@ class Student : public Grademeres{
                 );
 
         Student();
+        explicit Student(nullptr_t);
 
         ~Student();
 
@@ -48,7 +49,7 @@ class Student : public Grademeres{
 
         Semester* getSemester(int semNumber);
 
-        int operator +();
+        int operator ++(int);
         int operator -(int semNumber);
 
 
@@ -69,6 +70,10 @@ class Student : public Grademeres{
         GRADE getGrade (int semNumber, const string& subjName);
 
         int setName (int semNumber, const string& subjName, const string &subjNameToSet);
+
+
+        friend int saveToFile(const string& path, Student* student);
+        friend int loadFromFile(const string& path, Student* student);
 
 };
 

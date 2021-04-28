@@ -194,7 +194,7 @@ Semester* Student::getSemester(int semNumber){
         return nullptr;
 }
 
-int Student::operator +() {
+int Student::operator ++(const int) {
     return addSemester();
 }
 
@@ -285,3 +285,5 @@ int Student::setName (int semNumber, const string& subjName, const string &subjN
     }
     return semester->setName(subjName, subjNameToSet);
 }
+
+Student::Student(nullptr_t) {}

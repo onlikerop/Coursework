@@ -34,6 +34,10 @@ public:
     string getName() const;
 
     int setName (const string &subjName);
+
+
+    friend int saveToFile(const string& path, Student* student);
+    friend int loadFromFile(const string& path, Student* student);
 };
 
 

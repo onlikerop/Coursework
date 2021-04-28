@@ -49,4 +49,8 @@ enum GRADE{
 };
 
 
+class Subject;
+class Semester;
+class Student;
+
 #endif //COURSEWORK_OWNTYPES_H
