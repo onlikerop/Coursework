@@ -31,6 +31,8 @@ public:
 
     int getNumberOfGrades(int grade) final;
 
+    int getNumberOfSubjects() final;
+
     Subject* getSubject(const string& subjName);
 
     int operator +(const string& subjName);

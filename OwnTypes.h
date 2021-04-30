@@ -12,6 +12,11 @@
 using namespace std;
 
 
+class Subject;
+class Semester;
+class Student;
+
+
 struct Name{
     string Second;
     string First;
@@ -32,6 +37,26 @@ struct University {
     string IDCard;
 };
 
+struct BothWayList{
+
+    BothWayList(BothWayList *pPrevious, BothWayList *pNext, Student* value) {
+
+        this->id = ++BothWayList::count;
+        this->previous = pPrevious;
+        this->next = pNext;
+        this->value = value;
+    }
+
+    int id;
+    BothWayList* previous;
+    BothWayList* next;
+    Student* value;
+
+    static int count;
+    static BothWayList* pStart;
+
+};
+
 enum SEX {
     Undefined = -1,
     Male,
@@ -47,10 +72,5 @@ enum GRADE{
     INCOMPLETE = 2,
     UNSET = 0
 };
-
-
-class Subject;
-class Semester;
-class Student;
 
 #endif //COURSEWORK_OWNTYPES_H

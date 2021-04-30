@@ -102,6 +102,15 @@ int Semester::getNumberOfGrades(int grade){
     return counter;
 }
 
+int Semester::getNumberOfSubjects(){
+    int counter = 0;
+    for (auto & subject : subjects){
+        if (subject.is_active())
+            counter++;
+    }
+    return counter;
+}
+
 
 int Semester::setGrade (const string& subjName, GRADE grade_to_set){
     Subject* subject = getSubject(subjName);

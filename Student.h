@@ -33,9 +33,13 @@ class Student : public Grademeres{
 
         string getFullName() const;
 
+        Date getBirthdate() const;
+
         string getID() const;
 
         void printInfo();
+
+        void editInfo();
 
 //        void addSubject(int semNumber, const string& subjName);
 //
@@ -46,6 +50,8 @@ class Student : public Grademeres{
         int getNumberOfGrades(GRADE grade) final;
 
         int getNumberOfGrades(int grade) final;
+
+        int getNumberOfSubjects() final;
 
         Semester* getSemester(int semNumber);
 

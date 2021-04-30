@@ -47,8 +47,7 @@ Student::Student() {
                     || !(BDDay || BDMonth)
                     ) {
                 cout << "ERROR! You've entered wrong birthdate. Try again!" << endl;
-            } else
-                flag = false;
+            } else flag = false;
         }
 
 
@@ -58,8 +57,7 @@ Student::Student() {
             cin >> receiptYear;
             if (receiptYear - BDYear < 14)
                 cout << "ERROR! Student on receipt must be 14 years old or older. Try again!" << endl;
-            else
-                flag = false;
+            else flag = false;
         }
 
         cout << "Enter student's faculty: " << endl;
@@ -78,8 +76,7 @@ Student::Student() {
             cin >> sexString;
             if (stringToSEX(sexString) == Undefined)
                 cout << "ERROR! Unknown sex. It must be \"Male\" or \"Female\". Try Again!" << endl;
-            else
-                flag = false;
+            else flag = false;
         }
 
         sex = stringToSEX(sexString);
@@ -127,6 +124,10 @@ string Student::getFullName() const{
     return name.Second + " " + name.First + " " + name.Third;
 }
 
+Date Student::getBirthdate() const{
+    return BDate;
+}
+
 string Student::getID() const{
     return university.IDCard;
 }
@@ -151,6 +152,144 @@ void Student::printInfo(){
             cout << "   Semester " << counter << endl;
             counter++;
             semester.printSubjects();
+            cout << endl;
+        }
+
+    cout << "==================================================" << endl;
+}
+
+void Student::editInfo(){
+    string wannaEdit;
+    cout << "==================Student's Info==================" << endl;
+
+    cout << "Name: " << getFullName() << endl;
+    cout << "Do you want to edit this field? (Y/N):" << endl;
+    cin >> wannaEdit;
+    if (wannaEdit == "Y" or "y"){
+        cout << "Enter new full name of student:" << endl;
+        cin >> name.Second >> name.First >> name.Third;
+    }
+    cout << "Sex: " << SEXToString(sex) << endl;
+    cout << "Do you want to edit this field? (Y/N):" << endl;
+    cin >> wannaEdit;
+    if (wannaEdit == "Y" or "y"){
+        string newSex;
+        while (stringToSEX(newSex) == Undefined) {
+            cout << "Enter new sex of student:" << endl;
+            cin >> newSex;
+            if (stringToSEX(newSex) == Undefined)
+                cout << "ERROR! Unknown sex. It must be \"Male\" or \"Female\". Try Again!" << endl;
+            else
+                sex = stringToSEX(newSex);
+        }
+    }
+    cout << "Birthdate: " << BDate.day << "." << BDate.month << "." << BDate.year << endl;
+    cout << "Do you want to edit this field? (Y/N):" << endl;
+    cin >> wannaEdit;
+    if (wannaEdit == "Y" or "y"){
+        bool flag = true;
+        unsigned short BDDay, BDMonth, BDYear;
+        while (flag) {
+            cout << "Enter new student's birthdate (DD.MM.YYYY): " << endl;
+            scanf_s("%hu.%hu.%hu", &BDDay, &BDMonth, &BDYear);
+            bool leap_year = BDYear % 100 ? !(BDYear % 4) : !(BDYear % 400);
+            if (
+                    ((BDMonth == 4 || BDMonth == 6 || BDMonth == 9 || BDMonth == 11) && BDDay > 30)
+                    || ((BDMonth == 2) && leap_year && BDDay > 29)
+                    || ((BDMonth == 2) && !leap_year && BDDay > 28)
+                    || (BDDay > 31)
+                    || (BDMonth > 12)
+                    || !(BDDay || BDMonth)
+                    ) {
+                cout << "ERROR! You've entered wrong birthdate. Try again!" << endl;
+            } else flag = false;
+        }
+        this->BDate = {BDDay, BDMonth, BDYear};
+    }
+    cout << "IDCard: " << university.IDCard << endl;
+    cout << "Do you want to edit this field? (Y/N):" << endl;
+    cin >> wannaEdit;
+    if (wannaEdit == "Y" or "y"){
+        cout << "Enter new student's ID (ID Card):" << endl;
+        cin >> university.IDCard;
+    }
+    cout << "Faculty: " << university.faculty << endl;
+    cout << "Do you want to edit this field? (Y/N):" << endl;
+    cin >> wannaEdit;
+    if (wannaEdit == "Y" or "y"){
+        cout << "Enter new student's faculty:" << endl;
+        cin >> university.faculty;
+    }
+    cout << "Department: " << university.department << endl;
+    cout << "Do you want to edit this field? (Y/N):" << endl;
+    cin >> wannaEdit;
+    if (wannaEdit == "Y" or "y"){
+        cout << "Enter new student's department:" << endl;
+        cin >> university.department;
+    }
+    cout << "Group: " << university.group << endl;
+    cout << "Do you want to edit this field? (Y/N):" << endl;
+    cin >> wannaEdit;
+    if (wannaEdit == "Y" or "y"){
+        cout << "Enter new student's group:" << endl;
+        cin >> university.group;
+    }
+    cout << "Year of receipt: " << university.receiptYear << endl;
+    if (wannaEdit == "Y" or "y"){
+        bool flag = true;
+        unsigned short receiptYear;
+        while (flag) {
+            cout << "Enter new student's receipt year:" << endl;
+            cin >> receiptYear;
+            if (receiptYear - BDate.year < 14)
+                cout << "ERROR! Student on receipt must be 14 years old or older. Try again!" << endl;
+            else flag = false;
+        }
+        university.receiptYear = receiptYear;
+
+    }
+
+    cout << endl << "                 Semesters' info                  " << endl;
+
+    int counter = 1;
+    for (auto & semester : semesters)
+        if (semester.is_active()){
+            cout << "   Semester " << counter << endl;
+            counter++;
+            semester.printSubjects();
+            cout << "Do you want to edit this semester? (Y/N):" << endl;
+            cin >> wannaEdit;
+            if (wannaEdit == "Y" or "y"){
+                string subjectStr;
+                while (true){
+                    cout << "Enter subject that you want to change (or enter \"exit\" to exit):" << endl;
+                    cin >> subjectStr;
+                    if (subjectStr == "exit") break;
+
+                    Subject* subject = semester.getSubject(subjectStr);
+                    if (subject == nullptr){
+                        cout << "Error! You entered undeclared subject, try again!" << endl;
+                        continue;
+                    }
+                    string choiceStr;
+                    int choice;
+                    cout << "What would you like to edit:"
+                        << endl << "1. Name of subject"
+                        << endl << "2. Grade"
+                        << endl;
+                    cin >> choiceStr;
+                    choice = stoi(choiceStr);
+                    switch (choice) {
+                        case 1: {subject->setName(); break;}
+                        case 2: {subject->setGrade(); break;}
+                        default: {
+                            cout << "ERROR! Wrong menu item, try this step again" << endl;
+                            continue;
+                        }
+                    }
+
+                }
+            }
             cout << endl;
         }
 
@@ -183,6 +322,15 @@ int Student::getNumberOfGrades(int grade){
     for (auto & semester : semesters){
         if (semester.is_active())
             counter += semester.getNumberOfGrades(grade);
+    }
+    return counter;
+}
+
+int Student::getNumberOfSubjects(){
+    int counter = 0;
+    for (auto & semester : semesters){
+        if (semester.is_active())
+            counter += semester.getNumberOfSubjects();
     }
     return counter;
 }

@@ -13,6 +13,7 @@
 
 
 string GRADEToString(GRADE grade);
+GRADE StringToGRADE(string grade);
 string SEXToString (SEX sex);
 SEX stringToSEX (const string& sex);
 
@@ -29,11 +30,15 @@ public:
 
     int setGrade (int grade_to_set);
 
+    int setGrade ();
+
     GRADE getGrade () const;
 
     string getName() const;
 
     int setName (const string &subjName);
+
+    int setName ();
 
 
     friend int saveToFile(const string& path, Student* student);

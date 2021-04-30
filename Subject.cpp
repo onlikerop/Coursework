@@ -16,6 +16,16 @@ string GRADEToString(GRADE grade) {
     }
 }
 
+GRADE StringToGRADE(string grade) {
+    if (grade == "UNSET") return UNSET;
+    if (grade == "INCOMPLETE" || grade == "2") return INCOMPLETE;
+    if (grade == "SATISFACTORY" || grade == "3") return SATISFACTORY;
+    if (grade == "GOOD" || grade == "4") return GOOD;
+    if (grade == "GREAT" || grade == "5") return GREAT;
+    if (grade == "COMPLETE") return COMPLETE;
+    else return Undefined_;
+}
+
 string SEXToString (SEX sex) {
     switch (sex) {
         case 0: return "Male";
@@ -49,6 +59,25 @@ int Subject::setGrade (int grade_to_set){
     return 0;
 }
 
+int Subject::setGrade (){
+    string grade_to_set;
+    while (StringToGRADE(grade_to_set) == Undefined_) {
+        cout << "Enter grade to set:"
+             << endl << "\"GREAT\" or 5"
+             << endl << "\"GOOD\" or 4"
+             << endl << "\"SATISFACTORY\" or 3"
+             << endl << "\"COMPLETE\""
+             << endl << "\"INCOMPLETE\" or 2"
+             << endl << "\"UNSET\""
+             << endl;
+        cin >> grade_to_set;
+        if (StringToGRADE(grade_to_set) == Undefined_)
+            cout << "ERROR! Unknown grade, try again!" << endl;
+    }
+    grade = StringToGRADE(grade_to_set);
+    return 0;
+}
+
 GRADE Subject::getGrade () const{
     return grade;
 }
@@ -58,6 +87,14 @@ string Subject::getName() const{
 }
 
 int Subject::setName(const string &subjName) {
+    this->name = subjName;
+    return 0;
+}
+
+int Subject::setName() {
+    string subjName;
+    cout << "Enter subject name:" << endl;
+    cin >> subjName;
     this->name = subjName;
     return 0;
 }
