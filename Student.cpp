@@ -254,47 +254,81 @@ void Student::editInfo(){
 
     cout << endl << "                 Semesters' info                  " << endl;
 
-    int counter = 1;
-    for (auto & semester : semesters)
-        if (semester.is_active()){
-            cout << "   Semester " << counter << endl;
-            counter++;
-            semester.printSubjects();
-            cout << "Do you want to edit this semester? (Y/N):" << endl;
-            cin >> wannaEdit;
-            if (wannaEdit == "Y" || wannaEdit == "y"){
-                string subjectStr;
-                while (true){
-                    cout << "Enter subject that you want to change (or enter \"exit\" to exit):" << endl;
-                    cin >> subjectStr;
-                    if (subjectStr == "exit") break;
+    bool flag = true, flag2 = true;
+    while (flag) {
+        int counter = 1;
+        for (auto &semester : semesters)
+            if (semester.is_active()) {
+                cout << "   Semester " << counter << endl;
+                counter++;
+                semester.printSubjects();
+                cout << "Do you want to edit this semester? (Y/N):" << endl;
+                cin >> wannaEdit;
+                if (wannaEdit == "Y" || wannaEdit == "y") {
+                    string subjectStr;
+                    while (true) {
+                        cout
+                                << "Enter subject that you want to change or enter \"exit\" to exit or enter \"DELETE\" to delete this semester or \"addnew\" to add new subject:"
+                                << endl;
+                        cin.get();
+                        getline(cin, subjectStr);
+                        if (subjectStr == "exit") break;
+                        if (subjectStr == "DELETE") {
+                            int i = 1;
+                            while (this->getSemester(i) != &semester)
+                                i++;
+                            removeSemester(i);
+                            break;
+                        }
+                        if (subjectStr == "addnew") {
+                            int i = 1;
+                            while (this->getSemester(i) != &semester)
+                                i++;
+                            this->addSubject(i);
+                            break;
+                        }
 
-                    Subject* subject = semester.getSubject(subjectStr);
-                    if (subject == nullptr){
-                        cout << "Error! You entered undeclared subject, try again!" << endl;
-                        continue;
-                    }
-                    string choiceStr;
-                    int choice;
-                    cout << "What would you like to edit:"
-                        << endl << "1. Name of subject"
-                        << endl << "2. Grade"
-                        << endl;
-                    cin >> choiceStr;
-                    choice = stoi(choiceStr);
-                    switch (choice) {
-                        case 1: {subject->setName(); break;}
-                        case 2: {subject->setGrade(); break;}
-                        default: {
-                            cout << "ERROR! Wrong menu item, try this step again" << endl;
+                        Subject *subject = semester.getSubject(subjectStr);
+                        if (subject == nullptr) {
+                            cout << "Error! You entered undeclared subject, try again!" << endl;
                             continue;
                         }
-                    }
+                        string choiceStr;
+                        int choice;
+                        cout << "What would you like to edit:"
+                             << endl << "1. Name of subject"
+                             << endl << "2. Grade"
+                             << endl;
+                        cin >> choiceStr;
+                        choice = stoi(choiceStr);
+                        switch (choice) {
+                            case 1: {
+                                subject->setName();
+                                break;
+                            }
+                            case 2: {
+                                subject->setGrade();
+                                break;
+                            }
+                            default: {
+                                cout << "ERROR! Wrong menu item, try this step again" << endl;
+                                continue;
+                            }
+                        }
 
+                    }
                 }
             }
-            cout << endl;
+        string wanna;
+        cout << "Do you want to add a new semester? (Y/N):" << endl;
+        cin >> wanna;
+        if (wanna == "Y" || wanna == "y") {
+            addSemester();
+            flag2 = true;
         }
+        else if (flag2) flag2 = false;
+        else flag = false;
+    }
 
     cout << "==================================================" << endl;
 }

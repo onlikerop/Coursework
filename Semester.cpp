@@ -31,7 +31,8 @@ int Semester::addSubject(){
 
             string subjName;
             cout << "Enter name of subject:" << endl;
-            cin.get();
+            if (cin.get() != '\n')
+                cin.unget();
             getline(cin, subjName);
             subject.setName(subjName);
             cout << "You've just successfully added " << subjName << " subject" << endl;

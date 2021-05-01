@@ -4,6 +4,8 @@
 
 #include "Subject.h"
 
+#include <utility>
+
 string GRADEToString(GRADE grade) {
     switch (grade) {
         case 0: return "UNSET";
@@ -86,15 +88,17 @@ string Subject::getName() const{
     return name;
 }
 
-int Subject::setName(const string &subjName) {
-    this->name = subjName;
+int Subject::setName(string subjName) {
+    this->name = move(subjName);
     return 0;
 }
 
 int Subject::setName() {
     string subjName;
     cout << "Enter subject name:" << endl;
-    cin >> subjName;
-    this->name = subjName;
+    if (cin.get() != '\n')
+        cin.unget();
+    getline(cin, subjName);
+    this->name = move(subjName);
     return 0;
 }

@@ -232,7 +232,8 @@ void menu(){
                         case 1: {
                             string fullNameOrID;
                             cout << "Enter full name or ID of the Student:" << endl;
-                            cin >> fullNameOrID;
+                            cin.get();
+                            getline(cin, fullNameOrID);
                             foundStudent = findStudent(fullNameOrID);
                             break;
                         }
@@ -240,7 +241,8 @@ void menu(){
                             string fullNameOrID, minYearStr, maxYearStr;
                             int minYear, maxYear;
                             cout << "Enter full name or ID of the Student:" << endl;
-                            cin >> fullNameOrID;
+                            cin.get();
+                            getline(cin, fullNameOrID);
                             cout << "Enter min. birthdate year:" << endl;
                             cin >> minYearStr;
                             minYear = stoi(minYearStr);
