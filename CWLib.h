@@ -14,6 +14,7 @@
 
 
 int saveToFile(const string& path, Student* student);
+inline int loadFromFile(const string& path, Student* student, ifstream* fin);
 int loadFromFile(const string& path, Student* student);
 int createStudent(Student* value);
 BothWayList* findStudent(string fullNameOrID);

@@ -72,7 +72,7 @@ Student::Student() {
 
         flag = true;
         while (flag) {
-            cout << "Enter student's sex (Male, Female, M (latin), F, М (cyrillic), Ж): " << endl;
+            cout << "Enter student's sex (Male, Female, M , F): " << endl;
             cin >> sexString;
             if (stringToSEX(sexString) == Undefined)
                 cout << "ERROR! Unknown sex. It must be \"Male\" or \"Female\". Try Again!" << endl;
@@ -165,17 +165,17 @@ void Student::editInfo(){
     cout << "Name: " << getFullName() << endl;
     cout << "Do you want to edit this field? (Y/N):" << endl;
     cin >> wannaEdit;
-    if (wannaEdit == "Y" or "y"){
+    if (wannaEdit == "Y" || wannaEdit == "y"){
         cout << "Enter new full name of student:" << endl;
         cin >> name.Second >> name.First >> name.Third;
     }
     cout << "Sex: " << SEXToString(sex) << endl;
     cout << "Do you want to edit this field? (Y/N):" << endl;
     cin >> wannaEdit;
-    if (wannaEdit == "Y" or "y"){
+    if (wannaEdit == "Y" || wannaEdit == "y"){
         string newSex;
         while (stringToSEX(newSex) == Undefined) {
-            cout << "Enter new sex of student:" << endl;
+            cout << "Enter new sex of student (Male, Female, M , F):" << endl;
             cin >> newSex;
             if (stringToSEX(newSex) == Undefined)
                 cout << "ERROR! Unknown sex. It must be \"Male\" or \"Female\". Try Again!" << endl;
@@ -186,7 +186,7 @@ void Student::editInfo(){
     cout << "Birthdate: " << BDate.day << "." << BDate.month << "." << BDate.year << endl;
     cout << "Do you want to edit this field? (Y/N):" << endl;
     cin >> wannaEdit;
-    if (wannaEdit == "Y" or "y"){
+    if (wannaEdit == "Y" || wannaEdit == "y"){
         bool flag = true;
         unsigned short BDDay, BDMonth, BDYear;
         while (flag) {
@@ -209,33 +209,36 @@ void Student::editInfo(){
     cout << "IDCard: " << university.IDCard << endl;
     cout << "Do you want to edit this field? (Y/N):" << endl;
     cin >> wannaEdit;
-    if (wannaEdit == "Y" or "y"){
+    if (wannaEdit == "Y" || wannaEdit == "y"){
         cout << "Enter new student's ID (ID Card):" << endl;
         cin >> university.IDCard;
     }
     cout << "Faculty: " << university.faculty << endl;
     cout << "Do you want to edit this field? (Y/N):" << endl;
     cin >> wannaEdit;
-    if (wannaEdit == "Y" or "y"){
+    if (wannaEdit == "Y" || wannaEdit == "y"){
         cout << "Enter new student's faculty:" << endl;
-        cin >> university.faculty;
+        cin.get();
+        getline(cin, university.faculty);
     }
     cout << "Department: " << university.department << endl;
     cout << "Do you want to edit this field? (Y/N):" << endl;
     cin >> wannaEdit;
-    if (wannaEdit == "Y" or "y"){
+    if (wannaEdit == "Y" || wannaEdit == "y"){
         cout << "Enter new student's department:" << endl;
-        cin >> university.department;
+        getline(cin, university.department);
     }
     cout << "Group: " << university.group << endl;
     cout << "Do you want to edit this field? (Y/N):" << endl;
     cin >> wannaEdit;
-    if (wannaEdit == "Y" or "y"){
+    if (wannaEdit == "Y" || wannaEdit == "y"){
         cout << "Enter new student's group:" << endl;
         cin >> university.group;
     }
     cout << "Year of receipt: " << university.receiptYear << endl;
-    if (wannaEdit == "Y" or "y"){
+    cout << "Do you want to edit this field? (Y/N):" << endl;
+    cin >> wannaEdit;
+    if (wannaEdit == "Y" || wannaEdit == "y"){
         bool flag = true;
         unsigned short receiptYear;
         while (flag) {
@@ -259,7 +262,7 @@ void Student::editInfo(){
             semester.printSubjects();
             cout << "Do you want to edit this semester? (Y/N):" << endl;
             cin >> wannaEdit;
-            if (wannaEdit == "Y" or "y"){
+            if (wannaEdit == "Y" || wannaEdit == "y"){
                 string subjectStr;
                 while (true){
                     cout << "Enter subject that you want to change (or enter \"exit\" to exit):" << endl;

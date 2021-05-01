@@ -20,7 +20,7 @@ int main() {
 //            "IT",
 //            "KB-3",
 //            "INBO-5-19",
-//            "19Б6141",
+//            "19B6141",
 //            Male
 //    );
 //    cout << Ivan1->getFullName() << endl;
@@ -46,14 +46,14 @@ int main() {
 //    (*Ivan1)++;
 //    *Ivan1 - 3;
 //    Ivan1->setGrade(3, "Physics", 3);
-////    Ivan1->printInfo();
+//    Ivan1->printInfo();
 //
-////    saveToFile("Ivan.CW", Ivan1);
+//    saveToFile("Ivan.CW", Ivan1);
 //
 //
-//    auto* John = new Student(nullptr);
-//    if (!loadFromFile("Ivan.CW", John))
-//        John->printInfo();
+////    auto* John = new Student(nullptr);
+////    if (!loadFromFile("Ivan.CW", John))
+////        John->printInfo();
 //
 //    delete Ivan1;
 

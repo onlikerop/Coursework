@@ -79,6 +79,7 @@ class Student : public Grademeres{
 
 
         friend int saveToFile(const string& path, Student* student);
+        friend inline int loadFromFile(const string& path, Student* student, ifstream* fin);
         friend int loadFromFile(const string& path, Student* student);
 
 };
