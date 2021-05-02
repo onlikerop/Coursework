@@ -36,7 +36,7 @@ public:
 
     string getName() const;
 
-    int setName (string subjName);
+    int setName (const string& subjName);
 
     int setName ();
 

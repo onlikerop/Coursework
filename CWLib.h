@@ -20,6 +20,9 @@ int createStudent(Student* value);
 BothWayList* findStudent(string fullNameOrID);
 BothWayList* findStudent(string fullNameOrID, unsigned short BDYearMin, unsigned short BDYearMax);
 BothWayList* findStudent(unsigned short BDYearMin, unsigned short BDYearMax);
+int printAllStudents();
+int saveAllToFile(const string& fileName);
+int loadAllFromFile(const string& fileName);
 
 void menu();
 

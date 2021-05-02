@@ -205,16 +205,7 @@ void menu(){
 
             switch (choice) {
                 case 1: { createStudent(new Student()); break; }
-                case 2: {
-                    BothWayList* pCurrent = BothWayList::pStart;
-                    if (pCurrent == nullptr)
-                        cout << "There is no any student. Make sure, you loaded data from file or created at least one student!" << endl;
-                    while(pCurrent != nullptr){
-                        pCurrent->value->printInfo();
-                        pCurrent = pCurrent->next;
-                    }
-                    break;
-                }
+                case 2: { printAllStudents(); break; }
                 case 3: {
                     string choiceStr2;
                     int choice2;
@@ -288,67 +279,18 @@ void menu(){
                 }
                 case 4: {
                     string fileName;
-                    bool flag = true;
-                    ofstream fout;
-
-                    while (flag){
-                        cout << "Enter the name of the file in which you want to save list:" << endl;
-                        cin >> fileName;
-                        fileName += ".CW";
-                        ifstream fin;
-                        fin.open(fileName);
-                        if (fin.is_open()){
-                            string wanna;
-                            cout << "This file is already exist, do you really want to rewrite all data inside it? (Y/N):" << endl;
-                            cin >> wanna;
-                            if (wanna == "Y" || wanna == "y"){
-                                flag = false;
-                                fin.close();
-                                remove(fileName.c_str());
-                            }
-                        }
-                        else {
-                            flag = false;
-                            fin.close();
-                        }
-                    }
-
-                    BothWayList* pCurrent = BothWayList::pStart;
-                    while (pCurrent != nullptr) {
-                        saveToFile(fileName, pCurrent->value);
-                        pCurrent = pCurrent->next;
-                    }
+                    cout << "Enter the name of the file in which you want to save list:" << endl;
+                    cin >> fileName;
+                    fileName += ".CW";
+                    saveAllToFile(fileName);
                     break;
                 }
                 case 5: {
                     string fileName;
-                    bool flag = true;
-                    ifstream fin;
-
-                    while (flag){
-                        cout << "Enter the name of the file in which you want to load from:" << endl;
-                        cin >> fileName;
-                        fileName += ".CW";
-                        fin.open(fileName);
-                        if (!fin.is_open()) {
-                            cout << "File do not exist or it's damaged or it's protected by system!" << endl;
-                            fin.close();
-                        }
-                        else flag = false;
-                        }
-
-                    deleteAllStudents();
-                    int error = 0, count = 0;
-                    while (!fin.eof() && error == 0) {
-                        auto *temp = new Student(nullptr);
-                        error = loadFromFile(fileName, temp, &fin);
-                        if (!error){
-                            createStudent(temp);
-                            count++;
-                        }
-                    }
-                    fin.close();
-                    cout << "Loaded " << count << " students from file" << endl;
+                    cout << "Enter the name of the file in which you want to load from:" << endl;
+                    cin >> fileName;
+                    fileName += ".CW";
+                    loadAllFromFile(fileName);
                     break;
                 }
                 case 7: {break;}
@@ -484,4 +426,77 @@ int loadFromFile(const string& path, Student* student){
         return 0;
     }
 
+}
+
+int printAllStudents() {
+    BothWayList* pCurrent = BothWayList::pStart;
+    if (pCurrent == nullptr)
+        cout << "There is no any student. Make sure, you loaded data from file or created at least one student!" << endl;
+    while(pCurrent != nullptr){
+        pCurrent->value->printInfo();
+        pCurrent = pCurrent->next;
+    }
+    return 0;
+}
+
+int saveAllToFile(const string& fileName) {
+    bool flag = true;
+    ofstream fout;
+
+    while (flag){
+        ifstream fin;
+        fin.open(fileName);
+        if (fin.is_open()){
+            string wanna;
+            cout << "This file is already exist, do you really want to rewrite all data inside it? (Y/N):" << endl;
+            cin >> wanna;
+            if (wanna == "Y" || wanna == "y"){
+                flag = false;
+                fin.close();
+                remove(fileName.c_str());
+            }
+        }
+        else {
+            flag = false;
+            fin.close();
+        }
+    }
+
+    BothWayList* pCurrent = BothWayList::pStart;
+    while (pCurrent != nullptr) {
+        saveToFile(fileName, pCurrent->value);
+        pCurrent = pCurrent->next;
+    }
+    return 0;
+}
+
+int loadAllFromFile(const string& fileName){
+    bool flag = true;
+    ifstream fin;
+
+    while (flag){
+        fin.open(fileName);
+        if (!fin.is_open()) {
+            cout << "File do not exist or it's damaged or it's protected by system!" << endl;
+            fin.close();
+        }
+        else flag = false;
+    }
+
+    deleteAllStudents();
+    int error = 0, count = 0;
+    while (!fin.eof() && error == 0) {
+        auto *temp = new Student(nullptr);
+        error = loadFromFile(fileName, temp, &fin);
+        if (!error){
+            createStudent(temp);
+            count++;
+        }
+        else{
+            delete temp;
+        }
+    }
+    fin.close();
+    cout << "Loaded " << count << " students from file" << endl;
+    return 0;
 }

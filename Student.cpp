@@ -275,16 +275,16 @@ void Student::editInfo(){
                         if (subjectStr == "exit") break;
                         if (subjectStr == "DELETE") {
                             int i = 1;
-                            while (this->getSemester(i) != &semester)
+                            while (getSemester(i) != &semester)
                                 i++;
                             removeSemester(i);
                             break;
                         }
                         if (subjectStr == "addnew") {
-                            int i = 1;
-                            while (this->getSemester(i) != &semester)
-                                i++;
-                            this->addSubject(i);
+//                            int i = 1;
+//                            while (getSemester(i) != &semester)
+//                                i++;
+                            semester.addSubject();
                             break;
                         }
 

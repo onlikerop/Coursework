@@ -88,8 +88,8 @@ string Subject::getName() const{
     return name;
 }
 
-int Subject::setName(string subjName) {
-    this->name = move(subjName);
+int Subject::setName(const string& subjName) {
+    this->name = subjName;
     return 0;
 }
 
