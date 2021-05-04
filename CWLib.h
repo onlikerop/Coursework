@@ -17,6 +17,8 @@ int saveToFile(const string& path, Student* student);
 inline int loadFromFile(const string& path, Student* student, ifstream* fin);
 int loadFromFile(const string& path, Student* student);
 int createStudent(Student* value);
+int deleteStudent(BothWayList* list);
+int deleteAllStudents();
 BothWayList* findStudent(string fullNameOrID);
 BothWayList* findStudent(string fullNameOrID, unsigned short BDYearMin, unsigned short BDYearMax);
 BothWayList* findStudent(unsigned short BDYearMin, unsigned short BDYearMax);

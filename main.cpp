@@ -58,6 +58,6 @@ int main() {
 //    delete Ivan1;
 
     menu();
-
+    deleteAllStudents();
     return 0;
 }

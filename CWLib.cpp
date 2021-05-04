@@ -12,7 +12,7 @@ int createStudent(Student* value){
     }
     else{
         BothWayList* temp = BothWayList::pStart;
-        while (temp->next != nullptr){ // TO EDIT (check if exist 1 and 2 sem and count its number of "3") !!!!!!!!!!!!!
+        while (temp->next != nullptr){
             double tempGrades3_1_2_sem = 0, tempAllGrades_1_2_sem = 0, valueGrades3_1_2_sem = 0, valueAllGrades_1_2_sem = 0;
             if (temp->value->getSemester(1) != nullptr) {
                 tempGrades3_1_2_sem += temp->value->getSemester(1)->getNumberOfGrades(3);
@@ -165,7 +165,7 @@ BothWayList* findStudent(unsigned short BDYearMin, unsigned short BDYearMax){
 
             }
             if (pCurrent->value->getBirthdate().year >= BDYearMin
-                || pCurrent->value->getBirthdate().year <= BDYearMax
+                && pCurrent->value->getBirthdate().year <= BDYearMax
                ) break;
             else pCurrent = pCurrent->next;
 
@@ -287,10 +287,13 @@ void menu(){
                 }
                 case 5: {
                     string fileName;
-                    cout << "Enter the name of the file in which you want to load from:" << endl;
-                    cin >> fileName;
-                    fileName += ".CW";
-                    loadAllFromFile(fileName);
+                    bool flag = true;
+                    while (flag) {
+                        cout << "Enter the name of the file in which you want to load from:" << endl;
+                        cin >> fileName;
+                        fileName += ".CW";
+                        flag = static_cast<bool>(loadAllFromFile(fileName));
+                    }
                     break;
                 }
                 case 7: {break;}
@@ -434,6 +437,7 @@ int printAllStudents() {
         cout << "There is no any student. Make sure, you loaded data from file or created at least one student!" << endl;
     while(pCurrent != nullptr){
         pCurrent->value->printInfo();
+        cout << endl;
         pCurrent = pCurrent->next;
     }
     return 0;
@@ -471,16 +475,13 @@ int saveAllToFile(const string& fileName) {
 }
 
 int loadAllFromFile(const string& fileName){
-    bool flag = true;
     ifstream fin;
 
-    while (flag){
-        fin.open(fileName);
-        if (!fin.is_open()) {
-            cout << "File do not exist or it's damaged or it's protected by system!" << endl;
-            fin.close();
-        }
-        else flag = false;
+    fin.open(fileName);
+    if (!fin.is_open()) {
+        cout << "File do not exist or it's damaged or it's protected by system!" << endl;
+        fin.close();
+        return 1;
     }
 
     deleteAllStudents();
@@ -493,6 +494,7 @@ int loadAllFromFile(const string& fileName){
             count++;
         }
         else{
+            cout << "End of file. Removing temporary variable..." << endl;
             delete temp;
         }
     }

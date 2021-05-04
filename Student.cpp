@@ -254,7 +254,8 @@ void Student::editInfo(){
 
     cout << endl << "                 Semesters' info                  " << endl;
 
-    bool flag = true, flag2 = true;
+    bool flag = true;
+    wannaEdit = "N";
     while (flag) {
         int counter = 1;
         for (auto &semester : semesters)
@@ -285,7 +286,7 @@ void Student::editInfo(){
 //                            while (getSemester(i) != &semester)
 //                                i++;
                             semester.addSubject();
-                            break;
+                            continue;
                         }
 
                         Subject *subject = semester.getSubject(subjectStr);
@@ -298,16 +299,21 @@ void Student::editInfo(){
                         cout << "What would you like to edit:"
                              << endl << "1. Name of subject"
                              << endl << "2. Grade"
+                             << endl << "3. Delete"
                              << endl;
                         cin >> choiceStr;
                         choice = stoi(choiceStr);
                         switch (choice) {
                             case 1: {
                                 subject->setName();
-                                break;
+                                continue;
                             }
                             case 2: {
                                 subject->setGrade();
+                                continue;
+                            }
+                            case 3: {
+                                semester.removeSubject(subjectStr);
                                 break;
                             }
                             default: {
@@ -319,15 +325,15 @@ void Student::editInfo(){
                     }
                 }
             }
-        string wanna;
-        cout << "Do you want to add a new semester? (Y/N):" << endl;
-        cin >> wanna;
-        if (wanna == "Y" || wanna == "y") {
-            addSemester();
-            flag2 = true;
+        if (!(wannaEdit == "Y" || wannaEdit == "y")) {
+            string wanna;
+            cout << "Do you want to add a new semester? (Y/N):" << endl;
+            cin >> wanna;
+            if (wanna == "Y" || wanna == "y") {
+                addSemester();
+            }
+            else flag = false;
         }
-        else if (flag2) flag2 = false;
-        else flag = false;
     }
 
     cout << "==================================================" << endl;

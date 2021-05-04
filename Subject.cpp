@@ -49,6 +49,7 @@ Subject::Subject(){
     name = "";
     grade = UNSET;
     is_active_ = false;
+//    name.reserve(256);
 }
 
 int Subject::setGrade (GRADE grade_to_set){
