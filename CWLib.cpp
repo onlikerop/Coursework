@@ -357,23 +357,43 @@ inline int loadFromFile(const string& path, Student* student, ifstream* fin){
     }
     else{
         try {
-            fin->read(reinterpret_cast<char *>(&(student->name.Second)), sizeof(string));
-            fin->read(reinterpret_cast<char *>(&(student->name.First)), sizeof(string));
-            fin->read(reinterpret_cast<char *>(&(student->name.Third)), sizeof(string));
+            string SName, FName, TName, faculty, department, group, IDCard, sexString;
+            unsigned short BDDay, BDMonth, BDYear, receiptYear;
+            SEX sex;
+            fin->read(reinterpret_cast<char *>(&SName), sizeof(string));
+            student->name.Second.resize(SName.size());
+            student->name.Second = SName;
+            fin->read(reinterpret_cast<char *>(&FName), sizeof(string));
+            student->name.First.resize(FName.size());
+            student->name.First = FName;
+            fin->read(reinterpret_cast<char *>(&TName), sizeof(string));
+            student->name.Third.resize(TName.size());
+            student->name.Third = TName;
             fin->read(reinterpret_cast<char *>(&(student->BDate.day)), sizeof(unsigned short));
             fin->read(reinterpret_cast<char *>(&(student->BDate.month)), sizeof(unsigned short));
             fin->read(reinterpret_cast<char *>(&(student->BDate.year)), sizeof(unsigned short));
             fin->read(reinterpret_cast<char *>(&(student->university.receiptYear)), sizeof(unsigned short));
-            fin->read(reinterpret_cast<char *>(&(student->university.faculty)), sizeof(string));
-            fin->read(reinterpret_cast<char *>(&(student->university.department)), sizeof(string));
-            fin->read(reinterpret_cast<char *>(&(student->university.group)), sizeof(string));
-            fin->read(reinterpret_cast<char *>(&(student->university.IDCard)), sizeof(string));
+            fin->read(reinterpret_cast<char *>(&faculty), sizeof(string));
+            student->university.faculty.resize(faculty.size());
+            student->university.faculty = faculty;
+            fin->read(reinterpret_cast<char *>(&department), sizeof(string));
+            student->university.department.resize(department.size());
+            student->university.department = department;
+            fin->read(reinterpret_cast<char *>(&group), sizeof(string));
+            student->university.group.resize(group.size());
+            student->university.group = group;
+            fin->read(reinterpret_cast<char *>(&IDCard), sizeof(string));
+            student->university.IDCard.resize(IDCard.size());
+            student->university.IDCard = IDCard;
             fin->read(reinterpret_cast<char *>(&(student->sex)), sizeof(SEX));
             for (int semester = 0; semester < 9; semester++){
                 fin->read(reinterpret_cast<char *>(&(student->semesters[semester].is_active_)), sizeof(bool));
                 for (int subject = 0; subject < 10; subject++){
+                    string name;
                     fin->read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].is_active_)), sizeof(bool));
-                    fin->read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].name)), sizeof(string));
+                    fin->read(reinterpret_cast<char *>(&name), sizeof(string));
+                    student->semesters[semester].subjects[subject].name.resize(name.size());
+                    student->semesters[semester].subjects[subject].name = name;
                     fin->read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].grade)), sizeof(GRADE));
                 }
             }
