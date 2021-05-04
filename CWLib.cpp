@@ -319,23 +319,39 @@ int saveToFile(const string& path, Student* student){
     }
     else{
         try {
-            fout.write(reinterpret_cast<char *>(&(student->name.Second)), sizeof(string));
-            fout.write(reinterpret_cast<char *>(&(student->name.First)), sizeof(string));
-            fout.write(reinterpret_cast<char *>(&(student->name.Third)), sizeof(string));
+            unsigned int temp_size = student->name.Second.capacity();
+            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fout.write(reinterpret_cast<char *>(&(student->name.Second)), temp_size);
+            temp_size = student->name.First.capacity();
+            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fout.write(reinterpret_cast<char *>(&(student->name.First)), temp_size);
+            temp_size = student->name.Third.capacity();
+            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fout.write(reinterpret_cast<char *>(&(student->name.Third)), temp_size);
             fout.write(reinterpret_cast<char *>(&(student->BDate.day)), sizeof(unsigned short));
             fout.write(reinterpret_cast<char *>(&(student->BDate.month)), sizeof(unsigned short));
             fout.write(reinterpret_cast<char *>(&(student->BDate.year)), sizeof(unsigned short));
             fout.write(reinterpret_cast<char *>(&(student->university.receiptYear)), sizeof(unsigned short));
-            fout.write(reinterpret_cast<char *>(&(student->university.faculty)), sizeof(string));
-            fout.write(reinterpret_cast<char *>(&(student->university.department)), sizeof(string));
-            fout.write(reinterpret_cast<char *>(&(student->university.group)), sizeof(string));
-            fout.write(reinterpret_cast<char *>(&(student->university.IDCard)), sizeof(string));
+            temp_size = student->university.faculty.capacity();
+            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fout.write(reinterpret_cast<char *>(&(student->university.faculty)), temp_size);
+            temp_size = student->university.department.capacity();
+            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fout.write(reinterpret_cast<char *>(&(student->university.department)), temp_size);
+            temp_size = student->university.group.capacity();
+            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fout.write(reinterpret_cast<char *>(&(student->university.group)), temp_size);
+            temp_size = student->university.IDCard.capacity();
+            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fout.write(reinterpret_cast<char *>(&(student->university.IDCard)), temp_size);
             fout.write(reinterpret_cast<char *>(&(student->sex)), sizeof(SEX));
             for (auto semester : student->semesters){
                 fout.write(reinterpret_cast<char *>(&(semester.is_active_)), sizeof(bool));
                 for (auto subject : semester.subjects){
                     fout.write(reinterpret_cast<char *>(&(subject.is_active_)), sizeof(bool));
-                    fout.write(reinterpret_cast<char *>(&(subject.name)), sizeof(string));
+                    temp_size = subject.name.capacity();
+                    fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+                    fout.write(reinterpret_cast<char *>(&(subject.name)), temp_size);
                     fout.write(reinterpret_cast<char *>(&(subject.grade)), sizeof(GRADE));
                 }
             }
@@ -357,43 +373,32 @@ inline int loadFromFile(const string& path, Student* student, ifstream* fin){
     }
     else{
         try {
-            string SName, FName, TName, faculty, department, group, IDCard, sexString;
-            unsigned short BDDay, BDMonth, BDYear, receiptYear;
-            SEX sex;
-            fin->read(reinterpret_cast<char *>(&SName), sizeof(string));
-            student->name.Second.resize(SName.size());
-            student->name.Second = SName;
-            fin->read(reinterpret_cast<char *>(&FName), sizeof(string));
-            student->name.First.resize(FName.size());
-            student->name.First = FName;
-            fin->read(reinterpret_cast<char *>(&TName), sizeof(string));
-            student->name.Third.resize(TName.size());
-            student->name.Third = TName;
+            unsigned int temp_size;
+            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fin->read(reinterpret_cast<char *>(&(student->name.Second)), temp_size);
+            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fin->read(reinterpret_cast<char *>(&(student->name.First)), temp_size);
+            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fin->read(reinterpret_cast<char *>(&(student->name.Third)), temp_size);
             fin->read(reinterpret_cast<char *>(&(student->BDate.day)), sizeof(unsigned short));
             fin->read(reinterpret_cast<char *>(&(student->BDate.month)), sizeof(unsigned short));
             fin->read(reinterpret_cast<char *>(&(student->BDate.year)), sizeof(unsigned short));
             fin->read(reinterpret_cast<char *>(&(student->university.receiptYear)), sizeof(unsigned short));
-            fin->read(reinterpret_cast<char *>(&faculty), sizeof(string));
-            student->university.faculty.resize(faculty.size());
-            student->university.faculty = faculty;
-            fin->read(reinterpret_cast<char *>(&department), sizeof(string));
-            student->university.department.resize(department.size());
-            student->university.department = department;
-            fin->read(reinterpret_cast<char *>(&group), sizeof(string));
-            student->university.group.resize(group.size());
-            student->university.group = group;
-            fin->read(reinterpret_cast<char *>(&IDCard), sizeof(string));
-            student->university.IDCard.resize(IDCard.size());
-            student->university.IDCard = IDCard;
+            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fin->read(reinterpret_cast<char *>(&(student->university.faculty)), temp_size);
+            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fin->read(reinterpret_cast<char *>(&(student->university.department)), temp_size);
+            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fin->read(reinterpret_cast<char *>(&(student->university.group)), temp_size);
+            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            fin->read(reinterpret_cast<char *>(&(student->university.IDCard)), temp_size);
             fin->read(reinterpret_cast<char *>(&(student->sex)), sizeof(SEX));
             for (int semester = 0; semester < 9; semester++){
                 fin->read(reinterpret_cast<char *>(&(student->semesters[semester].is_active_)), sizeof(bool));
                 for (int subject = 0; subject < 10; subject++){
-                    string name;
                     fin->read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].is_active_)), sizeof(bool));
-                    fin->read(reinterpret_cast<char *>(&name), sizeof(string));
-                    student->semesters[semester].subjects[subject].name.resize(name.size());
-                    student->semesters[semester].subjects[subject].name = name;
+                    fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
+                    fin->read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].name)), temp_size);
                     fin->read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].grade)), sizeof(GRADE));
                 }
             }
