@@ -315,9 +315,10 @@ void menu(){
                 }
                 case 6: {
                     cout << endl << "\t\tCREDITS" << endl;
-                    cout << "\tProgram is created by student of Information security specialization" << endl;
-                    cout << "\tgroup BBBO-05-20 Karabanov Evgeniy (Eugene) Gennadyevich. Personal ID: 20B0791" << endl;
-                    cout << "\tas coursework of 1st course for Russian Technical University MIREA" << endl << endl;
+                    cout << "This program is created by student of Information security specialization of" << endl;
+                    cout << "group BBBO-05-20 Karabanov Evgeniy (Eugene) Gennadyevich. Personal ID: 20B0791" << endl;
+                    cout << "as coursework of the 1st course for Russian Technological University MIREA" << endl << endl;
+                    break;
                 }
                 case 7: {
                     switch (sortStudents()){

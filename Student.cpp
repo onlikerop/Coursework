@@ -147,14 +147,15 @@ void Student::printInfo(){
 
     cout << endl << "                 Semesters' info                  " << endl;
 
-    int counter = 1;
-    for (auto & semester : semesters)
+    int counter = 0;
+    for (auto & semester : semesters) {
+        counter++;
         if (semester.is_active()){
             cout << "   Semester " << counter << endl;
-            counter++;
             semester.printSubjects();
             cout << endl;
         }
+    }
 
     cout << "==================================================" << endl;
 }
@@ -259,11 +260,11 @@ void Student::editInfo(){
     bool flag = true;
     wannaEdit = "N";
     while (flag) {
-        int counter = 1;
-        for (auto &semester : semesters)
+        int counter = 0;
+        for (auto &semester : semesters) {
+            counter++;
             if (semester.is_active()) {
                 cout << "   Semester " << counter << endl;
-                counter++;
                 semester.printSubjects();
                 cout << "Do you want to edit this semester? (Y/N):" << endl;
                 cin >> wannaEdit;
@@ -274,7 +275,7 @@ void Student::editInfo(){
                                 << "Enter subject that you want to change or enter \"exit\" to exit or enter \"DELETE\" to delete this semester or \"addnew\" to add new subject:"
                                 << endl;
                         if (cin.get() != '\n')
-                                cin.unget();
+                            cin.unget();
                         getline(cin, subjectStr);
                         if (subjectStr == "exit") break;
                         if (subjectStr == "DELETE") {
@@ -328,6 +329,7 @@ void Student::editInfo(){
                     }
                 }
             }
+        }
         if (!(wannaEdit == "Y" || wannaEdit == "y")) {
             string wanna;
             cout << "Do you want to add a new semester? (Y/N):" << endl;
