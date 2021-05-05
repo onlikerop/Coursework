@@ -25,7 +25,7 @@ BothWayList* findStudent(unsigned short BDYearMin, unsigned short BDYearMax);
 int printAllStudents();
 int saveAllToFile(const string& fileName);
 int loadAllFromFile(const string& fileName);
-void sortStudents();
+int sortStudents();
 
 void menu();
 

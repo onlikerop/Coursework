@@ -12,7 +12,7 @@ int createStudent(Student* value){
     }
     else{
         BothWayList* temp = BothWayList::pStart;
-        while (temp->next != nullptr){
+        while (temp != nullptr){
             double tempGrades3_1_2_sem = 0, tempAllGrades_1_2_sem = 0, valueGrades3_1_2_sem = 0, valueAllGrades_1_2_sem = 0;
             if (temp->value->getSemester(1) != nullptr) {
                 tempGrades3_1_2_sem += temp->value->getSemester(1)->getNumberOfGrades(3);
@@ -31,12 +31,25 @@ int createStudent(Student* value){
                 valueAllGrades_1_2_sem += value->getSemester(2)->getNumberOfSubjects();
             }
             if ((tempGrades3_1_2_sem / tempAllGrades_1_2_sem) >= (valueGrades3_1_2_sem / valueAllGrades_1_2_sem)){
-                temp = temp->next;
+                if (temp->next != nullptr)
+                    temp = temp->next;
+                else{
+                    auto *theNewOne = new BothWayList(temp, temp->next, value);
+                    temp->next = theNewOne;
+                    break;
+                }
             }
-            else break;
+            else{
+                auto *theNewOne = new BothWayList(temp->previous, temp, value);
+                if (temp->previous != nullptr)
+                    temp->previous->next = theNewOne;
+                else
+                    BothWayList::pStart = theNewOne;
+                temp->previous = theNewOne;
+                break;
+            }
         }
-        auto *theNewOne = new BothWayList(temp, temp->next, value);
-        temp->next = theNewOne;
+
     }
     return 0;
 
@@ -49,6 +62,7 @@ int deleteStudent(BothWayList* list){
         BothWayList::pStart = list->next;
     if (list->next != nullptr)
         list->next->previous = list->previous;
+    BothWayList::count--;
     delete list;
     return 0;
 
@@ -299,7 +313,19 @@ void menu(){
                     }
                     break;
                 }
-                case 7: { sortStudents(); break; }
+                case 6: {
+                    cout << endl << "\t\tCREDITS" << endl;
+                    cout << "\tProgram is created by student of Information security specialization" << endl;
+                    cout << "\tgroup BBBO-05-20 Karabanov Evgeniy (Eugene) Gennadyevich. Personal ID: 20B0791" << endl;
+                    cout << "\tas coursework of 1st course for Russian Technical University MIREA" << endl << endl;
+                }
+                case 7: {
+                    switch (sortStudents()){
+                        case 0: { cout << "Successfully sorted students!" << endl; break; }
+                        case 1: { cout << "ERROR! There is nothing to sort!" << endl; break; }
+                        default: { cout << "ERROR! Unknown error!" << endl; }
+                    }
+                }
                 case 8: { break; }
                 default: {
                     throw invalid_argument("Invalid input");
@@ -547,7 +573,7 @@ int loadAllFromFile(const string& fileName){
             count++;
         }
         else{
-            cout << "End of file. Removing temporary variable..." << endl;
+            cout << "End of file. Removing temporary variable..." << "\n\t";
             delete temp;
         }
     }
@@ -556,15 +582,31 @@ int loadAllFromFile(const string& fileName){
     return 0;
 }
 
-void sortStudents() { // TO EDIT
-    string fileName;
-    for (int i = 0; i < 16; i++)
-        fileName += static_cast<char>(rand()%256);
-    fileName += ".tmp";
-    cout << "Creating temporary file for sorting..." << endl;
-    saveAllToFile(fileName);
-    cout << "Loading from temporary file..." << endl;
-    loadAllFromFile(fileName);
-    cout << "Sorting has just been successfully finished!" << endl;
-    remove(fileName.c_str());
+int sortStudents() {
+    unsigned int local_count = BothWayList::count;
+    if (local_count < 2)
+        return 1;
+    try{
+        void **temp = new void*[local_count];
+        for (int i = 0; i < local_count; i++)
+            temp[i] = malloc(sizeof(Student));
+        BothWayList *pCurrent = BothWayList::pStart;
+        cout << "Starting sorting...\n\tCreating backup for current student's data..." << endl;
+        for (int i = 0; i < local_count; i++) {
+            temp[i] = pCurrent->value;
+            pCurrent = pCurrent->next;
+        }
+        cout << "\tClearing student's data..." << endl;
+        deleteAllStudents();
+        cout << "\tLoading data for sorting..." << endl;
+        for (int i = 0; i < local_count; i++) {
+            createStudent(static_cast<Student *>(temp[i]));
+        }
+        delete[] temp;
+        return 0;
+    }
+    catch (exception &e){
+        return sizeof(*e.what());
+    }
+
 }

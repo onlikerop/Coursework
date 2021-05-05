@@ -23,7 +23,7 @@ class Student : public Grademeres{
                 );
 
         Student();
-        explicit Student(nullptr_t);
+        Student(nullptr_t);
 
         ~Student();
 
