@@ -189,7 +189,7 @@ BothWayList* findStudent(unsigned short BDYearMin, unsigned short BDYearMax){
 void menu(){
     string choiceStr;
     int choice = -1;
-    while(choice != 7){
+    while(choice != 8){
         try {
             cout << "Choose one the following menu item:"
                 << endl << "1. Create new student"
@@ -198,7 +198,8 @@ void menu(){
                 << endl << "4. Save list to file"
                 << endl << "5. Load list from file"
                 << endl << "6. Credits"
-                << endl << "7. Exit"
+                << endl << "7. Sorting"
+                << endl << "8. Exit"
                 << endl;
             cin >> choiceStr;
             choice = stoi(choiceStr);
@@ -223,7 +224,8 @@ void menu(){
                         case 1: {
                             string fullNameOrID;
                             cout << "Enter full name or ID of the Student:" << endl;
-                            cin.get();
+                            if (cin.get() != '\n')
+                                cin.unget();
                             getline(cin, fullNameOrID);
                             foundStudent = findStudent(fullNameOrID);
                             break;
@@ -232,7 +234,8 @@ void menu(){
                             string fullNameOrID, minYearStr, maxYearStr;
                             int minYear, maxYear;
                             cout << "Enter full name or ID of the Student:" << endl;
-                            cin.get();
+                            if (cin.get() != '\n')
+                                cin.unget();
                             getline(cin, fullNameOrID);
                             cout << "Enter min. birthdate year:" << endl;
                             cin >> minYearStr;
@@ -271,7 +274,7 @@ void menu(){
                         switch(choice2){
                             case 1: { foundStudent->value->editInfo(); break; }
                             case 2: { deleteStudent(foundStudent); break; }
-                            case 3: {break;}
+                            case 3: { continue; }
                             default: {cout << "ERROR! Unknown menu item, skipping!" << endl;}
                         }
                     }
@@ -296,7 +299,8 @@ void menu(){
                     }
                     break;
                 }
-                case 7: {break;}
+                case 7: { sortStudents(); break; }
+                case 8: { break; }
                 default: {
                     throw invalid_argument("Invalid input");
                 }
@@ -550,4 +554,17 @@ int loadAllFromFile(const string& fileName){
     fin.close();
     cout << "Loaded " << count << " students from file" << endl;
     return 0;
+}
+
+void sortStudents() { // TO EDIT
+    string fileName;
+    for (int i = 0; i < 16; i++)
+        fileName += static_cast<char>(rand()%256);
+    fileName += ".tmp";
+    cout << "Creating temporary file for sorting..." << endl;
+    saveAllToFile(fileName);
+    cout << "Loading from temporary file..." << endl;
+    loadAllFromFile(fileName);
+    cout << "Sorting has just been successfully finished!" << endl;
+    remove(fileName.c_str());
 }

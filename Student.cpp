@@ -61,7 +61,8 @@ Student::Student() {
         }
 
         cout << "Enter student's faculty: " << endl;
-        cin.get();
+        if (cin.get() != '\n')
+                                cin.unget();
         getline(cin, faculty);
         cout << "Enter student's department: " << endl;
         getline(cin, department);
@@ -218,7 +219,8 @@ void Student::editInfo(){
     cin >> wannaEdit;
     if (wannaEdit == "Y" || wannaEdit == "y"){
         cout << "Enter new student's faculty:" << endl;
-        cin.get();
+        if (cin.get() != '\n')
+                                cin.unget();
         getline(cin, university.faculty);
     }
     cout << "Department: " << university.department << endl;
@@ -271,7 +273,8 @@ void Student::editInfo(){
                         cout
                                 << "Enter subject that you want to change or enter \"exit\" to exit or enter \"DELETE\" to delete this semester or \"addnew\" to add new subject:"
                                 << endl;
-                        cin.get();
+                        if (cin.get() != '\n')
+                                cin.unget();
                         getline(cin, subjectStr);
                         if (subjectStr == "exit") break;
                         if (subjectStr == "DELETE") {
