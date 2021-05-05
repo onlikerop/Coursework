@@ -468,48 +468,6 @@ inline int loadFromFile(const string& path, Student* student, ifstream* fin){
 
 }
 
-int loadFromFile(const string& path, Student* student){
-    ifstream fin;
-    fin.open(path, ios_base::in);
-    if (!fin.is_open()){
-        cout << "Error opening save-file for loading" << endl;
-        fin.close();
-        return 1;
-    }
-    else{
-        try {
-            fin.read(reinterpret_cast<char *>(&(student->name.Second)), sizeof(string));
-            fin.read(reinterpret_cast<char *>(&(student->name.First)), sizeof(string));
-            fin.read(reinterpret_cast<char *>(&(student->name.Third)), sizeof(string));
-            fin.read(reinterpret_cast<char *>(&(student->BDate.day)), sizeof(unsigned short));
-            fin.read(reinterpret_cast<char *>(&(student->BDate.month)), sizeof(unsigned short));
-            fin.read(reinterpret_cast<char *>(&(student->BDate.year)), sizeof(unsigned short));
-            fin.read(reinterpret_cast<char *>(&(student->university.receiptYear)), sizeof(unsigned short));
-            fin.read(reinterpret_cast<char *>(&(student->university.faculty)), sizeof(string));
-            fin.read(reinterpret_cast<char *>(&(student->university.department)), sizeof(string));
-            fin.read(reinterpret_cast<char *>(&(student->university.group)), sizeof(string));
-            fin.read(reinterpret_cast<char *>(&(student->university.IDCard)), sizeof(string));
-            fin.read(reinterpret_cast<char *>(&(student->sex)), sizeof(SEX));
-            for (int semester = 0; semester < 9; semester++){
-                fin.read(reinterpret_cast<char *>(&(student->semesters[semester].is_active_)), sizeof(bool));
-                for (int subject = 0; subject < 10; subject++){
-                    fin.read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].is_active_)), sizeof(bool));
-                    fin.read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].name)), sizeof(string));
-                    fin.read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].grade)), sizeof(GRADE));
-                }
-            }
-            cout << "Successfully loaded data from \'" << path << "\'" << endl;
-            fin.close();
-        }
-        catch (...){
-            fin.close();
-            return 1;
-        }
-        return 0;
-    }
-
-}
-
 int printAllStudents() {
     BothWayList* pCurrent = BothWayList::pStart;
     if (pCurrent == nullptr)

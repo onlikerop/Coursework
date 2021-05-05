@@ -15,7 +15,6 @@
 
 int saveToFile(const string& path, Student* student);
 inline int loadFromFile(const string& path, Student* student, ifstream* fin);
-int loadFromFile(const string& path, Student* student);
 int createStudent(Student* value);
 int deleteStudent(BothWayList* list);
 int deleteAllStudents();
