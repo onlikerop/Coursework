@@ -57,6 +57,24 @@ struct BothWayList{
 
 };
 
+struct Crypto{
+public:
+    Crypto(const char* value, HCRYPTKEY hSessionKey){
+        this->value = value;
+        this->hSessionKey = hSessionKey;
+    }
+    const char* getValue() const{
+        return value;
+    }
+    HCRYPTKEY getSessionKey() const{
+        return hSessionKey;
+    }
+
+private:
+    const char* value;
+    HCRYPTKEY hSessionKey;
+};
+
 enum SEX {
     Undefined = -1,
     Male,

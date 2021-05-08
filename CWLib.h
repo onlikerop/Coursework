@@ -28,5 +28,9 @@ int sortStudents();
 
 void menu();
 
+Crypto* CWEncrypt(const char* toEncode);
+Crypto* CWEncrypt(const char* toEncode, HCRYPTKEY hSessionKey);
+char* CWDecrypt(const char* toDecode, HCRYPTKEY hSessionKey);
+
 
 #endif //COURSEWORK_CWLIB_H

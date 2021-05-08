@@ -569,3 +569,57 @@ int sortStudents() {
     }
 
 }
+
+Crypto* CWEncrypt(const char* toEncode) {
+    HCRYPTPROV hProv;
+    HCRYPTKEY hSessionKey;
+
+    if(!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)){
+        cout << "Error, getting encryption context" << endl;
+        return nullptr;
+    }
+
+    cout << "Cryptographic provider successfully initialized!" << endl;
+
+    if(!CryptGenKey(hProv, CALG_RC4, CRYPT_EXPORTABLE, &hSessionKey)){
+        cout << "Error, generating session key for encryption!" << endl;
+        return nullptr;
+    }
+    cout << "Session key successfully generated!" << endl;
+    char *tempString;
+    tempString = new char[strlen(toEncode)];
+    strcpy_s(tempString, strlen(tempString), toEncode);
+    DWORD count = strlen(tempString);
+    if(!CryptEncrypt(hSessionKey, NULL, true, NULL, reinterpret_cast<BYTE*>(tempString), &count, count)){
+        cout << "Error, encrypting provided data" << endl;
+        return nullptr;
+    }
+    auto response = new Crypto(tempString, hSessionKey);
+    return response;
+}
+
+Crypto* CWEncrypt(const char* toEncode, HCRYPTKEY hSessionKey) {
+    char *tempString;
+    tempString = new char[strlen(toEncode)];
+    strcpy_s(tempString, strlen(tempString), toEncode);
+    DWORD count = strlen(tempString);
+    if(!CryptEncrypt(hSessionKey, NULL, true, NULL, reinterpret_cast<BYTE*>(tempString), &count, count)){
+        cout << "Error, encrypting provided data" << endl;
+        return nullptr;
+    }
+    auto response = new Crypto(tempString, hSessionKey);
+    return response;
+}
+
+char* CWDecrypt(const char* toDecode, HCRYPTKEY hSessionKey) {
+    char *tempString;
+    tempString = new char[strlen(toDecode)];
+    strcpy_s(tempString, strlen(tempString), toDecode);
+    DWORD count = strlen(tempString);
+    if(!CryptDecrypt(hSessionKey, NULL, true, NULL, reinterpret_cast<BYTE*>(tempString), &count)){
+        cout << "Error, decrypting provided data" << endl;
+        return nullptr;
+    }
+
+    return tempString;
+}
