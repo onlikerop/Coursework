@@ -20,10 +20,10 @@ string GRADEToString(GRADE grade) {
 
 GRADE StringToGRADE(string grade) {
     if (grade == "UNSET") return UNSET;
-    if (grade == "INCOMPLETE" || grade == "2") return INCOMPLETE;
-    if (grade == "SATISFACTORY" || grade == "3") return SATISFACTORY;
-    if (grade == "GOOD" || grade == "4") return GOOD;
-    if (grade == "GREAT" || grade == "5") return GREAT;
+    if (grade == "INCOMPLETE" || grade == "2" || grade == "INCOMPLETE (2)") return INCOMPLETE;
+    if (grade == "SATISFACTORY" || grade == "3" || grade == "SATISFACTORY (3)") return SATISFACTORY;
+    if (grade == "GOOD" || grade == "4" || grade == "GOOD (4)") return GOOD;
+    if (grade == "GREAT" || grade == "5" || grade == "GREAT (5)") return GREAT;
     if (grade == "COMPLETE") return COMPLETE;
     else return Undefined_;
 }

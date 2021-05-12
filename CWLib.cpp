@@ -341,165 +341,163 @@ void menu(){
 }
 
 int saveToFile(const string& path, Student* student, HCRYPTKEY key){
-    ofstream fout;
-    fout.open(path, ofstream::app);
-    if (!fout.is_open()){
+    FILE *file;
+    fopen_s(&file, path.c_str(), "ab+");
+    if (!file){
         cout << "Error opening save-file for saving" << endl;
-        fout.close();
         return 1;
     }
     else{
         try {
-            unsigned int temp_size = student->name.Second.size();
-            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            string temp = CWEncrypt(student->name.Second.c_str(), key)->getValue();
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
+            int temp_size = student->name.Second.size();
+            fputc(temp_size, file);
+            fputs(student->name.Second.c_str(), file);
             temp_size = student->name.First.size();
-            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            temp = CWEncrypt(student->name.First.c_str(), key)->getValue();
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
+            fputc(temp_size, file);
+            fputs(student->name.First.c_str(), file);
             temp_size = student->name.Third.size();
-            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            temp = CWEncrypt(student->name.Third.c_str(), key)->getValue();
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
-            fout.write(reinterpret_cast<char *>(&(student->BDate.day)), sizeof(unsigned short));
-            fout.write(reinterpret_cast<char *>(&(student->BDate.month)), sizeof(unsigned short));
-            fout.write(reinterpret_cast<char *>(&(student->BDate.year)), sizeof(unsigned short));
-            fout.write(reinterpret_cast<char *>(&(student->university.receiptYear)), sizeof(unsigned short));
+            fputc(temp_size, file);
+            fputs(student->name.Third.c_str(), file);
+
+            string temp0;
+
+            temp0 = reinterpret_cast<char *>(&student->BDate.day);
+            temp0.resize(sizeof(unsigned short));
+            for (int i = 0; i < sizeof(unsigned short); i++)
+                fputc(temp0[i], file);
+
+            temp0 = reinterpret_cast<char *>(&student->BDate.month);
+            temp0.resize(sizeof(unsigned short));
+            for (int i = 0; i < sizeof(unsigned short); i++)
+                fputc(temp0[i], file);
+
+            temp0 = reinterpret_cast<char *>(&student->BDate.year);
+            temp0.resize(sizeof(unsigned short));
+            for (int i = 0; i < sizeof(unsigned short); i++)
+                fputc(temp0[i], file);
+
+            temp0 = reinterpret_cast<char *>(&student->university.receiptYear);
+            temp0.resize(sizeof(unsigned short));
+            for (int i = 0; i < sizeof(unsigned short); i++)
+                fputc(temp0[i], file);
+
             temp_size = student->university.faculty.size();
-            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            temp = CWEncrypt(student->university.faculty.c_str(), key)->getValue();
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
+            fputc(temp_size, file);
+            fputs(student->university.faculty.c_str(), file);
             temp_size = student->university.department.size();
-            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            temp = CWEncrypt(student->university.department.c_str(), key)->getValue();
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
+            fputc(temp_size, file);
+            fputs(student->university.department.c_str(), file);
             temp_size = student->university.group.size();
-            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            temp = CWEncrypt(student->university.group.c_str(), key)->getValue();
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
+            fputc(temp_size, file);
+            fputs(student->university.group.c_str(), file);
             temp_size = student->university.IDCard.size();
-            fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            temp = CWEncrypt(student->university.IDCard.c_str(), key)->getValue();
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
-            fout.write(reinterpret_cast<char *>(&(student->sex)), sizeof(SEX));
-            for (auto semester : student->semesters){
-                fout.write(reinterpret_cast<char *>(&(semester.is_active_)), sizeof(bool));
-                for (auto subject : semester.subjects){
-                    fout.write(reinterpret_cast<char *>(&(subject.is_active_)), sizeof(bool));
+            fputc(temp_size, file);
+            fputs(student->university.IDCard.c_str(), file);
+            string temp = SEXToString(student->sex);
+            temp_size = temp.size();
+            fputc(temp_size, file);
+            fputs(temp.c_str(), file);
+            for (auto & semester : student->semesters){
+                fputc(semester.is_active_, file);
+                for (auto & subject : semester.subjects){
+                    fputc(subject.is_active_, file);
                     temp_size = subject.name.size();
-                    fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
-                    temp = CWEncrypt(subject.name.c_str(), key)->getValue();
-                    temp.resize(temp_size);
-                    for(int i = 0; i < temp_size; i++)
-                        fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
-                    fout.write(reinterpret_cast<char *>(&(subject.grade)), sizeof(GRADE));
+                    fputc(temp_size, file);
+                    fputs(subject.name.c_str(), file);
+                    temp = GRADEToString(subject.grade);
+                    temp_size = temp.size();
+                    fputc(temp_size, file);
+                    fputs(temp.c_str(), file);
                 }
             }
-            cout << "Successfully saved data into \'" << path << "\'" << endl;
-            fout.close();
         }
         catch (...){
-            fout.close();
+            fclose(file);
             return 1;
         }
+        fclose(file);
         return 0;
     }
 }
 
-inline int loadFromFile(const string& path, Student* student, ifstream* fin, BYTE *hPublicKey, DWORD hPublicKeyLen){
-    if (!fin->is_open()){
+inline int loadFromFile(const string& path, Student* student, FILE* file, BYTE *hPublicKey, DWORD hPublicKeyLen){
+    if (!file){
         cout << "Error opening save-file for loading" << endl;
         return 1;
     }
     else{
         try {
-            unsigned int temp_size;
-            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            student->name.Second.resize(temp_size);
-            string temp;
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
-            student->name.Second = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
-            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            student->name.First.resize(temp_size);
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
-            student->name.First = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
-            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            student->name.Third.resize(temp_size);
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
-            student->name.Third = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
-            fin->read(reinterpret_cast<char *>(&(student->BDate.day)), sizeof(unsigned short));
-            fin->read(reinterpret_cast<char *>(&(student->BDate.month)), sizeof(unsigned short));
-            fin->read(reinterpret_cast<char *>(&(student->BDate.year)), sizeof(unsigned short));
-            fin->read(reinterpret_cast<char *>(&(student->university.receiptYear)), sizeof(unsigned short));
-            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            student->university.faculty.resize(temp_size);
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
-            student->university.faculty = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
-            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            student->university.department.resize(temp_size);
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
-            student->university.department = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
-            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            student->university.group.resize(temp_size);
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
-            student->university.group = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
-            fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
-            student->university.IDCard.resize(temp_size);
-            temp.resize(temp_size);
-            for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
-            student->university.IDCard = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
-            fin->read(reinterpret_cast<char *>(&(student->sex)), sizeof(SEX));
-            for (int semester = 0; semester < 9; semester++){
-                fin->read(reinterpret_cast<char *>(&(student->semesters[semester].is_active_)), sizeof(bool));
-                for (int subject = 0; subject < 10; subject++){
-                    fin->read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].is_active_)), sizeof(bool));
-                    fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
-                    student->semesters[semester].subjects[subject].name.resize(temp_size);
-                    temp.resize(temp_size);
-                    for(int i = 0; i < temp_size; i++)
-                        fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
-                    student->semesters[semester].subjects[subject].name = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
-                    fin->read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].grade)), sizeof(GRADE));
+            int temp_size;
+            char* temp;
+
+            temp_size = fgetc(file);
+            temp = new char[temp_size];
+            fgets(temp, temp_size + 1, file);
+            student->name.Second = temp;
+
+            temp_size = fgetc(file);
+            temp = new char[temp_size];
+            fgets(temp, temp_size + 1, file);
+            student->name.First = temp;
+
+            temp_size = fgetc(file);
+            temp = new char[temp_size];
+            fgets(temp, temp_size + 1, file);
+            student->name.Third = temp;
+
+
+            fgets(reinterpret_cast<char *>(&student->BDate.day), sizeof(unsigned short) + 1, file);
+            fgets(reinterpret_cast<char *>(&student->BDate.month), sizeof(unsigned short) + 1, file);
+            fgets(reinterpret_cast<char *>(&student->BDate.year), sizeof(unsigned short) + 1, file);
+
+            fgets(reinterpret_cast<char *>(&student->university.receiptYear), sizeof(unsigned short) + 1, file);
+
+            temp_size = fgetc(file);
+            temp = new char[temp_size];
+            fgets(temp, temp_size + 1, file);
+            student->university.faculty = temp;
+
+            temp_size = fgetc(file);
+            temp = new char[temp_size];
+            fgets(temp, temp_size + 1, file);
+            student->university.department = temp;
+
+            temp_size = fgetc(file);
+            temp = new char[temp_size];
+            fgets(temp, temp_size + 1, file);
+            student->university.group = temp;
+
+            temp_size = fgetc(file);
+            temp = new char[temp_size];
+            fgets(temp, temp_size + 1, file);
+            student->university.IDCard = temp;
+
+            temp_size = fgetc(file);
+            temp = new char[temp_size];
+            fgets(temp, temp_size + 1, file);
+            student->sex = stringToSEX(temp);
+            for (auto &semester : student->semesters) {
+                semester.is_active_ = fgetc(file);
+                for (auto &subject : semester.subjects) {
+                    subject.is_active_ = fgetc(file);
+
+                    temp_size = fgetc(file);
+                    temp = new char[temp_size];
+                    fgets(temp, temp_size + 1, file);
+                    subject.name = temp;
+
+                    temp_size = fgetc(file);
+                    temp = new char[temp_size];
+                    fgets(temp, temp_size + 1, file);
+                    subject.grade = StringToGRADE(temp);
                 }
             }
-            if (SEXToString(student->sex) == "Error displaying the sex")
-                throw exception();
-            cout << "Successfully loaded data from \'" << path << "\'" << endl;
         }
         catch (...){
             return 1;
         }
         return 0;
     }
-
 }
 
 int printAllStudents() {
@@ -586,43 +584,42 @@ int saveAllToFile(string fileName) {
 }
 
 int loadAllFromFile(const string& fileName){
-    ifstream fin;
 
     DWORD hPublicKeyLen;
-    fin.open(fileName + ".hkey");
-    if (!fin.is_open()) {
-        cout << "File do not exist or it's damaged or it's protected by system!" << endl;
-        fin.close();
-        return 1;
-    }
-    fin.read(reinterpret_cast<char*>(&hPublicKeyLen), sizeof(DWORD));
-    BYTE *hPublicKey = new BYTE[hPublicKeyLen];
-    fin.read(reinterpret_cast<char*>(&hPublicKey), hPublicKeyLen);
-    fin.close();
+//    fin.open(fileName + ".hkey");
+//    if (!fin.is_open()) {
+//        cout << "File do not exist or it's damaged or it's protected by system!" << endl;
+//        fin.close();
+//        return 1;
+//    }
+//    fin.read(reinterpret_cast<char*>(&hPublicKeyLen), sizeof(DWORD));
+    BYTE *hPublicKey = new BYTE[1];
+//    fin.read(reinterpret_cast<char*>(&hPublicKey), hPublicKeyLen);
+//    fin.close();
 
-    fin.open(fileName);
-    if (!fin.is_open()) {
+    FILE *file;
+    fopen_s(&file, fileName.c_str(), "rb");
+    if (!file) {
         cout << "File do not exist or it's damaged or it's protected by system!" << endl;
-        fin.close();
         return 1;
     }
 
     deleteAllStudents();
     int error = 0, count = 0;
 
-    while (!fin.eof() && error == 0) {
+    while (error == 0) {
         auto *temp = new Student(nullptr);
-        error = loadFromFile(fileName, temp, &fin, hPublicKey, hPublicKeyLen);
+        error = loadFromFile(fileName, temp, file, hPublicKey, /*hPublicKeyLen*/NULL);
         if (!error){
             createStudent(temp);
             count++;
         }
         else{
-            cout << "End of file. Removing temporary variable..." << "\n\t";
+            cout << "End of file or file is damaged. Removing temporary variable..." << "\n\t";
             delete temp;
         }
     }
-    fin.close();
+    fclose(file);
     cout << "Loaded " << count << " students from file" << endl;
     return 0;
 }

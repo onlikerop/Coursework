@@ -79,7 +79,7 @@ class Student : public Grademeres{
 
 
         friend int saveToFile(const string& path, Student* student, HCRYPTKEY key);
-        friend inline int loadFromFile(const string& path, Student* student, ifstream* fin, BYTE *hPublicKey, DWORD hPublicKeyLen);
+        friend inline int loadFromFile(const string& path, Student* student, FILE* file, BYTE *hPublicKey, DWORD hPublicKeyLen);
 
 };
 

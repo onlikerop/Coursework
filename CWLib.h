@@ -14,7 +14,7 @@
 
 
 int saveToFile(const string& path, Student* student, HCRYPTKEY key);
-inline int loadFromFile(const string& path, Student* student, ifstream* fin, BYTE *hPublicKey, DWORD hPublicKeyLen);
+inline int loadFromFile(const string& path, Student* student, FILE* file, BYTE *hPublicKey, DWORD hPublicKeyLen);
 int createStudent(Student* value);
 int deleteStudent(BothWayList* list);
 int deleteAllStudents();
