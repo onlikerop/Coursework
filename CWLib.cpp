@@ -340,7 +340,7 @@ void menu(){
     }
 }
 
-int saveToFile(const string& path, Student* student){
+int saveToFile(const string& path, Student* student, HCRYPTKEY key){
     ofstream fout;
     fout.open(path, ofstream::app);
     if (!fout.is_open()){
@@ -352,36 +352,50 @@ int saveToFile(const string& path, Student* student){
         try {
             unsigned int temp_size = student->name.Second.size();
             fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            string temp = CWEncrypt(student->name.Second.c_str(), key)->getValue();
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(student->name.Second[i])), 1);
+                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
             temp_size = student->name.First.size();
             fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            temp = CWEncrypt(student->name.First.c_str(), key)->getValue();
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(student->name.First[i])), 1);
+                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
             temp_size = student->name.Third.size();
             fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            temp = CWEncrypt(student->name.Third.c_str(), key)->getValue();
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(student->name.Third[i])), 1);
+                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
             fout.write(reinterpret_cast<char *>(&(student->BDate.day)), sizeof(unsigned short));
             fout.write(reinterpret_cast<char *>(&(student->BDate.month)), sizeof(unsigned short));
             fout.write(reinterpret_cast<char *>(&(student->BDate.year)), sizeof(unsigned short));
             fout.write(reinterpret_cast<char *>(&(student->university.receiptYear)), sizeof(unsigned short));
             temp_size = student->university.faculty.size();
             fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            temp = CWEncrypt(student->university.faculty.c_str(), key)->getValue();
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(student->university.faculty[i])), 1);
+                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
             temp_size = student->university.department.size();
             fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            temp = CWEncrypt(student->university.department.c_str(), key)->getValue();
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(student->university.department[i])), 1);
+                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
             temp_size = student->university.group.size();
             fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            temp = CWEncrypt(student->university.group.c_str(), key)->getValue();
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(student->university.group[i])), 1);
+                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
             temp_size = student->university.IDCard.size();
             fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+            temp = CWEncrypt(student->university.IDCard.c_str(), key)->getValue();
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fout.write(reinterpret_cast<char *>(&(student->university.IDCard[i])), 1);
+                fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
             fout.write(reinterpret_cast<char *>(&(student->sex)), sizeof(SEX));
             for (auto semester : student->semesters){
                 fout.write(reinterpret_cast<char *>(&(semester.is_active_)), sizeof(bool));
@@ -389,8 +403,10 @@ int saveToFile(const string& path, Student* student){
                     fout.write(reinterpret_cast<char *>(&(subject.is_active_)), sizeof(bool));
                     temp_size = subject.name.size();
                     fout.write(reinterpret_cast<char *>(&temp_size), sizeof(int));
+                    temp = CWEncrypt(subject.name.c_str(), key)->getValue();
+                    temp.resize(temp_size);
                     for(int i = 0; i < temp_size; i++)
-                        fout.write(reinterpret_cast<char *>(&(subject.name[i])), 1);
+                        fout.write(reinterpret_cast<char *>(&(temp[i])), 1);
                     fout.write(reinterpret_cast<char *>(&(subject.grade)), sizeof(GRADE));
                 }
             }
@@ -405,7 +421,7 @@ int saveToFile(const string& path, Student* student){
     }
 }
 
-inline int loadFromFile(const string& path, Student* student, ifstream* fin){
+inline int loadFromFile(const string& path, Student* student, ifstream* fin, BYTE *hPublicKey, DWORD hPublicKeyLen){
     if (!fin->is_open()){
         cout << "Error opening save-file for loading" << endl;
         return 1;
@@ -415,36 +431,51 @@ inline int loadFromFile(const string& path, Student* student, ifstream* fin){
             unsigned int temp_size;
             fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
             student->name.Second.resize(temp_size);
+            string temp;
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(student->name.Second[i])), 1);
+                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
+            student->name.Second = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
             fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
             student->name.First.resize(temp_size);
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(student->name.First[i])), 1);
+                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
+            student->name.First = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
             fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
             student->name.Third.resize(temp_size);
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(student->name.Third[i])), 1);
+                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
+            student->name.Third = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
             fin->read(reinterpret_cast<char *>(&(student->BDate.day)), sizeof(unsigned short));
             fin->read(reinterpret_cast<char *>(&(student->BDate.month)), sizeof(unsigned short));
             fin->read(reinterpret_cast<char *>(&(student->BDate.year)), sizeof(unsigned short));
             fin->read(reinterpret_cast<char *>(&(student->university.receiptYear)), sizeof(unsigned short));
             fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
             student->university.faculty.resize(temp_size);
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(student->university.faculty[i])), 1);
+                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
+            student->university.faculty = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
             fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
             student->university.department.resize(temp_size);
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(student->university.department[i])), 1);
+                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
+            student->university.department = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
             fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
             student->university.group.resize(temp_size);
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(student->university.group[i])), 1);
+                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
+            student->university.group = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
             fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
             student->university.IDCard.resize(temp_size);
+            temp.resize(temp_size);
             for(int i = 0; i < temp_size; i++)
-                fin->read(reinterpret_cast<char *>(&(student->university.IDCard[i])), 1);
+                fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
+            student->university.IDCard = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
             fin->read(reinterpret_cast<char *>(&(student->sex)), sizeof(SEX));
             for (int semester = 0; semester < 9; semester++){
                 fin->read(reinterpret_cast<char *>(&(student->semesters[semester].is_active_)), sizeof(bool));
@@ -452,8 +483,10 @@ inline int loadFromFile(const string& path, Student* student, ifstream* fin){
                     fin->read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].is_active_)), sizeof(bool));
                     fin->read(reinterpret_cast<char *>(&temp_size), sizeof(int));
                     student->semesters[semester].subjects[subject].name.resize(temp_size);
+                    temp.resize(temp_size);
                     for(int i = 0; i < temp_size; i++)
-                        fin->read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].name[i])), 1);
+                        fin->read(reinterpret_cast<char *>(&(temp[i])), 1);
+                    student->semesters[semester].subjects[subject].name = CWDecrypt(temp.c_str(), hPublicKey, hPublicKeyLen);
                     fin->read(reinterpret_cast<char *>(&(student->semesters[semester].subjects[subject].grade)), sizeof(GRADE));
                 }
             }
@@ -481,7 +514,7 @@ int printAllStudents() {
     return 0;
 }
 
-int saveAllToFile(const string& fileName) {
+int saveAllToFile(string fileName) {
     bool flag = true;
     ofstream fout;
 
@@ -497,23 +530,75 @@ int saveAllToFile(const string& fileName) {
                 fin.close();
                 remove(fileName.c_str());
             }
+            else {
+                cout << "Enter the name of the file in which you want to save list:" << endl;
+                cin >> fileName;
+                fileName += ".CW";
+            }
         }
         else {
             flag = false;
             fin.close();
         }
     }
+    if (BothWayList::pStart != nullptr) {
+        HCRYPTPROV hProv;
+        HCRYPTKEY hSessionKey;
 
-    BothWayList* pCurrent = BothWayList::pStart;
-    while (pCurrent != nullptr) {
-        saveToFile(fileName, pCurrent->value);
-        pCurrent = pCurrent->next;
+        if(!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)){
+            cout << "Error, getting encryption context" << endl;
+            return 1;
+        }
+
+        cout << "Cryptographic provider successfully initialized!" << endl;
+
+        if(!CryptGenKey(hProv, CALG_RC4, CRYPT_EXPORTABLE, &hSessionKey)){
+            cout << "Error, generating session key for encryption!" << endl;
+            return 1;
+        }
+        cout << "Session key successfully generated!" << endl;
+        BothWayList *pCurrent = BothWayList::pStart;
+        while (pCurrent != nullptr) {
+            saveToFile(fileName, pCurrent->value, hSessionKey);
+            pCurrent = pCurrent->next;
+        }
+        DWORD dwPublicKeyLen;
+        if (!CryptExportKey( hSessionKey, NULL,
+                        SIMPLEBLOB, 0, NULL, &dwPublicKeyLen)) {
+            cout << "Error, exporting key for encryption!" << endl;
+            return 1;
+        }
+        BYTE* hPublicKey = static_cast<BYTE*>(malloc(dwPublicKeyLen));
+        if (!CryptExportKey( hSessionKey, NULL,
+                        SIMPLEBLOB, NULL, hPublicKey, &dwPublicKeyLen)){
+            cout << "Error, exporting key for encryption!" << endl;
+            return 1;
+        }
+        fout.open(fileName + ".hkey");
+        fout.write(reinterpret_cast<char*>(&dwPublicKeyLen), sizeof(DWORD));
+        fout.write(reinterpret_cast<char*>(&hPublicKey), dwPublicKeyLen);
+        fout.close();
+        CryptDestroyKey(hSessionKey);
     }
+    else
+        cout << "There is nothing to save to file!" << endl;
     return 0;
 }
 
 int loadAllFromFile(const string& fileName){
     ifstream fin;
+
+    DWORD hPublicKeyLen;
+    fin.open(fileName + ".hkey");
+    if (!fin.is_open()) {
+        cout << "File do not exist or it's damaged or it's protected by system!" << endl;
+        fin.close();
+        return 1;
+    }
+    fin.read(reinterpret_cast<char*>(&hPublicKeyLen), sizeof(DWORD));
+    BYTE *hPublicKey = new BYTE[hPublicKeyLen];
+    fin.read(reinterpret_cast<char*>(&hPublicKey), hPublicKeyLen);
+    fin.close();
 
     fin.open(fileName);
     if (!fin.is_open()) {
@@ -524,9 +609,10 @@ int loadAllFromFile(const string& fileName){
 
     deleteAllStudents();
     int error = 0, count = 0;
+
     while (!fin.eof() && error == 0) {
         auto *temp = new Student(nullptr);
-        error = loadFromFile(fileName, temp, &fin);
+        error = loadFromFile(fileName, temp, &fin, hPublicKey, hPublicKeyLen);
         if (!error){
             createStudent(temp);
             count++;
@@ -594,7 +680,14 @@ Crypto* CWEncrypt(const char* toEncode) {
         cout << "Error, encrypting provided data" << endl;
         return nullptr;
     }
-    auto response = new Crypto(tempString, hSessionKey);
+    DWORD hPublicKeyLen;
+    CryptExportKey( hSessionKey, NULL,
+                    SIMPLEBLOB, NULL, nullptr, &hPublicKeyLen);
+    BYTE *hPublicKey = new BYTE[hPublicKeyLen];
+    CryptExportKey( hSessionKey, NULL,
+                    SIMPLEBLOB, NULL, hPublicKey, &hPublicKeyLen);
+    auto response = new Crypto(tempString, hPublicKey);
+    CryptDestroyKey(hSessionKey);
     return response;
 }
 
@@ -607,19 +700,37 @@ Crypto* CWEncrypt(const char* toEncode, HCRYPTKEY hSessionKey) {
         cout << "Error, encrypting provided data" << endl;
         return nullptr;
     }
-    auto response = new Crypto(tempString, hSessionKey);
+    DWORD hPublicKeyLen;
+    CryptExportKey( hSessionKey, NULL,
+                    SIMPLEBLOB, NULL, nullptr, &hPublicKeyLen);
+    BYTE *hPublicKey = new BYTE[hPublicKeyLen];
+    CryptExportKey( hSessionKey, NULL,
+                    SIMPLEBLOB, NULL, hPublicKey, &hPublicKeyLen);
+    auto response = new Crypto(tempString, hPublicKey);
+    CryptDestroyKey(hSessionKey);
     return response;
 }
 
-char* CWDecrypt(const char* toDecode, HCRYPTKEY hSessionKey) {
+char* CWDecrypt(const char* toDecode, BYTE *hPublicKey, DWORD hPublicKeyLen) {
     char *tempString;
+    HCRYPTPROV hProv;
+    HCRYPTKEY hSessionKey;
+
+    if(!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)){
+        cout << "Error, getting encryption context" << endl;
+        return nullptr;
+    }
+
+    cout << "Cryptographic provider successfully initialized!" << endl;
+
     tempString = new char[strlen(toDecode)];
     strcpy_s(tempString, strlen(tempString), toDecode);
     DWORD count = strlen(tempString);
+    CryptImportKey(hProv, hPublicKey, hPublicKeyLen, NULL, NULL, &hSessionKey);
     if(!CryptDecrypt(hSessionKey, NULL, true, NULL, reinterpret_cast<BYTE*>(tempString), &count)){
         cout << "Error, decrypting provided data" << endl;
         return nullptr;
     }
-
+    CryptDestroyKey(hSessionKey);
     return tempString;
 }

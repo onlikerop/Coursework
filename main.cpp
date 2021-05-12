@@ -59,5 +59,10 @@ int main() {
 
     menu();
     deleteAllStudents();
+//    string ss = "String to encrypt and decrypt";
+//    Crypto cr = *CWEncrypt(ss.c_str());
+//    ss = cr.getValue();
+//    cout << ss << endl;
+//    cout << CWDecrypt(ss.c_str(), cr.getSessionKey()) << endl;
     return 0;
 }

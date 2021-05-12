@@ -63,16 +63,24 @@ public:
         this->value = value;
         this->hSessionKey = hSessionKey;
     }
+    Crypto(const char* value, BYTE* hPublicKey){
+        this->value = value;
+        this->hPublicKey = hPublicKey;
+    }
     const char* getValue() const{
         return value;
     }
     HCRYPTKEY getSessionKey() const{
         return hSessionKey;
     }
+    BYTE* getPublicLey(){
+        return hPublicKey;
+    }
 
 private:
     const char* value;
     HCRYPTKEY hSessionKey;
+    BYTE* hPublicKey;
 };
 
 enum SEX {

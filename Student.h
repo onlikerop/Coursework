@@ -78,9 +78,8 @@ class Student : public Grademeres{
         int setName (int semNumber, const string& subjName, const string &subjNameToSet);
 
 
-        friend int saveToFile(const string& path, Student* student);
-        friend inline int loadFromFile(const string& path, Student* student, ifstream* fin);
-        friend int loadFromFile(const string& path, Student* student);
+        friend int saveToFile(const string& path, Student* student, HCRYPTKEY key);
+        friend inline int loadFromFile(const string& path, Student* student, ifstream* fin, BYTE *hPublicKey, DWORD hPublicKeyLen);
 
 };
 
