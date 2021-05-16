@@ -29,7 +29,7 @@ int sortStudents();
 void menu();
 
 Crypto* CWEncrypt(const char* toEncode);
-Crypto* CWEncrypt(const char* toEncode, HCRYPTKEY hSessionKey);
+Crypto* CWEncrypt(const char* toEncode, HCRYPTPROV hProv, HCRYPTHASH hHash);
 char* CWDecrypt(const char* toDecode, BYTE *hPublicKey, DWORD hPublicKeyLen);
 
 
