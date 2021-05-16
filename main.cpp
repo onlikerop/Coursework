@@ -56,9 +56,11 @@ int main() {
 ////        John->printInfo();
 //
 //    delete Ivan1;
-
-    menu();
-    deleteAllStudents();
+    string fileName;
+    cout << "Enter name of file to save & load students:" << endl;
+    cin >> fileName;
+    fileName += ".CW";
+    menu(fileName.c_str());
 
 //    string ss = "String to encode and decode!";
 //    Crypto cr = *CWEncrypt(ss.c_str());

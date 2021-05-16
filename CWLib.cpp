@@ -5,202 +5,220 @@
 #include "CWLib.h"
 
 
-int createStudent(Student* value){
+int createStudent(Student* value, const char* fileName){
+    FILE *file;
+    fopen_s(&file, fileName, "ab+");
+    auto *temp = new Student(nullptr);
+    double tempGrades3_1_2_sem = 0, tempAllGrades_1_2_sem = 0, valueGrades3_1_2_sem = 0, valueAllGrades_1_2_sem = 0;
+    do {
+        loadFromFile(fileName, temp, file, nullptr, NULL);
+        if (temp->getSemester(1) != nullptr) {
+            tempGrades3_1_2_sem += temp->getSemester(1)->getNumberOfGrades(3);
+            tempAllGrades_1_2_sem += temp->getSemester(1)->getNumberOfSubjects();
+        }
+        if (temp->getSemester(2) != nullptr) {
+            tempGrades3_1_2_sem += temp->getSemester(2)->getNumberOfGrades(3);
+            tempAllGrades_1_2_sem += temp->getSemester(2)->getNumberOfSubjects();
+        }
+        if (value->getSemester(1) != nullptr) {
+            valueGrades3_1_2_sem += value->getSemester(1)->getNumberOfGrades(3);
+            valueAllGrades_1_2_sem += value->getSemester(1)->getNumberOfSubjects();
+        }
+        if (value->getSemester(2) != nullptr) {
+            valueGrades3_1_2_sem += value->getSemester(2)->getNumberOfGrades(3);
+            valueAllGrades_1_2_sem += value->getSemester(2)->getNumberOfSubjects();
+        }
+    } while ((tempGrades3_1_2_sem / tempAllGrades_1_2_sem) >= (valueGrades3_1_2_sem / valueAllGrades_1_2_sem));
+    saveToFile(fileName, value, file, NULL);
 
-    if (BothWayList::pStart == nullptr) {
-        BothWayList::pStart = new BothWayList(nullptr, nullptr, value);
+    fclose(file);
+    delete temp;
+    return 0;
+
+}
+
+int deleteStudent(Student *student, const char* fileName){
+    FILE *file;
+    fopen_s(&file, fileName, "rb+");
+    if (!file){
+        cout << "Error opening save-file for loading" << endl;
+        return 1;
     }
-    else{
-        BothWayList* temp = BothWayList::pStart;
-        while (temp != nullptr){
-            double tempGrades3_1_2_sem = 0, tempAllGrades_1_2_sem = 0, valueGrades3_1_2_sem = 0, valueAllGrades_1_2_sem = 0;
-            if (temp->value->getSemester(1) != nullptr) {
-                tempGrades3_1_2_sem += temp->value->getSemester(1)->getNumberOfGrades(3);
-                tempAllGrades_1_2_sem += temp->value->getSemester(1)->getNumberOfSubjects();
+    auto *temp = new Student(nullptr);
+    long prevPosition, currPosition;
+    do{
+        prevPosition = ftell(file);
+        int err = loadFromFile(fileName, temp, file, nullptr, NULL);
+        currPosition = ftell(file);
+        if (err){
+            fclose(file);
+            return err;
+        }
+    } while(student->getID() != temp->getID());
+    FILE* tempFile;
+    string tempName = fileName;
+    tempName += ".tmp";
+    fopen_s(&tempFile, tempName.c_str(), "wb+");
+    fseek(file, 0, SEEK_SET);
+    for (long i = 0; i < prevPosition; i++){
+        fputc(fgetc(file), tempFile);
+    }
+    fseek(file, currPosition, SEEK_SET);
+    while (!feof(file)){
+        int tmp = fgetc(file);
+        if (tmp != EOF)
+            fputc(tmp, tempFile);
+    }
+    fclose(file);
+    fopen_s(&file, fileName, "wb+");
+    fseek(tempFile, currPosition, SEEK_SET);
+    while (!feof(tempFile)){
+        int tmp = fgetc(tempFile);
+        if (tmp != EOF)
+            fputc(tmp, file);
+    }
+    fclose(file);
+    fclose(tempFile);
+    remove(tempName.c_str());
+
+    delete temp;
+    return 0;
+
+}
+
+Student* findStudent(string fullNameOrID, const char* fileName){
+    FILE *file;
+    fopen_s(&file, fileName, "rb+");
+    if (!file){
+        cout << "Error opening save-file for loading" << endl;
+        return nullptr;
+    }
+    string goNext = "Y";
+
+    auto *temp = new Student(nullptr);
+    int err = 0;
+
+    while(goNext == "Y" || goNext == "y") {
+
+        while (true){
+            if (feof(file) || err){
+                cout << "Student not found!" << endl;
+                fclose(file);
+                return nullptr;
             }
-            if (temp->value->getSemester(2) != nullptr) {
-                tempGrades3_1_2_sem += temp->value->getSemester(2)->getNumberOfGrades(3);
-                tempAllGrades_1_2_sem += temp->value->getSemester(2)->getNumberOfSubjects();
-            }
-            if (value->getSemester(1) != nullptr) {
-                valueGrades3_1_2_sem += value->getSemester(1)->getNumberOfGrades(3);
-                valueAllGrades_1_2_sem += value->getSemester(1)->getNumberOfSubjects();
-            }
-            if (value->getSemester(2) != nullptr) {
-                valueGrades3_1_2_sem += value->getSemester(2)->getNumberOfGrades(3);
-                valueAllGrades_1_2_sem += value->getSemester(2)->getNumberOfSubjects();
-            }
-            if ((tempGrades3_1_2_sem / tempAllGrades_1_2_sem) >= (valueGrades3_1_2_sem / valueAllGrades_1_2_sem)){
-                if (temp->next != nullptr)
-                    temp = temp->next;
-                else{
-                    auto *theNewOne = new BothWayList(temp, temp->next, value);
-                    temp->next = theNewOne;
-                    break;
-                }
-            }
-            else{
-                auto *theNewOne = new BothWayList(temp->previous, temp, value);
-                if (temp->previous != nullptr)
-                    temp->previous->next = theNewOne;
-                else
-                    BothWayList::pStart = theNewOne;
-                temp->previous = theNewOne;
+            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+            string currName = temp->getFullName();
+            string currID = temp->getID();
+            transform(currID.begin(), currID.end(), currID.begin(), tolower);
+            transform(currName.begin(), currName.end(), currName.begin(), tolower);
+            transform(fullNameOrID.begin(), fullNameOrID.end(), fullNameOrID.begin(), tolower);
+            if (currName == fullNameOrID || currID == fullNameOrID)
                 break;
-            }
         }
 
+        cout << "We found this item: " << endl;
+        temp->printInfo();
+        cout << endl << "Wanna try next one? (Y/N)" << endl;
+        cin >> goNext;
+
+        if (goNext == "Y")
+            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+
     }
-    return 0;
 
+    fclose(file);
+    return temp;
 }
 
-int deleteStudent(BothWayList* list){
-    if (list->previous != nullptr)
-        list->previous->next = list->next;
-    else
-        BothWayList::pStart = list->next;
-    if (list->next != nullptr)
-        list->next->previous = list->previous;
-    BothWayList::count--;
-    delete list;
-    return 0;
-
-}
-
-int deleteAllStudents(){
-    BothWayList* pCurrent = BothWayList::pStart;
-    while (pCurrent != nullptr) {
-        deleteStudent(pCurrent);
-        pCurrent = BothWayList::pStart;
+Student* findStudent(string fullNameOrID, unsigned short BDYearMin, unsigned short BDYearMax, const char* fileName){
+    FILE *file;
+    fopen_s(&file, fileName, "rb+");
+    if (!file){
+        cout << "Error opening save-file for loading" << endl;
+        return nullptr;
     }
-    return 0;
-
-}
-
-BothWayList* findStudent(string fullNameOrID){
-
-    auto *pCurrent = BothWayList::pStart;
-
     string goNext = "Y";
 
-    while(goNext == "Y") {
+    auto *temp = new Student(nullptr);
+    int err = 0;
+
+    while(goNext == "Y" || goNext == "y") {
 
         while (true){
-
-            if (pCurrent == nullptr){
-                cout << "We couldn't find next item with such value" << endl;
+            if (feof(file) || err){
+                cout << "Student not found!" << endl;
+                fclose(file);
                 return nullptr;
-
             }
-            string currName = pCurrent->value->getFullName();
-            string currID = pCurrent->value->getID();
+            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+            string currName = temp->getFullName();
+            string currID = temp->getID();
             transform(currID.begin(), currID.end(), currID.begin(), tolower);
             transform(currName.begin(), currName.end(), currName.begin(), tolower);
             transform(fullNameOrID.begin(), fullNameOrID.end(), fullNameOrID.begin(), tolower);
-            if (currName != fullNameOrID && currID != fullNameOrID){
-                pCurrent = pCurrent->next;
-            }
-            else break;
+            if ((currName == fullNameOrID || currID == fullNameOrID)
+                && temp->getBirthdate().year >= BDYearMin
+                && temp->getBirthdate().year <= BDYearMax
+               )
+                break;
 
         }
 
         cout << "We found this item: " << endl;
-        pCurrent->value->printInfo();
+        temp->printInfo();
         cout << endl << "Wanna try next one? (Y/N)" << endl;
         cin >> goNext;
 
         if (goNext == "Y")
-            pCurrent = pCurrent->next;
+            err = loadFromFile(fileName, temp, file, nullptr, NULL);
 
     }
 
-    return pCurrent;
-
+    fclose(file);
+    return temp;
 }
 
-BothWayList* findStudent(string fullNameOrID, unsigned short BDYearMin, unsigned short BDYearMax){
-
-    auto *pCurrent = BothWayList::pStart;
-
+Student* findStudent(unsigned short BDYearMin, unsigned short BDYearMax, const char* fileName){
+    FILE *file;
+    fopen_s(&file, fileName, "rb+");
+    if (!file){
+        cout << "Error opening save-file for loading" << endl;
+        return nullptr;
+    }
     string goNext = "Y";
 
-    while(goNext == "Y") {
+    auto *temp = new Student(nullptr);
+    int err = 0;
+
+    while(goNext == "Y" || goNext == "y") {
 
         while (true){
-
-            if (pCurrent == nullptr){
-                cout << "We couldn't find next item with such value" << endl;
+            if (feof(file) || err){
+                cout << "Student not found!" << endl;
+                fclose(file);
                 return nullptr;
-
             }
-            string currName = pCurrent->value->getFullName();
-            string currID = pCurrent->value->getID();
-            transform(currID.begin(), currID.end(), currID.begin(), tolower);
-            transform(currName.begin(), currName.end(), currName.begin(), tolower);
-            transform(fullNameOrID.begin(), fullNameOrID.end(), fullNameOrID.begin(), tolower);
-            if ((currName != fullNameOrID && currID != fullNameOrID)
-                || pCurrent->value->getBirthdate().year >= BDYearMin
-                || pCurrent->value->getBirthdate().year <= BDYearMax
-               ){
-                pCurrent = pCurrent->next;
-            }
-            else break;
+            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+            if (temp->getBirthdate().year >= BDYearMin && temp->getBirthdate().year <= BDYearMax)
+                break;
 
         }
 
         cout << "We found this item: " << endl;
-        pCurrent->value->printInfo();
+        temp->printInfo();
         cout << endl << "Wanna try next one? (Y/N)" << endl;
         cin >> goNext;
 
         if (goNext == "Y")
-            pCurrent = pCurrent->next;
+            err = loadFromFile(fileName, temp, file, nullptr, NULL);
 
     }
 
-    return pCurrent;
-
+    fclose(file);
+    return temp;
 }
 
-BothWayList* findStudent(unsigned short BDYearMin, unsigned short BDYearMax){
-
-    auto *pCurrent = BothWayList::pStart;
-
-    string goNext = "Y";
-
-    while(goNext == "Y") {
-
-        while (true){
-
-            if (pCurrent == nullptr){
-                cout << "We couldn't find next item with such value" << endl;
-                return nullptr;
-
-            }
-            if (pCurrent->value->getBirthdate().year >= BDYearMin
-                && pCurrent->value->getBirthdate().year <= BDYearMax
-               ) break;
-            else pCurrent = pCurrent->next;
-
-
-        }
-
-        cout << "We found this item: " << endl;
-        pCurrent->value->printInfo();
-        cout << endl << "Wanna try next one? (Y/N)" << endl;
-        cin >> goNext;
-
-        if (goNext == "Y")
-            pCurrent = pCurrent->next;
-
-    }
-
-    return pCurrent;
-
-}
-
-void menu(){
+void menu(const char* fileName){
     string choiceStr;
     int choice = -1;
     while(choice != 8){
@@ -219,8 +237,8 @@ void menu(){
             choice = stoi(choiceStr);
 
             switch (choice) {
-                case 1: { createStudent(new Student()); break; }
-                case 2: { printAllStudents(); break; }
+                case 1: { createStudent(new Student(), fileName); break; }
+                case 2: { printAllStudents(fileName); break; }
                 case 3: {
                     string choiceStr2;
                     int choice2;
@@ -232,7 +250,7 @@ void menu(){
                     cin >> choiceStr2;
                     choice2 = stoi(choiceStr2);
 
-                    BothWayList* foundStudent;
+                    Student* foundStudent;
 
                     switch (choice2) {
                         case 1: {
@@ -241,7 +259,7 @@ void menu(){
                             if (cin.get() != '\n')
                                 cin.unget();
                             getline(cin, fullNameOrID);
-                            foundStudent = findStudent(fullNameOrID);
+                            foundStudent = findStudent(fullNameOrID, fileName);
                             break;
                         }
                         case 2: {
@@ -257,7 +275,7 @@ void menu(){
                             cout << "Enter max. birthdate year:" << endl;
                             cin >> maxYearStr;
                             maxYear = stoi(maxYearStr);
-                            foundStudent = findStudent(fullNameOrID, minYear, maxYear);
+                            foundStudent = findStudent(fullNameOrID, minYear, maxYear, fileName);
                             break;
                         }
                         case 3: {
@@ -269,7 +287,7 @@ void menu(){
                             cout << "Enter max. birthdate year:" << endl;
                             cin >> maxYearStr;
                             maxYear = stoi(maxYearStr);
-                            foundStudent = findStudent(minYear, maxYear);
+                            foundStudent = findStudent(minYear, maxYear, fileName);
                             break;
                         }
                         default: {
@@ -286,33 +304,33 @@ void menu(){
                         choice2 = stoi(choiceStr2);
 
                         switch(choice2){
-                            case 1: { foundStudent->value->editInfo(); break; }
-                            case 2: { deleteStudent(foundStudent); break; }
+                            case 1: { foundStudent->editInfo(); break; }
+                            case 2: { deleteStudent(foundStudent, fileName); break; }
                             case 3: { continue; }
                             default: {cout << "ERROR! Unknown menu item, skipping!" << endl;}
                         }
                     }
                     break;
                 }
-                case 4: {
-                    string fileName;
-                    cout << "Enter the name of the file in which you want to save list:" << endl;
-                    cin >> fileName;
-                    fileName += ".CW";
-                    saveAllToFile(fileName);
-                    break;
-                }
-                case 5: {
-                    string fileName;
-                    bool flag = true;
-                    while (flag) {
-                        cout << "Enter the name of the file in which you want to load from:" << endl;
-                        cin >> fileName;
-                        fileName += ".CW";
-                        flag = static_cast<bool>(loadAllFromFile(fileName));
-                    }
-                    break;
-                }
+//                case 4: {
+//                    string fileName;
+//                    cout << "Enter the name of the file in which you want to save list:" << endl;
+//                    cin >> fileName;
+//                    fileName += ".CW";
+//                    saveAllToFile(fileName);
+//                    break;
+//                }
+//                case 5: {
+//                    string fileName;
+//                    bool flag = true;
+//                    while (flag) {
+//                        cout << "Enter the name of the file in which you want to load from:" << endl;
+//                        cin >> fileName;
+//                        fileName += ".CW";
+//                        flag = static_cast<bool>(loadAllFromFile(fileName));
+//                    }
+//                    break;
+//                }
                 case 6: {
                     cout << endl << "\t\tCREDITS" << endl;
                     cout << "This program is created by student of Information security specialization of" << endl;
@@ -320,13 +338,13 @@ void menu(){
                     cout << "as coursework of the 1st course for Russian Technological University MIREA" << endl << endl;
                     break;
                 }
-                case 7: {
-                    switch (sortStudents()){
-                        case 0: { cout << "Successfully sorted students!" << endl; break; }
-                        case 1: { cout << "ERROR! There is nothing to sort!" << endl; break; }
-                        default: { cout << "ERROR! Unknown error!" << endl; }
-                    }
-                }
+//                case 7: {
+//                    switch (sortStudents()){
+//                        case 0: { cout << "Successfully sorted students!" << endl; break; }
+//                        case 1: { cout << "ERROR! There is nothing to sort!" << endl; break; }
+//                        default: { cout << "ERROR! Unknown error!" << endl; }
+//                    }
+//                }
                 case 8: { break; }
                 default: {
                     throw invalid_argument("Invalid input");
@@ -340,9 +358,7 @@ void menu(){
     }
 }
 
-int saveToFile(const string& path, Student* student, HCRYPTKEY key){
-    FILE *file;
-    fopen_s(&file, path.c_str(), "ab+");
+inline int saveToFile(const string& path, Student* student, FILE* file, HCRYPTKEY key){
     if (!file){
         cout << "Error opening save-file for saving" << endl;
         return 1;
@@ -412,10 +428,8 @@ int saveToFile(const string& path, Student* student, HCRYPTKEY key){
             }
         }
         catch (...){
-            fclose(file);
             return 1;
         }
-        fclose(file);
         return 0;
     }
 }
@@ -424,6 +438,9 @@ inline int loadFromFile(const string& path, Student* student, FILE* file, BYTE *
     if (!file){
         cout << "Error opening save-file for loading" << endl;
         return 1;
+    }
+    else if(feof(file)){
+        return 2;
     }
     else{
         try {
@@ -500,158 +517,171 @@ inline int loadFromFile(const string& path, Student* student, FILE* file, BYTE *
     }
 }
 
-int printAllStudents() {
-    BothWayList* pCurrent = BothWayList::pStart;
-    if (pCurrent == nullptr)
-        cout << "There is no any student. Make sure, you loaded data from file or created at least one student!" << endl;
-    while(pCurrent != nullptr){
-        pCurrent->value->printInfo();
-        cout << endl;
-        pCurrent = pCurrent->next;
+int printAllStudents(const char* fileName) {
+    FILE* file;
+    fopen_s(&file, fileName, "rb");
+    if (!file){
+        cout << "Error opening save-file for loading" << endl;
     }
-    return 0;
-}
-
-int saveAllToFile(string fileName) {
-    bool flag = true;
-    ofstream fout;
-
-    while (flag){
-        ifstream fin;
-        fin.open(fileName);
-        if (fin.is_open()){
-            string wanna;
-            cout << "This file is already exist, do you really want to rewrite all data inside it? (Y/N):" << endl;
-            cin >> wanna;
-            if (wanna == "Y" || wanna == "y"){
-                flag = false;
-                fin.close();
-                remove(fileName.c_str());
-            }
-            else {
-                cout << "Enter the name of the file in which you want to save list:" << endl;
-                cin >> fileName;
-                fileName += ".CW";
-            }
-        }
-        else {
-            flag = false;
-            fin.close();
-        }
-    }
-    if (BothWayList::pStart != nullptr) {
-        HCRYPTPROV hProv;
-        HCRYPTKEY hSessionKey;
-
-        if(!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)){
-            cout << "Error, getting encryption context" << endl;
-            return 1;
-        }
-
-        cout << "Cryptographic provider successfully initialized!" << endl;
-
-        if(!CryptGenKey(hProv, CALG_RC4, CRYPT_EXPORTABLE, &hSessionKey)){
-            cout << "Error, generating session key for encryption!" << endl;
-            return 1;
-        }
-        cout << "Session key successfully generated!" << endl;
-        BothWayList *pCurrent = BothWayList::pStart;
-        while (pCurrent != nullptr) {
-            saveToFile(fileName, pCurrent->value, hSessionKey);
-            pCurrent = pCurrent->next;
-        }
-        DWORD dwPublicKeyLen;
-        if (!CryptExportKey( hSessionKey, NULL,
-                        SIMPLEBLOB, 0, NULL, &dwPublicKeyLen)) {
-            cout << "Error, exporting key for encryption!" << endl;
-            return 1;
-        }
-        BYTE* hPublicKey = static_cast<BYTE*>(malloc(dwPublicKeyLen));
-        if (!CryptExportKey( hSessionKey, NULL,
-                        SIMPLEBLOB, NULL, hPublicKey, &dwPublicKeyLen)){
-            cout << "Error, exporting key for encryption!" << endl;
-            return 1;
-        }
-        fout.open(fileName + ".hkey");
-        fout.write(reinterpret_cast<char*>(&dwPublicKeyLen), sizeof(DWORD));
-        fout.write(reinterpret_cast<char*>(&hPublicKey), dwPublicKeyLen);
-        fout.close();
-        CryptDestroyKey(hSessionKey);
-    }
-    else
-        cout << "There is nothing to save to file!" << endl;
-    return 0;
-}
-
-int loadAllFromFile(const string& fileName){
-
-    DWORD hPublicKeyLen;
-//    fin.open(fileName + ".hkey");
-//    if (!fin.is_open()) {
-//        cout << "File do not exist or it's damaged or it's protected by system!" << endl;
-//        fin.close();
-//        return 1;
-//    }
-//    fin.read(reinterpret_cast<char*>(&hPublicKeyLen), sizeof(DWORD));
-    BYTE *hPublicKey = new BYTE[1];
-//    fin.read(reinterpret_cast<char*>(&hPublicKey), hPublicKeyLen);
-//    fin.close();
-
-    FILE *file;
-    fopen_s(&file, fileName.c_str(), "rb");
-    if (!file) {
-        cout << "File do not exist or it's damaged or it's protected by system!" << endl;
-        return 1;
-    }
-
-    deleteAllStudents();
-    int error = 0, count = 0;
-
-    while (error == 0) {
-        auto *temp = new Student(nullptr);
-        error = loadFromFile(fileName, temp, file, hPublicKey, /*hPublicKeyLen*/NULL);
-        if (!error){
-            createStudent(temp);
-            count++;
-        }
-        else{
-            cout << "End of file or file is damaged. Removing temporary variable..." << "\n\t";
-            delete temp;
-        }
-    }
-    fclose(file);
-    cout << "Loaded " << count << " students from file" << endl;
-    return 0;
-}
-
-int sortStudents() {
-    unsigned int local_count = BothWayList::count;
-    if (local_count < 2)
-        return 1;
-    try{
-        void **temp = new void*[local_count];
-        for (int i = 0; i < local_count; i++)
-            temp[i] = malloc(sizeof(Student));
-        BothWayList *pCurrent = BothWayList::pStart;
-        cout << "Starting sorting...\n\tCreating backup for current student's data..." << endl;
-        for (int i = 0; i < local_count; i++) {
-            temp[i] = pCurrent->value;
-            pCurrent = pCurrent->next;
-        }
-        cout << "\tClearing student's data..." << endl;
-        deleteAllStudents();
-        cout << "\tLoading data for sorting..." << endl;
-        for (int i = 0; i < local_count; i++) {
-            createStudent(static_cast<Student *>(temp[i]));
-        }
-        delete[] temp;
+    int tmpChar = fgetc(file);
+    if (tmpChar == EOF) {
+        cout << "There is no any student. Make sure, you created at least one student!" << endl;
+        fclose(file);
         return 0;
     }
-    catch (exception &e){
-        return sizeof(*e.what());
+    ungetc(tmpChar, file);
+    auto *temp = new Student(nullptr);
+    while(!feof(file)){
+        int err = loadFromFile(fileName, temp, file, nullptr, NULL);
+        if (temp->getSex() == Undefined)
+            err = 3;
+        if (err)
+            break;
+        temp->printInfo();
+        cout << endl;
     }
-
+    fclose(file);
+    delete temp;
+    return 0;
 }
+
+//int saveAllToFile(string fileName) {
+//    bool flag = true;
+//    ofstream fout;
+//
+//    while (flag){
+//        ifstream fin;
+//        fin.open(fileName);
+//        if (fin.is_open()){
+//            string wanna;
+//            cout << "This file is already exist, do you really want to rewrite all data inside it? (Y/N):" << endl;
+//            cin >> wanna;
+//            if (wanna == "Y" || wanna == "y"){
+//                flag = false;
+//                fin.close();
+//                remove(fileName.c_str());
+//            }
+//            else {
+//                cout << "Enter the name of the file in which you want to save list:" << endl;
+//                cin >> fileName;
+//                fileName += ".CW";
+//            }
+//        }
+//        else {
+//            flag = false;
+//            fin.close();
+//        }
+//    }
+//    if (BothWayList::pStart != nullptr) {
+//        HCRYPTPROV hProv;
+//        HCRYPTKEY hSessionKey;
+//
+//        if(!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)){
+//            cout << "Error, getting encryption context" << endl;
+//            return 1;
+//        }
+//
+//        cout << "Cryptographic provider successfully initialized!" << endl;
+//
+//        if(!CryptGenKey(hProv, CALG_RC4, CRYPT_EXPORTABLE, &hSessionKey)){
+//            cout << "Error, generating session key for encryption!" << endl;
+//            return 1;
+//        }
+//        cout << "Session key successfully generated!" << endl;
+//        BothWayList *pCurrent = BothWayList::pStart;
+//        while (pCurrent != nullptr) {
+//            saveToFile(fileName, pCurrent->value, hSessionKey);
+//            pCurrent = pCurrent->next;
+//        }
+//        DWORD dwPublicKeyLen;
+//        if (!CryptExportKey( hSessionKey, NULL,
+//                        SIMPLEBLOB, 0, NULL, &dwPublicKeyLen)) {
+//            cout << "Error, exporting key for encryption!" << endl;
+//            return 1;
+//        }
+//        BYTE* hPublicKey = static_cast<BYTE*>(malloc(dwPublicKeyLen));
+//        if (!CryptExportKey( hSessionKey, NULL,
+//                        SIMPLEBLOB, NULL, hPublicKey, &dwPublicKeyLen)){
+//            cout << "Error, exporting key for encryption!" << endl;
+//            return 1;
+//        }
+//        fout.open(fileName + ".hkey");
+//        fout.write(reinterpret_cast<char*>(&dwPublicKeyLen), sizeof(DWORD));
+//        fout.write(reinterpret_cast<char*>(&hPublicKey), dwPublicKeyLen);
+//        fout.close();
+//        CryptDestroyKey(hSessionKey);
+//    }
+//    else
+//        cout << "There is nothing to save to file!" << endl;
+//    return 0;
+//}
+
+//int loadAllFromFile(const string& fileName){
+//
+//    DWORD hPublicKeyLen;
+////    fin.open(fileName + ".hkey");
+////    if (!fin.is_open()) {
+////        cout << "File do not exist or it's damaged or it's protected by system!" << endl;
+////        fin.close();
+////        return 1;
+////    }
+////    fin.read(reinterpret_cast<char*>(&hPublicKeyLen), sizeof(DWORD));
+//    BYTE *hPublicKey = new BYTE[1];
+////    fin.read(reinterpret_cast<char*>(&hPublicKey), hPublicKeyLen);
+////    fin.close();
+//
+//    FILE *file;
+//    fopen_s(&file, fileName.c_str(), "rb");
+//    if (!file) {
+//        cout << "File do not exist or it's damaged or it's protected by system!" << endl;
+//        return 1;
+//    }
+//    int error = 0, count = 0;
+//
+//    while (error == 0) {
+//        auto *temp = new Student(nullptr);
+//        error = loadFromFile(fileName, temp, file, hPublicKey, /*hPublicKeyLen*/NULL);
+//        if (!error){
+//            createStudent(temp, fileName.c_str());
+//            count++;
+//        }
+//        else{
+//            cout << "End of file or file is damaged. Removing temporary variable..." << "\n\t";
+//            delete temp;
+//        }
+//    }
+//    fclose(file);
+//    cout << "Loaded " << count << " students from file" << endl;
+//    return 0;
+//}
+
+//int sortStudents() {
+//    unsigned int local_count = BothWayList::count;
+//    if (local_count < 2)
+//        return 1;
+//    try{
+//        void **temp = new void*[local_count];
+//        for (int i = 0; i < local_count; i++)
+//            temp[i] = malloc(sizeof(Student));
+//        BothWayList *pCurrent = BothWayList::pStart;
+//        cout << "Starting sorting...\n\tCreating backup for current student's data..." << endl;
+//        for (int i = 0; i < local_count; i++) {
+//            temp[i] = pCurrent->value;
+//            pCurrent = pCurrent->next;
+//        }
+//        cout << "\tClearing student's data..." << endl;
+//        cout << "\tLoading data for sorting..." << endl;
+//        for (int i = 0; i < local_count; i++) {
+//            createStudent(static_cast<Student *>(temp[i]));
+//        }
+//        delete[] temp;
+//        return 0;
+//    }
+//    catch (exception &e){
+//        return sizeof(*e.what());
+//    }
+//
+//}
 
 Crypto* CWEncrypt(const char* toEncode) {
     HCRYPTPROV hProv;

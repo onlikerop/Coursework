@@ -37,6 +37,8 @@ class Student : public Grademeres{
 
         string getID() const;
 
+        SEX getSex() const;
+
         void printInfo();
 
         void editInfo();
@@ -78,7 +80,7 @@ class Student : public Grademeres{
         int setName (int semNumber, const string& subjName, const string &subjNameToSet);
 
 
-        friend int saveToFile(const string& path, Student* student, HCRYPTKEY key);
+        friend inline int saveToFile(const string& path, Student* student, FILE* file, HCRYPTKEY key);
         friend inline int loadFromFile(const string& path, Student* student, FILE* file, BYTE *hPublicKey, DWORD hPublicKeyLen);
 
 };

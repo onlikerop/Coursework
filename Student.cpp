@@ -15,7 +15,7 @@ Student::Student(string SName, string FName, string TName, Date BDate, unsigned 
     for (auto & semester : semesters)
         semester.is_active(false);
 
-    cout << "You've just successfully added " << getFullName() << " to the list of students" << endl;
+    //cout << "You've just successfully added " << getFullName() << " to the list of students" << endl;
 }
 
 Student::Student() {
@@ -93,7 +93,7 @@ Student::Student() {
 
 
 Student::~Student(){
-    cout << "You've just successfully removed student " << getFullName() << " (" << getID() << ")" << endl;
+    //cout << "You've just successfully removed student " << getFullName() << " (" << getID() << ")" << endl;
 }
 
 int Student::addSemester(){
@@ -483,3 +483,7 @@ int Student::setName (int semNumber, const string& subjName, const string &subjN
 }
 
 Student::Student(nullptr_t) {}
+
+SEX Student::getSex() const {
+    return sex;
+}
