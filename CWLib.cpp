@@ -7,31 +7,70 @@
 
 int createStudent(Student* value, const char* fileName){
     FILE *file;
-    fopen_s(&file, fileName, "ab+");
+    fopen_s(&file, fileName, "rb");
+    int err = 0;
     auto *temp = new Student(nullptr);
+    while(!err){
+        err = loadFromFile(fileName, temp, file, nullptr, NULL);
+        if (temp->getID() == value->getID()){
+            cout << "Error, saving added student! A student with such ID already exists!" << endl;
+            return 1;
+        }
+    }
+    fseek(file, 0, SEEK_SET);
+    long prevPosition = 0;
+    FILE* tempFile;
+    string tempName = fileName;
+    tempName += ".tmp";
+    fopen_s(&tempFile, tempName.c_str(), "wb+");
     double tempGrades3_1_2_sem = 0, tempAllGrades_1_2_sem = 0, valueGrades3_1_2_sem = 0, valueAllGrades_1_2_sem = 0;
-    do {
-        loadFromFile(fileName, temp, file, nullptr, NULL);
-        if (temp->getSemester(1) != nullptr) {
-            tempGrades3_1_2_sem += temp->getSemester(1)->getNumberOfGrades(3);
-            tempAllGrades_1_2_sem += temp->getSemester(1)->getNumberOfSubjects();
-        }
-        if (temp->getSemester(2) != nullptr) {
-            tempGrades3_1_2_sem += temp->getSemester(2)->getNumberOfGrades(3);
-            tempAllGrades_1_2_sem += temp->getSemester(2)->getNumberOfSubjects();
-        }
-        if (value->getSemester(1) != nullptr) {
-            valueGrades3_1_2_sem += value->getSemester(1)->getNumberOfGrades(3);
-            valueAllGrades_1_2_sem += value->getSemester(1)->getNumberOfSubjects();
-        }
-        if (value->getSemester(2) != nullptr) {
-            valueGrades3_1_2_sem += value->getSemester(2)->getNumberOfGrades(3);
-            valueAllGrades_1_2_sem += value->getSemester(2)->getNumberOfSubjects();
-        }
-    } while ((tempGrades3_1_2_sem / tempAllGrades_1_2_sem) >= (valueGrades3_1_2_sem / valueAllGrades_1_2_sem));
-    saveToFile(fileName, value, file, NULL);
 
+    if (value->getSemester(1) != nullptr) {
+        valueGrades3_1_2_sem += value->getSemester(1)->getNumberOfGrades(3);
+        valueAllGrades_1_2_sem += value->getSemester(1)->getNumberOfSubjects();
+    }
+    if (value->getSemester(2) != nullptr) {
+        valueGrades3_1_2_sem += value->getSemester(2)->getNumberOfGrades(3);
+        valueAllGrades_1_2_sem += value->getSemester(2)->getNumberOfSubjects();
+    }
+    if (valueAllGrades_1_2_sem != 0){
+        do {
+            prevPosition = ftell(file);
+            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+            if (temp->getSemester(1) != nullptr) {
+                tempGrades3_1_2_sem += temp->getSemester(1)->getNumberOfGrades(3);
+                tempAllGrades_1_2_sem += temp->getSemester(1)->getNumberOfSubjects();
+            }
+            if (temp->getSemester(2) != nullptr) {
+                tempGrades3_1_2_sem += temp->getSemester(2)->getNumberOfGrades(3);
+                tempAllGrades_1_2_sem += temp->getSemester(2)->getNumberOfSubjects();
+            }
+        } while ((tempGrades3_1_2_sem / tempAllGrades_1_2_sem) >= (valueGrades3_1_2_sem / valueAllGrades_1_2_sem) &&!err);
+    }
+    fseek(file, 0, SEEK_SET);
+    for (long i = 0; i < prevPosition; i++){
+        fputc(fgetc(file), tempFile);
+    }
+    saveToFile(tempName, value, tempFile, NULL);
+
+    fseek(file, prevPosition, SEEK_SET);
+    while (!feof(file)){
+        int tmp = fgetc(file);
+        if (tmp != EOF)
+            fputc(tmp, tempFile);
+    }
     fclose(file);
+    fopen_s(&file, fileName, "wb+");
+    fseek(tempFile, 0, SEEK_SET);
+    while (!feof(tempFile)){
+        int tmp = fgetc(tempFile);
+        if (tmp != EOF)
+            fputc(tmp, file);
+    }
+    fclose(file);
+    fclose(tempFile);
+    remove(tempName.c_str());
+
     delete temp;
     return 0;
 
@@ -71,7 +110,7 @@ int deleteStudent(Student *student, const char* fileName){
     }
     fclose(file);
     fopen_s(&file, fileName, "wb+");
-    fseek(tempFile, currPosition, SEEK_SET);
+    fseek(tempFile, 0, SEEK_SET);
     while (!feof(tempFile)){
         int tmp = fgetc(tempFile);
         if (tmp != EOF)
@@ -83,7 +122,54 @@ int deleteStudent(Student *student, const char* fileName){
 
     delete temp;
     return 0;
+}
 
+int deleteStudent(const char* IDCard, const char* fileName){
+    FILE *file;
+    fopen_s(&file, fileName, "rb+");
+    if (!file){
+        cout << "Error opening save-file for loading" << endl;
+        return 1;
+    }
+    auto *temp = new Student(nullptr);
+    long prevPosition, currPosition;
+    do{
+        prevPosition = ftell(file);
+        int err = loadFromFile(fileName, temp, file, nullptr, NULL);
+        currPosition = ftell(file);
+        if (err){
+            fclose(file);
+            return err;
+        }
+    } while(IDCard != temp->getID());
+    FILE* tempFile;
+    string tempName = fileName;
+    tempName += ".tmp";
+    fopen_s(&tempFile, tempName.c_str(), "wb+");
+    fseek(file, 0, SEEK_SET);
+    for (long i = 0; i < prevPosition; i++){
+        fputc(fgetc(file), tempFile);
+    }
+    fseek(file, currPosition, SEEK_SET);
+    while (!feof(file)){
+        int tmp = fgetc(file);
+        if (tmp != EOF)
+            fputc(tmp, tempFile);
+    }
+    fclose(file);
+    fopen_s(&file, fileName, "wb+");
+    fseek(tempFile, 0, SEEK_SET);
+    while (!feof(tempFile)){
+        int tmp = fgetc(tempFile);
+        if (tmp != EOF)
+            fputc(tmp, file);
+    }
+    fclose(file);
+    fclose(tempFile);
+    remove(tempName.c_str());
+
+    delete temp;
+    return 0;
 }
 
 Student* findStudent(string fullNameOrID, const char* fileName){
@@ -304,10 +390,91 @@ void menu(const char* fileName){
                         choice2 = stoi(choiceStr2);
 
                         switch(choice2){
-                            case 1: { foundStudent->editInfo(); break; }
+                            case 1: {
+                                string backupIDCard = foundStudent->getID();
+                                foundStudent->editInfo();
+                                FILE *file;
+                                fopen_s(&file, fileName, "rb+");
+                                if (!file){
+                                    cout << "Error opening save-file for loading" << endl;
+                                    break;
+                                }
+                                auto *temp = new Student(nullptr);
+                                int err = 0;
+                                bool flag = false;
+                                if (foundStudent->getID() != backupIDCard) {
+                                    while (!err) {
+                                        err = loadFromFile(fileName, temp, file, nullptr, NULL);
+                                        if (temp->getID() == foundStudent->getID()) {
+                                            cout << "Error, saving added student! A student with such ID already exists!" << endl;
+                                            flag = true;
+                                            break;
+                                        }
+                                    }
+                                    if (flag) {
+                                        fclose(file);
+                                        break;
+                                    }
+                                }
+                                deleteStudent(backupIDCard.c_str(), fileName);
+                                fseek(file, 0, SEEK_SET);
+                                long prevPosition = 0;
+                                FILE* tempFile;
+                                string tempName = fileName;
+                                tempName += ".tmp";
+                                fopen_s(&tempFile, tempName.c_str(), "wb+");
+                                double tempGrades3_1_2_sem = 0, tempAllGrades_1_2_sem = 0, valueGrades3_1_2_sem = 0, valueAllGrades_1_2_sem = 0;
+                                if (foundStudent->getSemester(1) != nullptr) {
+                                    valueGrades3_1_2_sem += foundStudent->getSemester(1)->getNumberOfGrades(3);
+                                    valueAllGrades_1_2_sem += foundStudent->getSemester(1)->getNumberOfSubjects();
+                                }
+                                if (foundStudent->getSemester(2) != nullptr) {
+                                    valueGrades3_1_2_sem += foundStudent->getSemester(2)->getNumberOfGrades(3);
+                                    valueAllGrades_1_2_sem += foundStudent->getSemester(2)->getNumberOfSubjects();
+                                }
+                                if (valueAllGrades_1_2_sem != 0){
+                                    do {
+                                        prevPosition = ftell(file);
+                                        err = loadFromFile(fileName, temp, file, nullptr, NULL);
+                                        if (temp->getSemester(1) != nullptr) {
+                                            tempGrades3_1_2_sem += temp->getSemester(1)->getNumberOfGrades(3);
+                                            tempAllGrades_1_2_sem += temp->getSemester(1)->getNumberOfSubjects();
+                                        }
+                                        if (temp->getSemester(2) != nullptr) {
+                                            tempGrades3_1_2_sem += temp->getSemester(2)->getNumberOfGrades(3);
+                                            tempAllGrades_1_2_sem += temp->getSemester(2)->getNumberOfSubjects();
+                                        }
+                                    } while ((tempGrades3_1_2_sem / tempAllGrades_1_2_sem) >= (valueGrades3_1_2_sem / valueAllGrades_1_2_sem) &&!err);
+                                }
+                                fseek(file, 0, SEEK_SET);
+                                for (long i = 0; i < prevPosition; i++){
+                                    fputc(fgetc(file), tempFile);
+                                }
+                                saveToFile(tempName, foundStudent, tempFile, NULL);
+
+                                while (!feof(file)){
+                                    int tmp = fgetc(file);
+                                    if (tmp != EOF)
+                                        fputc(tmp, tempFile);
+                                }
+                                fclose(file);
+                                fopen_s(&file, fileName, "wb+");
+                                fseek(tempFile, 0, SEEK_SET);
+                                while (!feof(tempFile)){
+                                    int tmp = fgetc(tempFile);
+                                    if (tmp != EOF)
+                                        fputc(tmp, file);
+                                }
+                                fclose(file);
+                                fclose(tempFile);
+                                remove(tempName.c_str());
+
+                                delete temp;
+                                break;
+                            }
                             case 2: { deleteStudent(foundStudent, fileName); break; }
                             case 3: { continue; }
-                            default: {cout << "ERROR! Unknown menu item, skipping!" << endl;}
+                            default: { cout << "ERROR! Unknown menu item, skipping!" << endl; }
                         }
                     }
                     break;
@@ -525,7 +692,7 @@ int printAllStudents(const char* fileName) {
     }
     int tmpChar = fgetc(file);
     if (tmpChar == EOF) {
-        cout << "There is no any student. Make sure, you created at least one student!" << endl;
+        cout << "There is no any student. Make sure, you've created at least one student!" << endl;
         fclose(file);
         return 0;
     }

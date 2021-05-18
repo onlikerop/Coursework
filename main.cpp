@@ -11,6 +11,7 @@ BothWayList* BothWayList::pStart = nullptr;
 int main() {
     SetConsoleCP(CP_UTF8);
     SetConsoleOutputCP(CP_UTF8);
+    setlocale(NULL, ".UTF8");
 //    auto *Ivan1 = new Student(
 //            "Alekseev",
 //            "John",

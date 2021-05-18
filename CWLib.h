@@ -17,6 +17,7 @@ inline int saveToFile(const string& path, Student* student, FILE* file, HCRYPTKE
 inline int loadFromFile(const string& path, Student* student, FILE* file, BYTE *hPublicKey, DWORD hPublicKeyLen);
 int createStudent(Student* value, const char* fileName);
 int deleteStudent(Student *student, const char* fileName);
+int deleteStudent(const char* IDCard, const char* fileName);
 Student* findStudent(string fullNameOrID, const char* fileName);
 Student* findStudent(string fullNameOrID, unsigned short BDYearMin, unsigned short BDYearMax, const char* fileName);
 Student* findStudent(unsigned short BDYearMin, unsigned short BDYearMax, const char* fileName);
