@@ -37,26 +37,6 @@ struct University {
     string IDCard;
 };
 
-struct BothWayList{
-
-    BothWayList(BothWayList *pPrevious, BothWayList *pNext, Student* value) {
-
-        this->id = ++BothWayList::count;
-        this->previous = pPrevious;
-        this->next = pNext;
-        this->value = value;
-    }
-
-    int id;
-    BothWayList* previous;
-    BothWayList* next;
-    Student* value;
-
-    static int count;
-    static BothWayList* pStart;
-
-};
-
 struct Crypto{
 public:
     Crypto(const char* value, HCRYPTKEY hSessionKey){

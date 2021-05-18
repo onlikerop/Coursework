@@ -286,9 +286,6 @@ void Student::editInfo(){
                             break;
                         }
                         if (subjectStr == "addnew") {
-//                            int i = 1;
-//                            while (getSemester(i) != &semester)
-//                                i++;
                             semester.addSubject();
                             continue;
                         }
@@ -343,18 +340,6 @@ void Student::editInfo(){
 
     cout << "==================================================" << endl;
 }
-
-//        void Student::addSubject(int semNumber, const string& subjName){
-//            semesters[semNumber-1]->addSubject(subjName);
-//        }
-//
-//        void Student::removeSubject(int semNumber, const string& subjName){
-//            semesters[semNumber-1]->removeSubject(subjName);
-//        }
-//
-//        void Student::printSubjects(int semNumber){
-//            semesters[semNumber-1]->printSubjects();
-//        }
 
 int Student::getNumberOfGrades(GRADE grade){
     int counter = 0;

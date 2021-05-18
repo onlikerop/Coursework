@@ -22,9 +22,6 @@ Student* findStudent(string fullNameOrID, const char* fileName);
 Student* findStudent(string fullNameOrID, unsigned short BDYearMin, unsigned short BDYearMax, const char* fileName);
 Student* findStudent(unsigned short BDYearMin, unsigned short BDYearMax, const char* fileName);
 int printAllStudents(const char* fileName);
-int saveAllToFile(string fileName);
-int loadAllFromFile(const string& fileName);
-int sortStudents();
 
 void menu(const char* fileName);
 

@@ -313,11 +313,8 @@ void menu(const char* fileName){
                 << endl << "1. Create new student"
                 << endl << "2. Print list of all Students (may be very long, do it only on your own risk)"
                 << endl << "3. Find student"
-                << endl << "4. Save list to file"
-                << endl << "5. Load list from file"
-                << endl << "6. Credits"
-                << endl << "7. Sorting"
-                << endl << "8. Exit"
+                << endl << "4. Credits"
+                << endl << "5. Exit"
                 << endl;
             cin >> choiceStr;
             choice = stoi(choiceStr);
@@ -479,40 +476,14 @@ void menu(const char* fileName){
                     }
                     break;
                 }
-//                case 4: {
-//                    string fileName;
-//                    cout << "Enter the name of the file in which you want to save list:" << endl;
-//                    cin >> fileName;
-//                    fileName += ".CW";
-//                    saveAllToFile(fileName);
-//                    break;
-//                }
-//                case 5: {
-//                    string fileName;
-//                    bool flag = true;
-//                    while (flag) {
-//                        cout << "Enter the name of the file in which you want to load from:" << endl;
-//                        cin >> fileName;
-//                        fileName += ".CW";
-//                        flag = static_cast<bool>(loadAllFromFile(fileName));
-//                    }
-//                    break;
-//                }
-                case 6: {
+                case 5: {
                     cout << endl << "\t\tCREDITS" << endl;
-                    cout << "This program is created by student of Information security specialization of" << endl;
+                    cout << "This program is developed by student of Information security specialization of" << endl;
                     cout << "group BBBO-05-20 Karabanov Evgeniy (Eugene) Gennadyevich. Personal ID: 20B0791" << endl;
                     cout << "as coursework of the 1st course for Russian Technological University MIREA" << endl << endl;
                     break;
                 }
-//                case 7: {
-//                    switch (sortStudents()){
-//                        case 0: { cout << "Successfully sorted students!" << endl; break; }
-//                        case 1: { cout << "ERROR! There is nothing to sort!" << endl; break; }
-//                        default: { cout << "ERROR! Unknown error!" << endl; }
-//                    }
-//                }
-                case 8: { break; }
+                case 6: { break; }
                 default: {
                     throw invalid_argument("Invalid input");
                 }
@@ -712,144 +683,8 @@ int printAllStudents(const char* fileName) {
     return 0;
 }
 
-//int saveAllToFile(string fileName) {
-//    bool flag = true;
-//    ofstream fout;
-//
-//    while (flag){
-//        ifstream fin;
-//        fin.open(fileName);
-//        if (fin.is_open()){
-//            string wanna;
-//            cout << "This file is already exist, do you really want to rewrite all data inside it? (Y/N):" << endl;
-//            cin >> wanna;
-//            if (wanna == "Y" || wanna == "y"){
-//                flag = false;
-//                fin.close();
-//                remove(fileName.c_str());
-//            }
-//            else {
-//                cout << "Enter the name of the file in which you want to save list:" << endl;
-//                cin >> fileName;
-//                fileName += ".CW";
-//            }
-//        }
-//        else {
-//            flag = false;
-//            fin.close();
-//        }
-//    }
-//    if (BothWayList::pStart != nullptr) {
-//        HCRYPTPROV hProv;
-//        HCRYPTKEY hSessionKey;
-//
-//        if(!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)){
-//            cout << "Error, getting encryption context" << endl;
-//            return 1;
-//        }
-//
-//        cout << "Cryptographic provider successfully initialized!" << endl;
-//
-//        if(!CryptGenKey(hProv, CALG_RC4, CRYPT_EXPORTABLE, &hSessionKey)){
-//            cout << "Error, generating session key for encryption!" << endl;
-//            return 1;
-//        }
-//        cout << "Session key successfully generated!" << endl;
-//        BothWayList *pCurrent = BothWayList::pStart;
-//        while (pCurrent != nullptr) {
-//            saveToFile(fileName, pCurrent->value, hSessionKey);
-//            pCurrent = pCurrent->next;
-//        }
-//        DWORD dwPublicKeyLen;
-//        if (!CryptExportKey( hSessionKey, NULL,
-//                        SIMPLEBLOB, 0, NULL, &dwPublicKeyLen)) {
-//            cout << "Error, exporting key for encryption!" << endl;
-//            return 1;
-//        }
-//        BYTE* hPublicKey = static_cast<BYTE*>(malloc(dwPublicKeyLen));
-//        if (!CryptExportKey( hSessionKey, NULL,
-//                        SIMPLEBLOB, NULL, hPublicKey, &dwPublicKeyLen)){
-//            cout << "Error, exporting key for encryption!" << endl;
-//            return 1;
-//        }
-//        fout.open(fileName + ".hkey");
-//        fout.write(reinterpret_cast<char*>(&dwPublicKeyLen), sizeof(DWORD));
-//        fout.write(reinterpret_cast<char*>(&hPublicKey), dwPublicKeyLen);
-//        fout.close();
-//        CryptDestroyKey(hSessionKey);
-//    }
-//    else
-//        cout << "There is nothing to save to file!" << endl;
-//    return 0;
-//}
 
-//int loadAllFromFile(const string& fileName){
-//
-//    DWORD hPublicKeyLen;
-////    fin.open(fileName + ".hkey");
-////    if (!fin.is_open()) {
-////        cout << "File do not exist or it's damaged or it's protected by system!" << endl;
-////        fin.close();
-////        return 1;
-////    }
-////    fin.read(reinterpret_cast<char*>(&hPublicKeyLen), sizeof(DWORD));
-//    BYTE *hPublicKey = new BYTE[1];
-////    fin.read(reinterpret_cast<char*>(&hPublicKey), hPublicKeyLen);
-////    fin.close();
-//
-//    FILE *file;
-//    fopen_s(&file, fileName.c_str(), "rb");
-//    if (!file) {
-//        cout << "File do not exist or it's damaged or it's protected by system!" << endl;
-//        return 1;
-//    }
-//    int error = 0, count = 0;
-//
-//    while (error == 0) {
-//        auto *temp = new Student(nullptr);
-//        error = loadFromFile(fileName, temp, file, hPublicKey, /*hPublicKeyLen*/NULL);
-//        if (!error){
-//            createStudent(temp, fileName.c_str());
-//            count++;
-//        }
-//        else{
-//            cout << "End of file or file is damaged. Removing temporary variable..." << "\n\t";
-//            delete temp;
-//        }
-//    }
-//    fclose(file);
-//    cout << "Loaded " << count << " students from file" << endl;
-//    return 0;
-//}
-
-//int sortStudents() {
-//    unsigned int local_count = BothWayList::count;
-//    if (local_count < 2)
-//        return 1;
-//    try{
-//        void **temp = new void*[local_count];
-//        for (int i = 0; i < local_count; i++)
-//            temp[i] = malloc(sizeof(Student));
-//        BothWayList *pCurrent = BothWayList::pStart;
-//        cout << "Starting sorting...\n\tCreating backup for current student's data..." << endl;
-//        for (int i = 0; i < local_count; i++) {
-//            temp[i] = pCurrent->value;
-//            pCurrent = pCurrent->next;
-//        }
-//        cout << "\tClearing student's data..." << endl;
-//        cout << "\tLoading data for sorting..." << endl;
-//        for (int i = 0; i < local_count; i++) {
-//            createStudent(static_cast<Student *>(temp[i]));
-//        }
-//        delete[] temp;
-//        return 0;
-//    }
-//    catch (exception &e){
-//        return sizeof(*e.what());
-//    }
-//
-//}
-
+// CRYPTOGRAPHY
 Crypto* CWEncrypt(const char* toEncode) {
     HCRYPTPROV hProv;
     HCRYPTKEY hSessionKey;

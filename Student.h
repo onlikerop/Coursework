@@ -43,12 +43,6 @@ class Student : public Grademeres{
 
         void editInfo();
 
-//        void addSubject(int semNumber, const string& subjName);
-//
-//        void removeSubject(int semNumber, const string& subjName);
-//
-//        void printSubjects(int semNumber);
-
         int getNumberOfGrades(GRADE grade) final;
 
         int getNumberOfGrades(int grade) final;
