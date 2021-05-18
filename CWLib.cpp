@@ -35,6 +35,7 @@ int createStudent(Student* value, const char* fileName){
     }
     if (valueAllGrades_1_2_sem != 0){
         do {
+            tempGrades3_1_2_sem = 0; tempAllGrades_1_2_sem = 0;
             prevPosition = ftell(file);
             err = loadFromFile(fileName, temp, file, nullptr, NULL);
             if (temp->getSemester(1) != nullptr) {
@@ -431,6 +432,7 @@ void menu(const char* fileName){
                                 }
                                 if (valueAllGrades_1_2_sem != 0){
                                     do {
+                                        tempGrades3_1_2_sem = 0; tempAllGrades_1_2_sem = 0;
                                         prevPosition = ftell(file);
                                         err = loadFromFile(fileName, temp, file, nullptr, NULL);
                                         if (temp->getSemester(1) != nullptr) {
