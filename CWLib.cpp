@@ -677,8 +677,10 @@ int printAllStudents(const char* fileName) {
             err = 3;
         if (err)
             break;
-        temp->printInfo();
-        cout << endl;
+        if (temp->getNumberOfSubjects()) {
+            temp->printInfo();
+            cout << endl;
+        }
     }
     fclose(file);
     delete temp;

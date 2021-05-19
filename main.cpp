@@ -62,7 +62,7 @@ int main() {
     fclose(decrypted_file);
 
 
-    menu(decrFileName.c_str());
+    menu(fileName.c_str());
 
     fopen_s(&decrypted_file, decrFileName.c_str() , "rb");
     fopen_s(&temp, tempFileName.c_str(), "wb+");
