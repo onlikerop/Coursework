@@ -26,8 +26,8 @@ int printAllStudents(const char* fileName);
 void menu(const char* fileName);
 
 Crypto* CWEncrypt(const char* toEncode);
-Crypto* CWEncrypt(const char* toEncode, HCRYPTPROV hProv, HCRYPTHASH hHash);
-char* CWDecrypt(const char* toDecode, BYTE *hPublicKey, DWORD hPublicKeyLen);
+Crypto* CWEncrypt(const char* toEncode, HCRYPTKEY hSessionKey);
+char* CWDecrypt(const char* toDecode, HCRYPTKEY hSessionKey);
 
 
 #endif //COURSEWORK_CWLIB_H

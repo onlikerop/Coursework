@@ -690,26 +690,13 @@ int printAllStudents(const char* fileName) {
 Crypto* CWEncrypt(const char* toEncode) {
     HCRYPTPROV hProv;
     HCRYPTKEY hSessionKey;
-    HCRYPTHASH hHash;
     if(!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)){
         cout << "Error, getting encryption context: " << GetLastError() << endl;
         return nullptr;
     }
     cout << "Cryptographic provider successfully initialized!" << endl;
 
-    if(!CryptCreateHash(hProv,CALG_SHA1,0,0,&hHash)){
-        cout << "Error, generating encryption hash: " << GetLastError() << endl;
-        return nullptr;
-    }
-    cout << "Encryption hash successfully created!" << endl;
-    char wszPassword[] = "SomePass\0";
-    if(!CryptHashData(hHash, reinterpret_cast<BYTE*>(wszPassword), sizeof(*wszPassword)+1, 0))
-    {
-        cout << "Error, working with encryption hash: " << GetLastError() << endl;
-        return nullptr;
-    }
-
-    if(!CryptDeriveKey(hProv, CALG_RC4, hHash, CRYPT_EXPORTABLE, &hSessionKey)){
+    if(!CryptGenKey(hProv, CALG_RC4, CRYPT_EXPORTABLE, &hSessionKey)){
         cout << "Error, generating session key for encryption: " << GetLastError() << endl;
         return nullptr;
     }
@@ -723,72 +710,32 @@ Crypto* CWEncrypt(const char* toEncode) {
         cout << "Error, encrypting provided data: " << GetLastError() << endl;
         return nullptr;
     }
-    DWORD hPublicKeyLen;
-    if (!CryptExportKey(
-            hSessionKey,
-            NULL,
-            SIMPLEBLOB,
-            NULL,
-            nullptr,
-            &hPublicKeyLen)){
-        cout << "Error, exporting cryptographic keys: " << GetLastError() << endl;
-        return nullptr;
-    }
-    BYTE *hPublicKey = new BYTE[hPublicKeyLen];
-    CryptExportKey( hSessionKey, NULL,
-                    SIMPLEBLOB, NULL, hPublicKey, &hPublicKeyLen);
-    auto response = new Crypto(tempString, hPublicKey);
-    CryptDestroyKey(hSessionKey);
+    auto response = new Crypto(tempString, hSessionKey);
     return response;
 }
 
-Crypto* CWEncrypt(const char* toEncode, HCRYPTPROV hProv, HCRYPTHASH hHash) {
-    HCRYPTKEY hSessionKey;
-    if(!CryptDeriveKey(hProv, CALG_RC4, hHash, CRYPT_EXPORTABLE, &hSessionKey)){
-        cout << "Error, generating session key for encryption: " << GetLastError() << endl;
-        return nullptr;
-    }
-    cout << "Session key successfully generated!" << endl;
-
+Crypto* CWEncrypt(const char* toEncode, HCRYPTKEY hSessionKey) {
     char *tempString;
     tempString = new char[strlen(toEncode)];
     strcpy_s(tempString, strlen(tempString), toEncode);
     DWORD count = strlen(tempString);
     if(!CryptEncrypt(hSessionKey, NULL, true, NULL, reinterpret_cast<BYTE*>(tempString), &count, count)){
-        cout << "Error, encrypting provided data" << endl;
+        cout << "Error, encrypting provided data: " << GetLastError() << endl;
         return nullptr;
     }
-    DWORD hPublicKeyLen;
-    CryptExportKey( hSessionKey, NULL,
-                    SIMPLEBLOB, NULL, nullptr, &hPublicKeyLen);
-    BYTE *hPublicKey = new BYTE[hPublicKeyLen];
-    CryptExportKey( hSessionKey, NULL,
-                    SIMPLEBLOB, NULL, hPublicKey, &hPublicKeyLen);
-    auto response = new Crypto(tempString, hProv, hHash, hSessionKey);
-    CryptDestroyKey(hSessionKey);
+    auto response = new Crypto(tempString, hSessionKey);
     return response;
 }
 
-char* CWDecrypt(const char* toDecode, BYTE *hPublicKey, DWORD hPublicKeyLen) {
+char* CWDecrypt(const char* toDecode, HCRYPTKEY hSessionKey) {
     char *tempString;
-    HCRYPTPROV hProv;
-    HCRYPTKEY hSessionKey;
-
-    if(!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)){
-        cout << "Error, getting encryption context" << endl;
-        return nullptr;
-    }
-
-    cout << "Cryptographic provider successfully initialized!" << endl;
 
     tempString = new char[strlen(toDecode)];
     strcpy_s(tempString, strlen(tempString), toDecode);
     DWORD count = strlen(tempString);
-    CryptImportKey(hProv, hPublicKey, hPublicKeyLen, NULL, NULL, &hSessionKey);
     if(!CryptDecrypt(hSessionKey, NULL, true, NULL, reinterpret_cast<BYTE*>(tempString), &count)){
         cout << "Error, decrypting provided data" << endl;
         return nullptr;
     }
-    CryptDestroyKey(hSessionKey);
     return tempString;
 }
