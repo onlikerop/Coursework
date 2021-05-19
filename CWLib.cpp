@@ -308,7 +308,7 @@ Student* findStudent(unsigned short BDYearMin, unsigned short BDYearMax, const c
 void menu(const char* fileName){
     string choiceStr;
     int choice = -1;
-    while(choice != 8){
+    while(choice != 5){
         try {
             cout << "Choose one the following menu item:"
                 << endl << "1. Create new student"
@@ -478,14 +478,14 @@ void menu(const char* fileName){
                     }
                     break;
                 }
-                case 5: {
+                case 4: {
                     cout << endl << "\t\tCREDITS" << endl;
                     cout << "This program is developed by student of Information security specialization of" << endl;
                     cout << "group BBBO-05-20 Karabanov Evgeniy (Eugene) Gennadyevich. Personal ID: 20B0791" << endl;
                     cout << "as coursework of the 1st course for Russian Technological University MIREA" << endl << endl;
                     break;
                 }
-                case 6: { break; }
+                case 5: { break; }
                 default: {
                     throw invalid_argument("Invalid input");
                 }
