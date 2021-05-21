@@ -13,6 +13,8 @@ int main() {
     fileName += ".CW";
     FILE *file, *decrypted_file, *temp;
     fopen_s(&file, fileName.c_str(), "rb");
+    if (!file)
+        fopen_s(&file, fileName.c_str(), "wb+");
     fopen_s(&temp, tempFileName.c_str(), "wb+");
 
     HCRYPTPROV hProv;
