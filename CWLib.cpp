@@ -576,7 +576,7 @@ inline int saveToFile(const string& path, Student* student, FILE* file){
 
 inline int loadFromFile(const string& path, Student* student, FILE* file){
     if (!file){
-        cout << "Error opening save-file for loading" << endl;
+        cout << "Error opening save-file for loading (or program met end of file)" << endl;
         return 1;
     }
     else if(feof(file)){
