@@ -277,6 +277,8 @@ void Student::editInfo(){
         cin >> wannaEdit;
         if (wannaEdit == "Y" || wannaEdit == "y") {
             cout << "Enter new student's department:" << endl;
+            if (cin.get() != '\n')
+                cin.unget();
             getline(cin, university.department);
         }
         cout << "Group: " << university.group << endl;
@@ -284,6 +286,8 @@ void Student::editInfo(){
         cin >> wannaEdit;
         if (wannaEdit == "Y" || wannaEdit == "y") {
             cout << "Enter new student's group:" << endl;
+            if (cin.get() != '\n')
+                cin.unget();
             cin >> university.group;
         }
         cout << "IDCard: " << university.IDCard << endl;
@@ -291,6 +295,8 @@ void Student::editInfo(){
         cin >> wannaEdit;
         if (wannaEdit == "Y" || wannaEdit == "y") {
             cout << "Enter new student's ID (ID Card):" << endl;
+            if (cin.get() != '\n')
+                cin.unget();
             cin >> university.IDCard;
         }
         cout << "Sex: " << SEXToString(sex) << endl;
