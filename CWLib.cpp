@@ -404,18 +404,16 @@ void menu(const char* fileName){
                                     while (!err) {
                                         err = loadFromFile(fileName, temp, file);
                                         if (temp->getID() == foundStudent->getID()) {
-                                            cout << "Error, saving added student! A student with such ID already exists!" << endl;
-                                            flag = true;
+                                            cout << "Error, saving added student! A student with such ID already exists!"
+                                                    "\nRecovering the latest saved ID from backup..." << endl;
+                                            temp->setID(backupIDCard);
                                             break;
                                         }
                                     }
-                                    if (flag) {
-                                        fclose(file);
-                                        break;
-                                    }
                                 }
+                                fclose(file);
                                 deleteStudent(backupIDCard.c_str(), fileName);
-                                fseek(file, 0, SEEK_SET);
+                                fopen_s(&file, fileName, "rb+");
                                 long prevPosition = 0;
                                 FILE* tempFile;
                                 string tempName = fileName;

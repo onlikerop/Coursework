@@ -539,3 +539,8 @@ Student::Student(nullptr_t) {}
 SEX Student::getSex() const {
     return sex;
 }
+
+int Student::setID(string IDCard) {
+    this->university.IDCard = IDCard;
+    return 0;
+}

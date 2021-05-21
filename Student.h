@@ -37,6 +37,8 @@ class Student : public Grademeres{
 
         string getID() const;
 
+        int setID(string IDCard);
+
         SEX getSex() const;
 
         void printInfo();
