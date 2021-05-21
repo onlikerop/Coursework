@@ -166,13 +166,13 @@ void Student::printInfo(){
     cout << "==================Student's Info==================" << endl;
 
     cout << "Name: " << getFullName() << endl;
-    cout << "Sex: " << SEXToString(sex) << endl;
     cout << "Birthdate: " << BDate.day << "." << BDate.month << "." << BDate.year << endl;
-    cout << "IDCard: " << university.IDCard << endl;
+    cout << "Year of receipt: " << university.receiptYear << endl;
     cout << "Faculty: " << university.faculty << endl;
     cout << "Department: " << university.department << endl;
     cout << "Group: " << university.group << endl;
-    cout << "Year of receipt: " << university.receiptYear << endl;
+    cout << "IDCard: " << university.IDCard << endl;
+    cout << "Sex: " << SEXToString(sex) << endl;
 
     cout << endl << "                 Semesters' info                  " << endl;
 
@@ -201,63 +201,68 @@ void Student::editInfo(){
             cout << "Enter new full name of student:" << endl;
             cin >> name.Second >> name.First >> name.Third;
         }
-        cout << "Sex: " << SEXToString(sex) << endl;
-        cout << "Do you want to edit this field? (Y/N):" << endl;
-        cin >> wannaEdit;
-        if (wannaEdit == "Y" || wannaEdit == "y") {
-            string newSex;
-            while (stringToSEX(newSex) == Undefined) {
-                cout << "Enter new sex of student (Male, Female, M , F):" << endl;
-                cin >> newSex;
-                if (stringToSEX(newSex) == Undefined)
-                    cout << "ERROR! Unknown sex. It must be \"Male\" or \"Female\". Try Again!" << endl;
-                else
-                    sex = stringToSEX(newSex);
-            }
-        }
-        cout << "Birthdate: " << BDate.day << "." << BDate.month << "." << BDate.year << endl;
-        cout << "Do you want to edit this field? (Y/N):" << endl;
-        cin >> wannaEdit;
-        if (wannaEdit == "Y" || wannaEdit == "y") {
-            bool flag = true;
-            unsigned short BDDay, BDMonth, BDYear;
-            while (flag) {
-                string dateString;
-                cout << "Enter new student's birthdate (DD.MM.YYYY): " << endl;
-                cin >> dateString;
 
-                unsigned int dots[2];
-                dots[0] = dateString.find('.');
-                if (dots[0] == string::npos)
-                    throw invalid_argument("Wrong format!");
-                dots[1] = dateString.find('.', dots[0] + 2);
-                if (dots[0] == string::npos)
-                    throw invalid_argument("Wrong format!");
+        while (true) {
+            cout << "Birthdate: " << BDate.day << "." << BDate.month << "." << BDate.year << endl;
+            cout << "Do you want to edit this field? (Y/N):" << endl;
+            cin >> wannaEdit;
+            if (wannaEdit == "Y" || wannaEdit == "y") {
+                bool flag = true;
+                unsigned short BDDay, BDMonth, BDYear;
+                while (flag) {
+                    string dateString;
+                    cout << "Enter new student's birthdate (DD.MM.YYYY): " << endl;
+                    cin >> dateString;
 
-                BDDay = stoi(dateString.substr(0, dots[0]));
-                BDMonth = stoi(dateString.substr(dots[0] + 1, dots[1] - dots[0] - 1));
-                BDYear = stoi(dateString.substr(dots[1] + 1));
-                bool leap_year = BDYear % 100 ? !(BDYear % 4) : !(BDYear % 400);
-                if (
-                        ((BDMonth == 4 || BDMonth == 6 || BDMonth == 9 || BDMonth == 11) && BDDay > 30)
-                        || ((BDMonth == 2) && leap_year && BDDay > 29)
-                        || ((BDMonth == 2) && !leap_year && BDDay > 28)
-                        || (BDDay > 31)
-                        || (BDMonth > 12)
-                        || !(BDDay || BDMonth)
-                        ) {
-                    cout << "ERROR! You've entered wrong birthdate. Try again!" << endl;
-                } else flag = false;
+                    unsigned int dots[2];
+                    dots[0] = dateString.find('.');
+                    if (dots[0] == string::npos)
+                        throw invalid_argument("Wrong format!");
+                    dots[1] = dateString.find('.', dots[0] + 2);
+                    if (dots[0] == string::npos)
+                        throw invalid_argument("Wrong format!");
+
+                    BDDay = stoi(dateString.substr(0, dots[0]));
+                    BDMonth = stoi(dateString.substr(dots[0] + 1, dots[1] - dots[0] - 1));
+                    BDYear = stoi(dateString.substr(dots[1] + 1));
+                    bool leap_year = BDYear % 100 ? !(BDYear % 4) : !(BDYear % 400);
+                    if (
+                            ((BDMonth == 4 || BDMonth == 6 || BDMonth == 9 || BDMonth == 11) && BDDay > 30)
+                            || ((BDMonth == 2) && leap_year && BDDay > 29)
+                            || ((BDMonth == 2) && !leap_year && BDDay > 28)
+                            || (BDDay > 31)
+                            || (BDMonth > 12)
+                            || !(BDDay || BDMonth)
+                            ) {
+                        cout << "ERROR! You've entered wrong birthdate. Try again!" << endl;
+                    } else flag = false;
+                }
+                this->BDate = {BDDay, BDMonth, BDYear};
             }
-            this->BDate = {BDDay, BDMonth, BDYear};
+            cout << "Year of receipt: " << university.receiptYear << endl;
+            cout << "Do you want to edit this field? (Y/N):" << endl;
+            cin >> wannaEdit;
+            if (wannaEdit == "Y" || wannaEdit == "y") {
+                bool flag = true;
+                unsigned short receiptYear;
+                string receiptYearStr;
+                while (flag) {
+                    cout << "Enter new student's receipt year:" << endl;
+                    cin >> receiptYearStr;
+                    receiptYear = stoi(receiptYearStr);
+                    if (receiptYear - BDate.year < 14)
+                        cout << "ERROR! Student on receipt must be 14 years old or older. Try again!" << endl;
+                    else flag = false;
+                }
+                university.receiptYear = receiptYear;
+
+            }
+
+            if (university.receiptYear - BDate.year < 14)
+                cout << "ERROR! Student on receipt must be 14 years old or older. Try again!" << endl;
+            else break;
         }
-        cout << "IDCard: " << university.IDCard << endl;
-        cout << "Do you want to edit this field? (Y/N):" << endl;
-        cin >> wannaEdit;
-        if (wannaEdit == "Y" || wannaEdit == "y") {
-            cout << "Enter new student's ID (ID Card):" << endl;
-            cin >> university.IDCard;
-        }
+
         cout << "Faculty: " << university.faculty << endl;
         cout << "Do you want to edit this field? (Y/N):" << endl;
         cin >> wannaEdit;
@@ -281,23 +286,26 @@ void Student::editInfo(){
             cout << "Enter new student's group:" << endl;
             cin >> university.group;
         }
-        cout << "Year of receipt: " << university.receiptYear << endl;
+        cout << "IDCard: " << university.IDCard << endl;
         cout << "Do you want to edit this field? (Y/N):" << endl;
         cin >> wannaEdit;
         if (wannaEdit == "Y" || wannaEdit == "y") {
-            bool flag = true;
-            unsigned short receiptYear;
-            string receiptYearStr;
-            while (flag) {
-                cout << "Enter new student's receipt year:" << endl;
-                cin >> receiptYearStr;
-                receiptYear = stoi(receiptYearStr);
-                if (receiptYear - BDate.year < 14)
-                    cout << "ERROR! Student on receipt must be 14 years old or older. Try again!" << endl;
-                else flag = false;
+            cout << "Enter new student's ID (ID Card):" << endl;
+            cin >> university.IDCard;
+        }
+        cout << "Sex: " << SEXToString(sex) << endl;
+        cout << "Do you want to edit this field? (Y/N):" << endl;
+        cin >> wannaEdit;
+        if (wannaEdit == "Y" || wannaEdit == "y") {
+            string newSex;
+            while (stringToSEX(newSex) == Undefined) {
+                cout << "Enter new sex of student (Male, Female, M , F):" << endl;
+                cin >> newSex;
+                if (stringToSEX(newSex) == Undefined)
+                    cout << "ERROR! Unknown sex. It must be \"Male\" or \"Female\". Try Again!" << endl;
+                else
+                    sex = stringToSEX(newSex);
             }
-            university.receiptYear = receiptYear;
-
         }
 
         cout << endl << "                 Semesters' info                  " << endl;

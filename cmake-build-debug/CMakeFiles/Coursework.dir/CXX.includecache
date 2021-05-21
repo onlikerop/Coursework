@@ -8,6 +8,10 @@
 
 Q:/Progs/C++/University/Practice/Coursework/Active.h
 
+Q:/Progs/C++/University/Practice/Coursework/CWLib.cpp
+CWLib.h
+Q:/Progs/C++/University/Practice/Coursework/CWLib.h
+
 Q:/Progs/C++/University/Practice/Coursework/CWLib.h
 fstream
 -
@@ -49,8 +53,4 @@ Active.h
 Q:/Progs/C++/University/Practice/Coursework/Active.h
 OwnTypes.h
 Q:/Progs/C++/University/Practice/Coursework/OwnTypes.h
-
-Q:/Progs/C++/University/Practice/Coursework/main.cpp
-CWLib.h
-Q:/Progs/C++/University/Practice/Coursework/CWLib.h
 

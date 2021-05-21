@@ -13,8 +13,8 @@
 #include <algorithm>
 
 
-inline int saveToFile(const string& path, Student* student, FILE* file, HCRYPTKEY key);
-inline int loadFromFile(const string& path, Student* student, FILE* file, BYTE *hPublicKey, DWORD hPublicKeyLen);
+inline int saveToFile(const string& path, Student* student, FILE* file);
+inline int loadFromFile(const string& path, Student* student, FILE* file);
 int createStudent(Student* value, const char* fileName);
 int deleteStudent(Student *student, const char* fileName);
 int deleteStudent(const char* IDCard, const char* fileName);
@@ -25,9 +25,8 @@ int printAllStudents(const char* fileName);
 
 void menu(const char* fileName);
 
-Crypto* CWEncrypt(const char* toEncode);
-Crypto* CWEncrypt(const char* toEncode, HCRYPTKEY hSessionKey);
-char* CWDecrypt(const char* toDecode, HCRYPTKEY hSessionKey);
+int CWEncrypt(char* toEncode, HCRYPTKEY hSessionKey);
+int CWDecrypt(char* toDecode, HCRYPTKEY hSessionKey);
 
 
 #endif //COURSEWORK_CWLIB_H

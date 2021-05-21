@@ -41,8 +41,8 @@ public:
     int setName ();
 
 
-    friend inline int saveToFile(const string& path, Student* student, FILE* file, HCRYPTKEY key);
-    friend inline int loadFromFile(const string& path, Student* student, FILE* file, BYTE *hPublicKey, DWORD hPublicKeyLen);
+    friend inline int saveToFile(const string& path, Student* student, FILE* file);
+    friend inline int loadFromFile(const string& path, Student* student, FILE* file);
 };
 
 

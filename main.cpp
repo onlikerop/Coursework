@@ -19,12 +19,16 @@ int main() {
     HCRYPTKEY hSessionKey;
     if(!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)){
         cout << "Error, getting encryption context: " << GetLastError() << endl;
+        fclose(file);
+        fclose(temp);
         return 1;
     }
     cout << "Cryptographic provider successfully initialized!" << endl;
 
     if(!CryptGenKey(hProv, CALG_RC4, CRYPT_EXPORTABLE, &hSessionKey)){
         cout << "Error, generating session key for encryption: " << GetLastError() << endl;
+        fclose(file);
+        fclose(temp);
         return 1;
     }
     cout << "Session key successfully generated!" << endl;
@@ -35,7 +39,7 @@ int main() {
         if(feof(file))
             break;
         if (buff[0] != 0) {
-            buff[0] = (CWEncrypt(reinterpret_cast<const char *>(&buff), hSessionKey)->getValue()[0]);
+            CWEncrypt(&buff[0], hSessionKey);
             fputs(buff, temp);
         } else {
             fputc(0, temp);
@@ -52,7 +56,7 @@ int main() {
         if(feof(temp))
             break;
         if (buff[0] != 0) {
-            buff[0] = (CWDecrypt(reinterpret_cast<const char *>(&buff), hSessionKey)[0]);
+            CWDecrypt(&buff[0], hSessionKey);
             fputs(buff, decrypted_file);
         } else {
             fputc(0, decrypted_file);
@@ -74,7 +78,7 @@ int main() {
         if(feof(decrypted_file))
             break;
         if (buff[0] != 0) {
-            buff[0] = (CWEncrypt(reinterpret_cast<const char *>(&buff), hSessionKey)->getValue()[0]);
+            CWEncrypt(&buff[0], hSessionKey);
             fputs(buff, temp);
         } else {
             fputc(0, temp);

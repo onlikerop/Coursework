@@ -11,7 +11,7 @@ int createStudent(Student* value, const char* fileName){
     int err = 0;
     auto *temp = new Student(nullptr);
     while(!err){
-        err = loadFromFile(fileName, temp, file, nullptr, NULL);
+        err = loadFromFile(fileName, temp, file);
         if (temp->getID() == value->getID()){
             cout << "Error, saving added student! A student with such ID already exists!" << endl;
             return 1;
@@ -37,7 +37,7 @@ int createStudent(Student* value, const char* fileName){
         do {
             tempGrades3_1_2_sem = 0; tempAllGrades_1_2_sem = 0;
             prevPosition = ftell(file);
-            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+            err = loadFromFile(fileName, temp, file);
             if (temp->getSemester(1) != nullptr) {
                 tempGrades3_1_2_sem += temp->getSemester(1)->getNumberOfGrades(3);
                 tempAllGrades_1_2_sem += temp->getSemester(1)->getNumberOfSubjects();
@@ -52,7 +52,7 @@ int createStudent(Student* value, const char* fileName){
     for (long i = 0; i < prevPosition; i++){
         fputc(fgetc(file), tempFile);
     }
-    saveToFile(tempName, value, tempFile, NULL);
+    saveToFile(tempName, value, tempFile);
 
     fseek(file, prevPosition, SEEK_SET);
     while (!feof(file)){
@@ -88,7 +88,7 @@ int deleteStudent(Student *student, const char* fileName){
     long prevPosition, currPosition;
     do{
         prevPosition = ftell(file);
-        int err = loadFromFile(fileName, temp, file, nullptr, NULL);
+        int err = loadFromFile(fileName, temp, file);
         currPosition = ftell(file);
         if (err){
             fclose(file);
@@ -136,7 +136,7 @@ int deleteStudent(const char* IDCard, const char* fileName){
     long prevPosition, currPosition;
     do{
         prevPosition = ftell(file);
-        int err = loadFromFile(fileName, temp, file, nullptr, NULL);
+        int err = loadFromFile(fileName, temp, file);
         currPosition = ftell(file);
         if (err){
             fclose(file);
@@ -193,7 +193,7 @@ Student* findStudent(string fullNameOrID, const char* fileName){
                 fclose(file);
                 return nullptr;
             }
-            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+            err = loadFromFile(fileName, temp, file);
             string currName = temp->getFullName();
             string currID = temp->getID();
             transform(currID.begin(), currID.end(), currID.begin(), tolower);
@@ -209,7 +209,7 @@ Student* findStudent(string fullNameOrID, const char* fileName){
         cin >> goNext;
 
         if (goNext == "Y")
-            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+            err = loadFromFile(fileName, temp, file);
 
     }
 
@@ -237,7 +237,7 @@ Student* findStudent(string fullNameOrID, unsigned short BDYearMin, unsigned sho
                 fclose(file);
                 return nullptr;
             }
-            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+            err = loadFromFile(fileName, temp, file);
             string currName = temp->getFullName();
             string currID = temp->getID();
             transform(currID.begin(), currID.end(), currID.begin(), tolower);
@@ -257,7 +257,7 @@ Student* findStudent(string fullNameOrID, unsigned short BDYearMin, unsigned sho
         cin >> goNext;
 
         if (goNext == "Y")
-            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+            err = loadFromFile(fileName, temp, file);
 
     }
 
@@ -285,7 +285,7 @@ Student* findStudent(unsigned short BDYearMin, unsigned short BDYearMax, const c
                 fclose(file);
                 return nullptr;
             }
-            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+            err = loadFromFile(fileName, temp, file);
             if (temp->getBirthdate().year >= BDYearMin && temp->getBirthdate().year <= BDYearMax)
                 break;
 
@@ -297,7 +297,7 @@ Student* findStudent(unsigned short BDYearMin, unsigned short BDYearMax, const c
         cin >> goNext;
 
         if (goNext == "Y")
-            err = loadFromFile(fileName, temp, file, nullptr, NULL);
+            err = loadFromFile(fileName, temp, file);
 
     }
 
@@ -312,7 +312,7 @@ void menu(const char* fileName){
         try {
             cout << "Choose one the following menu item:"
                 << endl << "1. Create new student"
-                << endl << "2. Print list of all Students (may be very long, do it only on your own risk)"
+                << endl << "2. Print list of all Students (may be very long)"
                 << endl << "3. Find student"
                 << endl << "4. Credits"
                 << endl << "5. Exit"
@@ -402,7 +402,7 @@ void menu(const char* fileName){
                                 bool flag = false;
                                 if (foundStudent->getID() != backupIDCard) {
                                     while (!err) {
-                                        err = loadFromFile(fileName, temp, file, nullptr, NULL);
+                                        err = loadFromFile(fileName, temp, file);
                                         if (temp->getID() == foundStudent->getID()) {
                                             cout << "Error, saving added student! A student with such ID already exists!" << endl;
                                             flag = true;
@@ -434,7 +434,7 @@ void menu(const char* fileName){
                                     do {
                                         tempGrades3_1_2_sem = 0; tempAllGrades_1_2_sem = 0;
                                         prevPosition = ftell(file);
-                                        err = loadFromFile(fileName, temp, file, nullptr, NULL);
+                                        err = loadFromFile(fileName, temp, file);
                                         if (temp->getSemester(1) != nullptr) {
                                             tempGrades3_1_2_sem += temp->getSemester(1)->getNumberOfGrades(3);
                                             tempAllGrades_1_2_sem += temp->getSemester(1)->getNumberOfSubjects();
@@ -449,7 +449,7 @@ void menu(const char* fileName){
                                 for (long i = 0; i < prevPosition; i++){
                                     fputc(fgetc(file), tempFile);
                                 }
-                                saveToFile(tempName, foundStudent, tempFile, NULL);
+                                saveToFile(tempName, foundStudent, tempFile);
 
                                 while (!feof(file)){
                                     int tmp = fgetc(file);
@@ -498,7 +498,7 @@ void menu(const char* fileName){
     }
 }
 
-inline int saveToFile(const string& path, Student* student, FILE* file, HCRYPTKEY key){
+inline int saveToFile(const string& path, Student* student, FILE* file){
     if (!file){
         cout << "Error opening save-file for saving" << endl;
         return 1;
@@ -574,7 +574,7 @@ inline int saveToFile(const string& path, Student* student, FILE* file, HCRYPTKE
     }
 }
 
-inline int loadFromFile(const string& path, Student* student, FILE* file, BYTE *hPublicKey, DWORD hPublicKeyLen){
+inline int loadFromFile(const string& path, Student* student, FILE* file){
     if (!file){
         cout << "Error opening save-file for loading" << endl;
         return 1;
@@ -672,7 +672,7 @@ int printAllStudents(const char* fileName) {
     ungetc(tmpChar, file);
     auto *temp = new Student(nullptr);
     while(!feof(file)){
-        int err = loadFromFile(fileName, temp, file, nullptr, NULL);
+        int err = loadFromFile(fileName, temp, file);
         if (temp->getSex() == Undefined)
             err = 3;
         if (err)
@@ -689,55 +689,20 @@ int printAllStudents(const char* fileName) {
 
 
 // CRYPTOGRAPHY
-Crypto* CWEncrypt(const char* toEncode) {
-    HCRYPTPROV hProv;
-    HCRYPTKEY hSessionKey;
-    if(!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)){
-        cout << "Error, getting encryption context: " << GetLastError() << endl;
-        return nullptr;
-    }
-    cout << "Cryptographic provider successfully initialized!" << endl;
-
-    if(!CryptGenKey(hProv, CALG_RC4, CRYPT_EXPORTABLE, &hSessionKey)){
-        cout << "Error, generating session key for encryption: " << GetLastError() << endl;
-        return nullptr;
-    }
-    cout << "Session key successfully generated!" << endl;
-
-    char *tempString;
-    tempString = new char[strlen(toEncode)];
-    strcpy_s(tempString, strlen(tempString), toEncode);
-    DWORD count = strlen(tempString);
-    if(!CryptEncrypt(hSessionKey, NULL, true, NULL, reinterpret_cast<BYTE*>(tempString), &count, count)){
+int CWEncrypt(char* toEncode, HCRYPTKEY hSessionKey) {
+    DWORD count = 1;
+    if(!CryptEncrypt(hSessionKey, NULL, true, NULL, reinterpret_cast<BYTE*>(toEncode), &count, count)){
         cout << "Error, encrypting provided data: " << GetLastError() << endl;
-        return nullptr;
+        return 1;
     }
-    auto response = new Crypto(tempString, hSessionKey);
-    return response;
+    return 0;
 }
 
-Crypto* CWEncrypt(const char* toEncode, HCRYPTKEY hSessionKey) {
-    char *tempString;
-    tempString = new char[strlen(toEncode)];
-    strcpy_s(tempString, strlen(tempString), toEncode);
-    DWORD count = strlen(tempString);
-    if(!CryptEncrypt(hSessionKey, NULL, true, NULL, reinterpret_cast<BYTE*>(tempString), &count, count)){
-        cout << "Error, encrypting provided data: " << GetLastError() << endl;
-        return nullptr;
-    }
-    auto response = new Crypto(tempString, hSessionKey);
-    return response;
-}
-
-char* CWDecrypt(const char* toDecode, HCRYPTKEY hSessionKey) {
-    char *tempString;
-
-    tempString = new char[strlen(toDecode)];
-    strcpy_s(tempString, strlen(tempString), toDecode);
-    DWORD count = strlen(tempString);
-    if(!CryptDecrypt(hSessionKey, NULL, true, NULL, reinterpret_cast<BYTE*>(tempString), &count)){
+int CWDecrypt(char* toDecode, HCRYPTKEY hSessionKey) {
+    DWORD count = 1;
+    if(!CryptDecrypt(hSessionKey, NULL, true, NULL, reinterpret_cast<BYTE*>(toDecode), &count)){
         cout << "Error, decrypting provided data" << endl;
-        return nullptr;
+        return 1;
     }
-    return tempString;
+    return 0;
 }
