@@ -10,6 +10,7 @@
 
 
 class Grademeres {
+public:
     virtual int getNumberOfGrades(int grade) = 0;
     virtual int getNumberOfGrades(GRADE grade) = 0;
     virtual int getNumberOfSubjects() = 0;
