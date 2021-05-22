@@ -14,8 +14,6 @@ Student::Student(string SName, string FName, string TName, Date BDate, unsigned 
     this->sex = sex;
     for (auto & semester : semesters)
         semester.is_active(false);
-
-    //cout << "You've just successfully added " << getFullName() << " to the list of students" << endl;
 }
 
 Student::Student() {

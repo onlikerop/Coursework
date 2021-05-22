@@ -36,10 +36,10 @@ string SEXToString (SEX sex) {
     }
 }
 
-SEX stringToSEX (const string& sex) {
-    if (sex == "Male" or sex == "male" or sex == "M" or sex == "m" or sex == "М" or sex == "м")
+SEX stringToSEX (string sex) {
+    if (sex == "Male" || sex == "male" || sex == "M" || sex == "m" || sex == "М" || sex == "м")
         return Male;
-    else if (sex == "Female" or sex == "female" or sex == "F" or sex == "f" or sex == "Ж" or sex == "ж")
+    else if (sex == "Female" || sex == "female" || sex == "F" || sex == "f" || sex == "Ж" || sex == "ж")
         return Female;
     else
         return Undefined;

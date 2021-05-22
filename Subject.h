@@ -15,7 +15,7 @@
 string GRADEToString(GRADE grade);
 GRADE StringToGRADE(string grade);
 string SEXToString (SEX sex);
-SEX stringToSEX (const string& sex);
+SEX stringToSEX (string sex);
 
 class Subject : public Active{
 private:
