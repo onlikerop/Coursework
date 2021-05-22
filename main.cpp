@@ -16,6 +16,9 @@ int main() {
     if (!file)
         fopen_s(&file, fileName.c_str(), "wb+");
     fopen_s(&temp, tempFileName.c_str(), "wb+");
+    string com = "attrib -R ";
+    com += fileName;
+    system(com.c_str());
 
     HCRYPTPROV hProv;
     HCRYPTKEY hSessionKey;
@@ -91,6 +94,9 @@ int main() {
     fclose(temp);
     remove(decrFileName.c_str());
     remove(tempFileName.c_str());
+    com = "attrib +R ";
+    com += fileName;
+    system(com.c_str());
     CryptDestroyKey(hSessionKey);
     return 0;
 }
