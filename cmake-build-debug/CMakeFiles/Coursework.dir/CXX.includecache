@@ -32,33 +32,13 @@ cstring
 string
 -
 
-Q:/Progs/C++/University/Practice/Coursework/Semester.cpp
-Subject.h
-Q:/Progs/C++/University/Practice/Coursework/Subject.h
-Semester.h
-Q:/Progs/C++/University/Practice/Coursework/Semester.h
-
 Q:/Progs/C++/University/Practice/Coursework/Semester.h
 Grademeres.h
 Q:/Progs/C++/University/Practice/Coursework/Grademeres.h
 
-Q:/Progs/C++/University/Practice/Coursework/Student.cpp
-Subject.h
-Q:/Progs/C++/University/Practice/Coursework/Subject.h
-Semester.h
-Q:/Progs/C++/University/Practice/Coursework/Semester.h
-Student.h
-Q:/Progs/C++/University/Practice/Coursework/Student.h
-
 Q:/Progs/C++/University/Practice/Coursework/Student.h
 Grademeres.h
 Q:/Progs/C++/University/Practice/Coursework/Grademeres.h
-
-Q:/Progs/C++/University/Practice/Coursework/Subject.cpp
-Subject.h
-Q:/Progs/C++/University/Practice/Coursework/Subject.h
-utility
--
 
 Q:/Progs/C++/University/Practice/Coursework/Subject.h
 iostream
@@ -71,8 +51,4 @@ Active.h
 Q:/Progs/C++/University/Practice/Coursework/Active.h
 OwnTypes.h
 Q:/Progs/C++/University/Practice/Coursework/OwnTypes.h
-
-Q:/Progs/C++/University/Practice/Coursework/main.cpp
-CWLib.h
-Q:/Progs/C++/University/Practice/Coursework/CWLib.h
 

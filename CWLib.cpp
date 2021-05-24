@@ -601,11 +601,32 @@ inline int loadFromFile(const string& path, Student* student, FILE* file){
             student->name.Third = temp;
 
 
-            fgets(reinterpret_cast<char *>(&student->BDate.day), sizeof(unsigned short) + 1, file);
-            fgets(reinterpret_cast<char *>(&student->BDate.month), sizeof(unsigned short) + 1, file);
-            fgets(reinterpret_cast<char *>(&student->BDate.year), sizeof(unsigned short) + 1, file);
+            string temp0;
+            temp0.resize(sizeof(unsigned short));
+            for (int i = 0; i < sizeof(unsigned short); i++)
+                temp0[i] = fgetc(file);
+            student->BDate.day = *reinterpret_cast<const unsigned short*>(temp0.c_str());
 
-            fgets(reinterpret_cast<char *>(&student->university.receiptYear), sizeof(unsigned short) + 1, file);
+            temp0.resize(sizeof(unsigned short));
+            for (int i = 0; i < sizeof(unsigned short); i++)
+                temp0[i] = fgetc(file);
+            student->BDate.month = *reinterpret_cast<const unsigned short*>(temp0.c_str());
+
+            temp0.resize(sizeof(unsigned short));
+            for (int i = 0; i < sizeof(unsigned short); i++)
+                temp0[i] = fgetc(file);
+            student->BDate.year = *reinterpret_cast<const unsigned short*>(temp0.c_str());
+
+            temp0.resize(sizeof(unsigned short));
+            for (int i = 0; i < sizeof(unsigned short); i++)
+                temp0[i] = fgetc(file);
+            student->university.receiptYear = *reinterpret_cast<const unsigned short*>(temp0.c_str());
+
+//            fgets(reinterpret_cast<char *>(&student->BDate.day), sizeof(unsigned short) + 1, file);
+//            fgets(reinterpret_cast<char *>(&student->BDate.month), sizeof(unsigned short) + 1, file);
+//            fgets(reinterpret_cast<char *>(&student->BDate.year), sizeof(unsigned short) + 1, file);
+
+//            fgets(reinterpret_cast<char *>(&student->university.receiptYear), sizeof(unsigned short) + 1, file);
 
             temp_size = fgetc(file);
             temp = new char[temp_size];
